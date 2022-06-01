@@ -12,9 +12,6 @@ public class OrderDetail {
     @Column(name = "number_product")
     private int numberProduct;
 
-    @Column(name = "total_price")
-    private Double totalPrice;
-
     @ManyToOne
     @JoinColumn(name = "id_order", nullable = false)
     private Order order;
@@ -42,10 +39,9 @@ public class OrderDetail {
     public OrderDetail() {
     }
 
-    public OrderDetail(Long idOrderDetail, int numberProduct, Double totalPrice) {
+    public OrderDetail(Long idOrderDetail, int numberProduct) {
         this.idOrderDetail = idOrderDetail;
         this.numberProduct = numberProduct;
-        this.totalPrice = totalPrice;
     }
 
     public Long getIdOrderDetail() {
@@ -64,11 +60,4 @@ public class OrderDetail {
         this.numberProduct = numberProduct;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 }
