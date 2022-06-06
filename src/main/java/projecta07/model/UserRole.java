@@ -7,13 +7,14 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user_role")
     private Long idUserRole;
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "id_role")
     private Role role;
+
 
     public User getUser() {
         return user;

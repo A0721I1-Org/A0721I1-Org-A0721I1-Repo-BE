@@ -19,9 +19,10 @@ public class User {
     private String password;
 
     @OneToOne(mappedBy = "user1")
+    @JsonBackReference
     private Employee employee;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<UserRole> userRoleList;
 
@@ -43,7 +44,6 @@ public class User {
 
     public User() {
     }
-
     public User(Long idUser, String username, String password) {
         this.idUser = idUser;
         this.username = username;

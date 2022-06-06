@@ -15,7 +15,7 @@ public class Position {
     @Column(name = "name_position")
     private String namePosition;
 
-    @OneToMany(mappedBy = "position")
+    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Employee> employeeLis;
 
