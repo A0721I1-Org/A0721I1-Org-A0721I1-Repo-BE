@@ -21,7 +21,7 @@ public class OrderDetailController {
     @Autowired
     private IOrderDetailService orderDetailService;
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<Iterable<OrderDetail>> findAll() {
         List<OrderDetail> orderDetails = (List<OrderDetail>) orderDetailService.findAll();
         if (orderDetails.isEmpty()) {

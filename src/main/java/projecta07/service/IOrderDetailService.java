@@ -10,5 +10,4 @@ public interface IOrderDetailService {
     Optional<OrderDetail> findById(Long id);
     OrderDetail save(OrderDetail orderDetail);
     void delete(Long id);
-    List<OrderDetail> findTest();
 }
