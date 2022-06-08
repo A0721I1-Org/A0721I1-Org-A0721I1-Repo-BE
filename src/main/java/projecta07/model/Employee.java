@@ -1,6 +1,8 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -35,6 +37,8 @@ public class Employee {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
+    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
+    @JsonBackReference
     private User user1;
 
     @ManyToOne
@@ -42,6 +46,7 @@ public class Employee {
     private Position position;
 
     @OneToMany(mappedBy = "employee")
+    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
     @JsonBackReference
     private List<Order> orderList;
 

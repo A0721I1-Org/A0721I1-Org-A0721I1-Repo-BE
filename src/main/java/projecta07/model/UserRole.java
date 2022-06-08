@@ -1,4 +1,7 @@
 package projecta07.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +12,7 @@ public class UserRole {
     private Long idUserRole;
     @ManyToOne
     @JoinColumn(name = "id_user")
+    @JsonBackReference
     private User user;
 
     @ManyToOne

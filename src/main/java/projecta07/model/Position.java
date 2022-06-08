@@ -1,6 +1,8 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Position {
     private String namePosition;
 
     @OneToMany(mappedBy = "position")
+    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
     @JsonBackReference
     private List<Employee> employeeLis;
 
