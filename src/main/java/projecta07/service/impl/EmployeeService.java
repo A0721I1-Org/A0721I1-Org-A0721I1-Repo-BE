@@ -6,7 +6,9 @@ import projecta07.model.Employee;
 import projecta07.repository.IEmployeeRepository;
 import projecta07.service.IEmployeeService;
 
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService implements IEmployeeService {
@@ -30,7 +32,15 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public List<Employee> searchEmployee(String username, String name, String phone) {
-        return employeeRepository.searchAllEmployee(username,name,phone);
+        return employeeRepository.searchAllEmployee(username, name, phone);
+    }
 
+    public void saveEmployee(Employee employee) {
+        employeeRepository.save(employee);
+    }
+
+    @Override
+    public Optional<Employee> findByIdEmployee(Long id) {
+        return employeeRepository.findById(id);
     }
 }

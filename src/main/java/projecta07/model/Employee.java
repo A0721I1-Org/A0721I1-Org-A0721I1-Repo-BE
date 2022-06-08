@@ -2,9 +2,17 @@ package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jdk.nashorn.internal.ir.annotations.Reference;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -15,26 +23,34 @@ public class Employee {
     private Long idEmployee;
 
     @Column(name = "name_employee")
+    @NotEmpty(message = "không được để trống")
     private String nameEmployee;
 
     @Column(name = "address_employee")
+    @NotEmpty(message = "không được để trống")
     private String addressEmployee;
 
     @Column(name = "phone_employee")
+    @NotEmpty(message = "không được để trống")
     private String phoneEmployee;
 
     @Column(name = "gender_employee")
+//    @NotEmpty(message = "không được để trống")
     private boolean genderEmployee;
 
     @Column(name = "date_of_birth_employee")
+    @NotEmpty(message = "không được để trống")
     private String dateOfBirthEmployee;
 
     @Column(name = "salary_employee")
+    @NotNull(message = "không được để trống")
+//    @Min(value = 100000.0, message = "mức lương thấp nhất là 100,000")
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-    @JsonBackReference
+//
+//    @JsonBackReference(value = "employee_user1")
     private User user1;
 
     @ManyToOne
@@ -42,7 +58,7 @@ public class Employee {
     private Position position;
 
     @OneToMany(mappedBy = "employee")
-    @JsonBackReference
+    @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
     public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
@@ -78,13 +94,13 @@ public class Employee {
         this.user1 = user1;
     }
 
-    public User getUser() {
-        return user1;
-    }
-
-    public void setUser(User user) {
-        this.user1 = user;
-    }
+//    public User getUser() {
+//        return user1;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user1 = user;
+//    }
 
     public Position getPosition() {
         return position;
