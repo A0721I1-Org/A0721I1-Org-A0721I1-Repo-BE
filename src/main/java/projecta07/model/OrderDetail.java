@@ -14,13 +14,32 @@ public class OrderDetail {
     @Column(name = "number_product")
     private int numberProduct;
 
-    @ManyToOne(targetEntity = Order.class)
+    @Column(name = "total_product")
+    private Double totalProduct;
+
+    @ManyToOne
     @JoinColumn(name = "id_order", nullable = false)
     private Order order;
 
     @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "id_product", nullable = false)
     private Product product;
+
+    public Double getTotalProduct() {
+        return totalProduct;
+    }
+
+    public void setTotalProduct(Double totalProduct) {
+        this.totalProduct = totalProduct;
+    }
+
+    public OrderDetail(Long idOrderDetail, int numberProduct, Double totalProduct, Order order, Product product) {
+        this.idOrderDetail = idOrderDetail;
+        this.numberProduct = numberProduct;
+        this.totalProduct = totalProduct;
+        this.order = order;
+        this.product = product;
+    }
 
     public Order getOrder() {
         return order;
