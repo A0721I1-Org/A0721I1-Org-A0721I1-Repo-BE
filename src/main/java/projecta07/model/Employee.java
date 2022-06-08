@@ -33,9 +33,7 @@ public class Employee {
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
     @JsonBackReference
     private User user1;
 
@@ -44,7 +42,6 @@ public class Employee {
     private Position position;
 
     @OneToMany(mappedBy = "employee")
-    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
     @JsonBackReference
     private List<Order> orderList;
 
@@ -59,6 +56,10 @@ public class Employee {
         this.user1 = user1;
         this.position = position;
         this.orderList = orderList;
+    }
+
+    public Employee() {
+
     }
 
     public Long getIdEmployee() {

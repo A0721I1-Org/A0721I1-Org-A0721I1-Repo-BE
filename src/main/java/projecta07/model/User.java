@@ -20,7 +20,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user1")
+    @OneToOne(mappedBy = "user1",cascade = CascadeType.PERSIST)
     @JsonBackReference
     private Employee employee;
 

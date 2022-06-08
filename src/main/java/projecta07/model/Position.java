@@ -18,19 +18,18 @@ public class Position {
     private String namePosition;
 
     @OneToMany(mappedBy = "position")
-    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
     @JsonBackReference
-    private List<Employee> employeeList;
+    private List<Employee> employeeLis;
 
     public Position() {
     }
 
     public List<Employee> getEmployeeLis() {
-        return employeeList;
+        return employeeLis;
     }
 
     public void setEmployeeLis(List<Employee> employeeLis) {
-        this.employeeList = employeeLis;
+        this.employeeLis = employeeLis;
     }
 
     public Long getIdPosition() {
