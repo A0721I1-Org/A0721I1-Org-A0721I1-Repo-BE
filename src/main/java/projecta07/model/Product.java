@@ -18,6 +18,9 @@ public class Product {
     @Column(name = "name_product")
     private String nameProduct;
 
+    @Column(name = "quatity_product")
+    private Integer quatityProduct;
+
     @Column(name = "price_product")
     private Double priceProduct;
 
@@ -30,6 +33,14 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "id_type_product", nullable = false)
     private TypeProduct typeProduct;
+
+    public Integer getQuatityProduct() {
+        return quatityProduct;
+    }
+
+    public void setQuatityProduct(Integer quatityProduct) {
+        this.quatityProduct = quatityProduct;
+    }
 
     @OneToMany(mappedBy = "product")
     @JsonBackReference
@@ -54,13 +65,16 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long idProduct, String codeProduct, String nameProduct, Double priceProduct, String imageProduct, String descriptionProduct) {
+    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
         this.idProduct = idProduct;
         this.codeProduct = codeProduct;
         this.nameProduct = nameProduct;
+        this.quatityProduct = quatityProduct;
         this.priceProduct = priceProduct;
         this.imageProduct = imageProduct;
         this.descriptionProduct = descriptionProduct;
+        this.typeProduct = typeProduct;
+        this.orderDetailList = orderDetailList;
     }
 
     public Long getIdProduct() {

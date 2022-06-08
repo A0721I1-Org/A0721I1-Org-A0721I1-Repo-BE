@@ -2,9 +2,12 @@ package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jdk.nashorn.internal.ir.annotations.Reference;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -44,7 +47,7 @@ public class Employee {
 //    @Min(value = 100000.0, message = "mức lương thấp nhất là 100,000")
     private Double salaryEmployee;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
 //    @JsonBackReference(value = "employee_user1")
@@ -57,6 +60,23 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
+
+    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
+        this.idEmployee = idEmployee;
+        this.nameEmployee = nameEmployee;
+        this.addressEmployee = addressEmployee;
+        this.phoneEmployee = phoneEmployee;
+        this.genderEmployee = genderEmployee;
+        this.dateOfBirthEmployee = dateOfBirthEmployee;
+        this.salaryEmployee = salaryEmployee;
+        this.user1 = user1;
+        this.position = position;
+        this.orderList = orderList;
+    }
+
+    public Employee() {
+
+    }
 
     public Long getIdEmployee() {
         return idEmployee;
@@ -105,6 +125,7 @@ public class Employee {
     public void setId(Long id) {
         this.idEmployee = id;
     }
+
 
     public String getNameEmployee() {
         return nameEmployee;
