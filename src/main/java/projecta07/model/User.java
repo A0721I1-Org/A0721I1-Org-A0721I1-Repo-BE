@@ -22,8 +22,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user1",cascade = CascadeType.PERSIST)
-    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
+    @OneToOne(mappedBy = "user1")
+//    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
 //    @JsonBackReference
     private Employee employee;
 

@@ -44,11 +44,12 @@ public class Employee {
 //    @Min(value = 100000.0, message = "mức lương thấp nhất là 100,000")
     private Double salaryEmployee;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
+//    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
 //    @NotEmpty(message = "không được để trống")
 //    @JsonManagedReference
+    @JsonBackReference(value = "employee_user1")
     private User user1;
 
     @ManyToOne
@@ -56,7 +57,7 @@ public class Employee {
     private Position position;
 
     @OneToMany(mappedBy = "employee")
-    @JsonBackReference
+    @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
     public Long getIdEmployee() {
