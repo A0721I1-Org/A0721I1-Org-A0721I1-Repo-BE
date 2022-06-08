@@ -3,6 +3,7 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -10,25 +11,32 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
+
     private Long idProduct;
 
     @Column(name = "code_product")
+
     private String codeProduct;
 
     @Column(name = "name_product")
+
     private String nameProduct;
 
     @Column(name = "price_product")
+
     private Double priceProduct;
 
     @Column(name = "image_product")
+
     private String imageProduct;
 
     @Column(name = "description_product")
+
     private String descriptionProduct;
 
     @ManyToOne
     @JoinColumn(name = "id_type_product", nullable = false)
+
     private TypeProduct typeProduct;
 
     @OneToMany(mappedBy = "product")

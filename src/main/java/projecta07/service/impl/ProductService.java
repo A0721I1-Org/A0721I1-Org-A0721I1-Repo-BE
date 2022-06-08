@@ -7,6 +7,7 @@ import projecta07.repository.IProductRepository;
 import projecta07.service.IProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService implements IProductService {
@@ -25,5 +26,18 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> Search(String codeProduct, String nameProduct) {
         return iProductRepository.findProductByCodeProductContainingAndNameProductContaining(codeProduct, nameProduct);
+    }
+
+    public void createProduct(Product product){
+        iProductRepository.save(product);
+    }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return iProductRepository.findById(id);
+    }
+
+    public void editProduct(Product product){
+        iProductRepository.save(product);
     }
 }
