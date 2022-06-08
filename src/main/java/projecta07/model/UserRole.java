@@ -9,13 +9,15 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user_role")
     private Long idUserRole;
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
     @JsonBackReference
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "id_role")
     private Role role;
+
 
     public User getUser() {
         return user;

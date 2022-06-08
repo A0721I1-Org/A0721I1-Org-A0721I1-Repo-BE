@@ -2,6 +2,7 @@ package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -17,8 +18,9 @@ public class Role {
     @Column(name = "name_role")
     private String nameRole;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     @JsonBackReference
+
     List<UserRole> userRoleList;
 
     public Role() {

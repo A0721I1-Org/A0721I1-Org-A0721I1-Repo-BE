@@ -1,16 +1,9 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jdk.nashorn.internal.ir.annotations.Reference;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -48,18 +41,19 @@ public class Employee {
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
+
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
 //    @JsonBackReference(value = "employee_user1")
     private User user1;
-
-    @ManyToOne
+    @ManyToOne(targetEntity = Position.class)
     @JoinColumn(name = "id_position", nullable = false)
     private Position position;
 
     @OneToMany(mappedBy = "employee")
     @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
+
 
     public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
         this.idEmployee = idEmployee;

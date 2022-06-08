@@ -5,20 +5,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
-import projecta07.service.impl.EmployeeService;
+import projecta07.service.IEmployeeService;
 import java.util.List;
 import org.springframework.validation.BindingResult;
 import projecta07.model.Position;
-import projecta07.service.IEmployeeService;
 import projecta07.service.IPositionService;
 import javax.validation.Valid;
 import java.util.Optional;
 
+
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/manager/api/employee")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeController {
     @Autowired
-    private EmployeeService employeeService;
+    private IEmployeeService employeeService;
     @Autowired
     private IPositionService positionService;
     //VinhTQ
@@ -91,6 +92,16 @@ public class EmployeeController {
                 employeeService.saveEmployee(employee);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
+        }
+    }
+    // HauLST
+    @GetMapping("/detail/{idUser}")
+    public ResponseEntity<Employee> findByIdUser(@PathVariable Long idUser) {
+        Employee employee = employeeService.findEmployeeByIdUser(idUser);
+        if (employee == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(employee,HttpStatus.OK);
         }
     }
 }

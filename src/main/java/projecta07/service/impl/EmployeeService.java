@@ -16,6 +16,11 @@ public class EmployeeService implements IEmployeeService {
     private IEmployeeRepository employeeRepository;
 
     @Override
+    public Employee findEmployeeByIdUser(Long IdUser) {
+        return employeeRepository.findEmployeeByIdUser(IdUser);
+    }
+
+    @Override
     public List<Employee> findAll() {
         return employeeRepository.findAll();
     }
@@ -27,7 +32,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void deleteEmployee(long id) {
-         employeeRepository.deleteById(id);
+        employeeRepository.deleteById(id);
     }
 
     @Override
