@@ -16,18 +16,19 @@ public class Position {
     private String namePosition;
 
     @OneToMany(mappedBy = "position")
-    @JsonBackReference
+    @JsonBackReference(value = "position_employee")
     private List<Employee> employeeList;
+
 
     public Position() {
     }
 
-    public List<Employee> getEmployeeLis() {
+    public List<Employee> getEmployeeList() {
         return employeeList;
     }
 
-    public void setEmployeeLis(List<Employee> employeeLis) {
-        this.employeeList = employeeLis;
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
     }
 
     public Long getIdPosition() {

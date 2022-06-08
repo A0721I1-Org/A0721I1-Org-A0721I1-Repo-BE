@@ -14,4 +14,5 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "select * from product where id_type_product = ?1  limit ?2,?3" , nativeQuery = true)
     List<Product> getProductsByTypeProductId(Long id , int currentPage , int size);
+
 }

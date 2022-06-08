@@ -1,5 +1,7 @@
 package projecta07.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,7 +21,7 @@ public class OrderDetail {
     @JoinColumn(name = "id_order", nullable = false)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "id_product", nullable = false)
     private Product product;
 
@@ -61,6 +63,19 @@ public class OrderDetail {
     public OrderDetail(Long idOrderDetail, int numberProduct) {
         this.idOrderDetail = idOrderDetail;
         this.numberProduct = numberProduct;
+    }
+
+    public OrderDetail(int numberProduct, Order order, Product product) {
+        this.numberProduct = numberProduct;
+        this.order = order;
+        this.product = product;
+    }
+
+    public OrderDetail(Long idOrderDetail, int numberProduct, Order order, Product product) {
+        this.idOrderDetail = idOrderDetail;
+        this.numberProduct = numberProduct;
+        this.order = order;
+        this.product = product;
     }
 
     public Long getIdOrderDetail() {
