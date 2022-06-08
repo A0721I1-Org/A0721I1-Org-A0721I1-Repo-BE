@@ -1,6 +1,9 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,7 +26,8 @@ public class User {
     private Employee employee;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
+
     private List<UserRole> userRoleList;
 
     public Employee getEmployee() {
