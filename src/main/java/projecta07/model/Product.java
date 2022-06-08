@@ -27,12 +27,12 @@ public class Product {
     @Column(name = "description_product")
     private String descriptionProduct;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = TypeProduct.class)
     @JoinColumn(name = "id_type_product", nullable = false)
     private TypeProduct typeProduct;
 
     @OneToMany(mappedBy = "product")
-    @JsonBackReference
+    @JsonBackReference(value = "product_orderDetail")
     private List<OrderDetail> orderDetailList;
 
     public TypeProduct getTypeProduct() {
