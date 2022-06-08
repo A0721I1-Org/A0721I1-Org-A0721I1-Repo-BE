@@ -9,4 +9,5 @@ public interface ITableService {
     List<Table> findAll();
     void deleteTableById(Long id);
     Optional<Table> findTableById(Long id);
+    Table save(Table table);
 }

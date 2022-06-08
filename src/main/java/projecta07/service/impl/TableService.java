@@ -27,4 +27,8 @@ public class TableService implements ITableService{
     public Optional<Table> findTableById(Long id) {
         return iTableRepository.findById(id);
     }
+    public Table save(Table table) {
+        return iTableRepository.save(table);
+    }
+
 }
