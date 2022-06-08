@@ -22,7 +22,7 @@ public class Feedback {
     @Column(name = "content_feedback")
     private String contentFeedback;
 
-    @Pattern(regexp = "[^0-9/~?><.,@]", message = "Định dạng tên không đúng")
+    @Pattern(regexp = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W|_]+", message = "Định dạng tên không đúng")
     @NotBlank
     @Column(name = "name_people_feedback")
     private String namePeopleFeedback;
@@ -37,6 +37,13 @@ public class Feedback {
     private String imageFeedback;
 
     public Feedback() {
+    }
+
+    public Feedback(String contentFeedback, String namePeopleFeedback, String emailPeopleFeedback, String imageFeedback) {
+        this.contentFeedback = contentFeedback;
+        this.namePeopleFeedback = namePeopleFeedback;
+        this.emailPeopleFeedback = emailPeopleFeedback;
+        this.imageFeedback = imageFeedback;
     }
 
     public Feedback(Long idFeedback, String codeFeedback, String dateFeedback, String contentFeedback, String namePeopleFeedback, String emailPeopleFeedback, String imageFeedback) {

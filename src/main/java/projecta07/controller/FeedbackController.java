@@ -4,27 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import projecta07.model.Feedback;
 import projecta07.service.impl.FeedbackService;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin
+@RequestMapping("/api/feedback")
 public class FeedbackController {
 
     @Autowired
     private FeedbackService feedbackService;
 
     @PostMapping("/createFeedback")
-    public ResponseEntity<Feedback> createFeedback(@Validated @ModelAttribute("feedBack") Feedback feedback, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         feedbackService.saveFeedback(feedback);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
