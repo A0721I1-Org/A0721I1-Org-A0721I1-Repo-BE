@@ -23,12 +23,11 @@ public class User {
     private String password;
 
     @OneToOne(mappedBy = "user1")
-//    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
-//    @JsonBackReference
+    @JsonBackReference(value = "user-employee")
     private Employee employee;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
     private List<UserRole> userRoleList;
 
     public Employee getEmployee() {
