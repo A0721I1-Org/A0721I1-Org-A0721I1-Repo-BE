@@ -29,7 +29,6 @@ public class User {
     @OneToOne(mappedBy = "user1")
     private Employee employee;
 
-    @JsonBackReference
     @ManyToMany
     @JoinTable(
             name = "user_role",
