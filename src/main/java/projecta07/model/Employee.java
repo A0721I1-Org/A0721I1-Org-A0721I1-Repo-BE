@@ -49,7 +49,7 @@ public class Employee {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-//
+//    @NotEmpty(message = "không được để trống")
 //    @JsonBackReference(value = "employee_user1")
     private User user1;
 
