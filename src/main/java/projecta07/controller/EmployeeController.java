@@ -25,17 +25,28 @@ public class EmployeeController {
         }
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
+
     @GetMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id){
-        if (employeeService.findEmployeeById(id)!=null) {
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        if (employeeService.findEmployeeById(id) != null) {
             employeeService.deleteEmployee(id);
-            return new ResponseEntity<>( HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/search")
-    public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username,@PathVariable String name,@PathVariable String phone ) {
-        List<Employee> employeeList = employeeService.searchEmployee(username,name,phone  );
+
+    @GetMapping("/search/{username}/{name}/{phone}")
+    public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone) {
+        if (username.equals("null")) {
+            username = "";
+        }
+        if (name.equals("null")) {
+            name = "";
+        }
+        if (phone.equals("null")) {
+            phone = "";
+        }
+        List<Employee> employeeList = employeeService.searchEmployee(username, name, phone);
         if (employeeList.isEmpty()) {
             return new ResponseEntity<List<Employee>>(HttpStatus.NO_CONTENT);
         }

@@ -9,10 +9,8 @@ import java.util.List;
 
 @Repository
 public interface IEmployeeRepository extends JpaRepository<Employee,Long> {
-//    @Query(value = "select id_employee,address_employee,date_of_birth_employee,gender_employee,name_employee,phone_employee,salary_employee from employee" , nativeQuery = true)
-//    List<Employee> findAll();
     @Query(value = "select * from employee  where id_employee =?1" , nativeQuery = true)
     Employee findEmployeeById(long id);
-    @Query(value = "select * from employee where user.username like concat('%' ,?1,'%')and name like concat('%' ,?2,'%') and phone like concat('%' ,?3,'%')",nativeQuery = true)
+    @Query(value = "SELECT * FROM employee join user on employee.id_user = user.id_user where user.username like concat('%' ,?1,'%')and employee.name_employee like concat('%' ,?2,'%') and employee.phone_employee like concat('%' ,?3,'%')",nativeQuery = true)
     List<Employee> searchAllEmployee(String username, String name, String phone);
 }
