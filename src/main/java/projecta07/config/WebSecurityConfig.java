@@ -83,9 +83,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate", "/register").permitAll().
+                .authorizeRequests().antMatchers("/authenticate", "/register").permitAll()
+                //Cấu hình cho các đường dẫn đăng nhập bằng Role là Member, Admin
+                .antMatchers("/staff/**").hasAnyRole("STAFF", "MANAGER")
+                //cấu hình cho đường dẫn admin, chỉ có Role admin mới vào được
+                .antMatchers("/manager/**").hasRole("MANAGER")
                 // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
+                .anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
