@@ -11,7 +11,7 @@ public class UserRole {
     private Long idUserRole;
     @ManyToOne
     @JoinColumn(name = "id_user")
-    @JsonBackReference(value = "UserRole_user")
+    @JsonBackReference
     private User user;
 
     @ManyToOne

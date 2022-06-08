@@ -47,7 +47,7 @@ public class Employee {
     @OneToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
-    @JsonBackReference(value = "employee_user1")
+//    @JsonBackReference(value = "employee_user1")
     private User user1;
 
     @ManyToOne

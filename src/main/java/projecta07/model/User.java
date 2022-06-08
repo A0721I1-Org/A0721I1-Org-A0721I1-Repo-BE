@@ -23,7 +23,7 @@ public class User {
     private String password;
 
     @OneToOne(mappedBy = "user1")
-    @JsonBackReference(value = "user_employee")
+    @JsonBackReference(value = "user-employee")
     private Employee employee;
 
     @OneToMany(mappedBy = "user")
