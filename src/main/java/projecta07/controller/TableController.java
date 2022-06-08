@@ -1,6 +1,9 @@
 package projecta07.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,12 +74,35 @@ public class TableController {
 
     //HuyNN method getAllTable
     @GetMapping("/getAllTable")
-    public ResponseEntity<Iterable<Table>> getAllTable() {
-        List<Table> tableList = (List<Table>) iTableService.findAll();
-        if (tableList.isEmpty()) {
+    public ResponseEntity<Iterable<Table>> getAllTable(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @PageableDefault(size = 5) Pageable pageable) {
+        Page<Table> tables;
+        Status status = null;
+        if (idStatus.isPresent()) {
+            status = iStatusService.findStatusById(idStatus.get()).get();
+        }
+        if (codeTable.isPresent()) {
+            if (idStatus.isPresent() && emptyTable.isPresent()) {
+                tables = iTableService.findAllByStatusAndEmptyTableAndCodeTable(status, emptyTable.get(), codeTable.get(), pageable);
+            } else if (idStatus.isPresent()){
+                tables = iTableService.findAllByStatusAndCodeTable(status, codeTable.get(), pageable);
+            } else if (emptyTable.isPresent()){
+                tables = iTableService.findAllByCodeTableAndEmptyTable(codeTable.get(), emptyTable.get(), pageable);
+            } else {
+                tables = iTableService.findByCodeTable(codeTable.get(), pageable);
+            }
+        } else if (idStatus.isPresent() && emptyTable.isPresent()){
+            tables = iTableService.findAllByStatusAndEmptyTable(status, emptyTable.get(), pageable);
+        } else if (idStatus.isPresent()) {
+            tables = iTableService.findAllByStatus(status, pageable);
+        } else if (emptyTable.isPresent()){
+            tables = iTableService.findAllByEmptyTable(emptyTable.get(), pageable);
+        } else {
+            tables = iTableService.findAll(pageable);
+        }
+        if (tables.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(tableList, HttpStatus.OK);
+        return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
     //HuyNN method deleteTable
