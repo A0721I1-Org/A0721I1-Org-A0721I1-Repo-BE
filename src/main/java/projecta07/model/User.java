@@ -20,7 +20,6 @@ public class User {
     private String password;
 
     @OneToOne(mappedBy = "user1")
-    @JsonIgnore
     @JsonBackReference
     private Employee employee;
 

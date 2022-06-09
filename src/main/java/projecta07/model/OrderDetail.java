@@ -3,6 +3,7 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class OrderDetail {
@@ -24,6 +25,11 @@ public class OrderDetail {
     @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "id_product", nullable = false)
     private Product product;
+
+    public double calculateTotalPriceOrderDetail(OrderDetail orderDetail) {
+        double totalProduct = orderDetail.getProduct().getPriceProduct() * orderDetail.getNumberProduct();
+        return totalProduct;
+    }
 
     public Double getTotalProduct() {
         return totalProduct;
