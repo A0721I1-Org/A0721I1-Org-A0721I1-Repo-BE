@@ -14,4 +14,12 @@ public class OrderService implements IOrderService {
     public Order getOrderByTableId(Long id) {
         return orderRepository.getOrderByTableId(id);
     }
+
+    public Order saveOrder(Order order) {
+        return this.orderRepository.save(order);
+    }
+
+    public Order getOrderById(Long id) {
+        return this.orderRepository.findById(id).orElse(null);
+    }
 }

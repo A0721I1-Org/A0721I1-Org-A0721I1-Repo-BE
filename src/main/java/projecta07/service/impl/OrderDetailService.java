@@ -14,8 +14,11 @@ public class OrderDetailService implements IOrderDetailService {
     private IOrderDetailRepository orderDetailRepository;
 
     /* get Order Detail by Order Id*/
-    public List<OrderDetail> getOrdersDetail(Long id) {
+    public List<OrderDetail> getOrderDetailsByOrderId(Long id) {
         return this.orderDetailRepository.getOrderDetailsByOrderId(id);
+    }
 
+    public OrderDetail save(OrderDetail orderDetail) {
+        return this.orderDetailRepository.save(orderDetail);
     }
 }

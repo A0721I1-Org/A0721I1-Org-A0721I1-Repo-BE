@@ -1,6 +1,7 @@
 package projecta07.dto;
 
 public class MenuOrderDTO {
+    private Long productId;
     private Long orderId;
     private String nameProduct;
     private int quantity;
@@ -8,6 +9,14 @@ public class MenuOrderDTO {
     private double totalPrice;
 
     public MenuOrderDTO() {}
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
 
     public Long getOrderId() {
         return orderId;
