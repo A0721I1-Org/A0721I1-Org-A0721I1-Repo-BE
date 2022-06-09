@@ -8,4 +8,5 @@ public interface IStatusService {
     List<Status> getAll();
     Status getStatusById(Long id);
     Status updateStatus(Status status);
+    List<Status> findAll();
 }

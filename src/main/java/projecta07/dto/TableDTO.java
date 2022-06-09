@@ -1,16 +1,22 @@
 package projecta07.dto;
 
-import javax.persistence.Column;
+import projecta07.model.Status;
+
 
 public class TableDTO {
     private Long idTable;
     private String codeTable;
     private Boolean emptyTable;
+
     private String nameStatus;
     private Long idStatus;
 
+    private Status status;
+
+
     public TableDTO() {
     }
+
 
     public TableDTO(Long idTable, String codeTable, Boolean emptyTable, String nameStatus, Long idStatus) {
         this.idTable = idTable;
@@ -58,5 +64,13 @@ public class TableDTO {
 
     public void setIdStatus(Long idStatus) {
         this.idStatus = idStatus;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

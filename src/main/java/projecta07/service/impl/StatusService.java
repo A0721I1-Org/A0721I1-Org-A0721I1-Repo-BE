@@ -12,6 +12,7 @@ import java.util.List;
 public class StatusService implements IStatusService {
     @Autowired
     private IStatusRepository iStatusRepository;
+
     @Override
     public List<Status> getAll() {
         return iStatusRepository.findAll();
@@ -25,5 +26,10 @@ public class StatusService implements IStatusService {
     @Override
     public Status updateStatus(Status status) {
         return iStatusRepository.save(status);
+    }
+
+    @Override
+    public List<Status> findAll() {
+        return iStatusRepository.findAllStatus();
     }
 }

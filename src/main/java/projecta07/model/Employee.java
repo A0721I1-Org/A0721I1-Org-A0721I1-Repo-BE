@@ -56,9 +56,11 @@ public class Employee {
         this.orderList = orderList;
     }
 
+
     public Employee() {
 
     }
+
 
     public Long getIdEmployee() {
         return idEmployee;
@@ -107,7 +109,6 @@ public class Employee {
     public void setId(Long id) {
         this.idEmployee = id;
     }
-
 
     public String getNameEmployee() {
         return nameEmployee;

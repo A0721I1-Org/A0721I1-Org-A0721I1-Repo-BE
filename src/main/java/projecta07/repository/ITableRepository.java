@@ -5,8 +5,6 @@ import org.springframework.stereotype.Repository;
 import projecta07.model.Table;
 
 
-
 @Repository
 public interface ITableRepository extends JpaRepository<Table,Long> {
-
 }

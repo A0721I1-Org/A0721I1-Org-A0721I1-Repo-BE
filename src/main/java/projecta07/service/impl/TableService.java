@@ -15,6 +15,10 @@ public class TableService implements ITableService {
 
     @Override
     public List<Table> getAll() {
+       return iTableRepository.findAll();
+    }
+    @Override
+    public List<Table> findAll() {
         return iTableRepository.findAll();
     }
 
@@ -27,4 +31,9 @@ public class TableService implements ITableService {
     public Table updateTable(Table table) {
         return iTableRepository.save(table);
     }
+
+    public Table save(Table table) {
+        return iTableRepository.save(table);
+    }
+
 }
