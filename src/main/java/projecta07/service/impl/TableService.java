@@ -10,16 +10,28 @@ import java.util.List;
 
 @Service
 public class TableService implements ITableService {
-
     @Autowired
     private ITableRepository iTableRepository;
 
+    @Override
+    public List<Table> getAll() {
+       return iTableRepository.findAll();
+    }
     @Override
     public List<Table> findAll() {
         return iTableRepository.findAll();
     }
 
     @Override
+    public Table getTableById(Long id) {
+        return iTableRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Table updateTable(Table table) {
+        return iTableRepository.save(table);
+    }
+
     public Table save(Table table) {
         return iTableRepository.save(table);
     }

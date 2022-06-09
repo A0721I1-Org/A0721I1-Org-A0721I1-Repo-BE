@@ -22,7 +22,7 @@ public class User {
     private Employee employee;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+    @JsonBackReference(value = "user-userRole")
     private List<UserRole> userRoleList;
 
     public Employee getEmployee() {

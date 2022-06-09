@@ -5,24 +5,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import projecta07.dto.TableDTO;
 import projecta07.model.Status;
 import projecta07.model.Table;
 import projecta07.service.IStatusService;
 import projecta07.service.ITableService;
 import projecta07.validate.ValidateTableDTO;
-
 import javax.validation.Valid;
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/table")
+@RequestMapping("/manager")
 @CrossOrigin(origins = "*")
 public class TableController {
-
     @Autowired
     private ValidateTableDTO validateTableDTO;
-
     @Autowired
     private ITableService iTableService;
 
@@ -42,10 +41,9 @@ public class TableController {
             }
         }
         if (bindingResult.hasErrors() || !check) {
-            if (bindingResult.hasErrors()){
+            if (bindingResult.hasErrors()) {
                 return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_MODIFIED);
-            }
-            else{
+            } else {
                 return new ResponseEntity<>("Da ton tai id", HttpStatus.NOT_MODIFIED);
             }
         } else {
@@ -59,21 +57,41 @@ public class TableController {
 
     //QuangNV method getAllStatus
     @GetMapping("/getAllStatus")
-    public ResponseEntity<List<Status>> getAllStatus(){
+    public ResponseEntity<List<Status>> getAllStatus() {
         List<Status> statusList = iStatusService.findAll();
-        if (statusList.isEmpty()){
+        if (statusList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else {
+        } else {
             return new ResponseEntity<>(statusList, HttpStatus.OK);
         }
     }
 
     // QuangNV method getAllTable
     @GetMapping("/getAllTable")
-    public ResponseEntity<List<Table>> getAllTable(){
-       List<Table> list = iTableService.findAll();
-       return new ResponseEntity<>(list, HttpStatus.OK);
+    public ResponseEntity<List<Table>> getAllTable() {
+        List<Table> list = iTableService.findAll();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    // ThaoPTT method update-table
+    @GetMapping("/update-table/{id}")
+    public ResponseEntity<Table> getTableId(@PathVariable("id") Long id) {
+        Table tableOptional = iTableService.getTableById(id);
+        return new ResponseEntity<>(tableOptional, HttpStatus.OK);
     }
 
+    /* update table */
+    @PutMapping(value = "/update-table/{id}")
+    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @RequestBody Table table) {
+        Table tableOptional = iTableService.getTableById(id);
+        if (tableOptional == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        iTableService.updateTable(table);
+        return new ResponseEntity<Table>(tableOptional, HttpStatus.OK);
+    }
 }
+
+
+
+
+
