@@ -19,16 +19,16 @@ public class Order {
     @Column(name = "total_order")
     private Double totalOrder;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Table.class)
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
     @OneToMany(mappedBy = "order")
-    @JsonBackReference
+    @JsonBackReference(value = "order_ordeDetail")
     private List<OrderDetail> orderDetailList;
 
     public Table getTable() {

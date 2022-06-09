@@ -31,7 +31,7 @@ public class Employee {
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonBackReference(value = "employe_user")
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user1;
 
@@ -40,9 +40,9 @@ public class Employee {
     private Position position;
 
     @OneToMany(mappedBy = "employee")
-    @JsonBackReference
+//    (value = "employe_orderlist")
+    @JsonBackReference(value = "employe_order")
     private List<Order> orderList;
-
     public Employee() {}
 
     public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {

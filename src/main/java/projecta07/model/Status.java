@@ -17,7 +17,7 @@ public class Status {
     private String nameStatus;
 
     @OneToMany(mappedBy = "status")
-    @JsonBackReference
+    @JsonBackReference(value = "status_table")
     private List<Table> tableList;
 
     public Status() {

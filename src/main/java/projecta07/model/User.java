@@ -21,10 +21,11 @@ public class User {
 
     @OneToOne(mappedBy = "user1")
     @JsonIgnore
+    @JsonBackReference
     private Employee employee;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+    @JsonBackReference(value = "user_userRole")
     private List<UserRole> userRoleList;
 
     public Employee getEmployee() {

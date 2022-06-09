@@ -22,7 +22,7 @@ public class Table {
     @JsonBackReference
     private List<Order> orderList;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Status.class)
     @JoinColumn(name = "id_status", nullable = false)
     private Status status;
 
