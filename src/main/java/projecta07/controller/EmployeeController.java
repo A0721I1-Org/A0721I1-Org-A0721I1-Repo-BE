@@ -94,6 +94,7 @@ public class EmployeeController {
             }
         }
     }
+
     // HauLST
     @GetMapping("/detail/{idUser}")
     public ResponseEntity<Employee> findByIdUser(@PathVariable Long idUser) {

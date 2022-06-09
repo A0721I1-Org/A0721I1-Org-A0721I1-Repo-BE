@@ -26,4 +26,5 @@ public interface IEmployeeRepository extends JpaRepository<Employee,Long> {
             "            inner join role on userrole.id_role = role.id_role\n" +
             "            where employee.id_user=?1", nativeQuery = true)
     Employee findEmployeeByIdUser(Long idUser);
+
 }
