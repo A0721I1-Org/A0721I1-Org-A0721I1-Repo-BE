@@ -20,7 +20,7 @@ public class TypeProduct {
     private String nameTypeProduct;
 
     @OneToMany(mappedBy = "typeProduct")
-    @JsonBackReference
+    @JsonBackReference(value = "typeProduct-product")
     private List<Product> products;
 
     public List<Product> getProducts() {

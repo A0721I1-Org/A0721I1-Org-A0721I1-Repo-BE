@@ -3,6 +3,7 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -19,9 +20,8 @@ public class Table {
     private Boolean emptyTable;
 
     @OneToMany(mappedBy = "table")
-    @JsonBackReference
+    @JsonBackReference(value = "table_order")
     private List<Order> orderList;
-
     @ManyToOne
     @JoinColumn(name = "id_status", nullable = false)
     private Status status;

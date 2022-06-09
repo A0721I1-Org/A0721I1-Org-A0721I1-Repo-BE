@@ -43,7 +43,7 @@ public class Product {
     }
 
     @OneToMany(mappedBy = "product")
-    @JsonBackReference
+    @JsonBackReference(value = "product-orderDetail")
     private List<OrderDetail> orderDetailList;
 
     public TypeProduct getTypeProduct() {

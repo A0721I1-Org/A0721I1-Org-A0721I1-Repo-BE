@@ -27,7 +27,7 @@ public class Order {
     private Employee employee;
 
     @OneToMany(mappedBy = "order")
-    @JsonBackReference
+    @JsonBackReference(value = "order-orderDetail")
     private List<OrderDetail> orderDetailList;
 
     public Table getTable() {
