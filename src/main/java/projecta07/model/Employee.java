@@ -42,6 +42,9 @@ public class Employee {
 
     @OneToOne(cascade = CascadeType.ALL)
 
+    @JsonBackReference(value = "employee_user")
+
+
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
 //    @JsonBackReference(value = "employee_user1")

@@ -18,8 +18,13 @@ public class Role {
     @Column(name = "name_role")
     private String nameRole;
 
+
+//    @OneToMany(mappedBy = "role")
+//    @JsonBackReference(value = "role_userRole")
+
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     @JsonBackReference
+
 
     List<UserRole> userRoleList;
 
