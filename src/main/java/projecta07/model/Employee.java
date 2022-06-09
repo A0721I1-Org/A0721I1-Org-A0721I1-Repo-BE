@@ -43,8 +43,8 @@ public class Employee {
 //    (value = "employe_orderlist")
     @JsonBackReference(value = "employe_order")
     private List<Order> orderList;
+    public Employee() {}
 
-    public Employee(){}
     public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
         this.idEmployee = idEmployee;
         this.nameEmployee = nameEmployee;

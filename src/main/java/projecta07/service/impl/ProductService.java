@@ -40,4 +40,9 @@ public class ProductService implements IProductService {
     public List<Product> getProductsByTypeProductId(Long id , int currentPage , int size) {
         return this.productRepository.getProductsByTypeProductId(id , currentPage ,  size);
     }
+
+    /* Get product by product id */
+    public Product getProductById(Long id) {
+        return this.productRepository.findById(id).orElse(null);
+    }
 }

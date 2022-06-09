@@ -1,26 +1,25 @@
 package projecta07.controller;
 
+import javafx.scene.control.Tab;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.MenuOrderDTO;
-import projecta07.model.Order;
-import projecta07.model.OrderDetail;
-import projecta07.model.Product;
-import projecta07.model.TypeProduct;
-import projecta07.service.impl.OrderDetailService;
-import projecta07.service.impl.OrderService;
-import projecta07.service.impl.ProductService;
-import projecta07.service.impl.TypeProductService;
+import projecta07.model.*;
+import projecta07.service.impl.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("menu")
 public class MenuController {
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @Autowired
     private ProductService productService;
@@ -33,6 +32,10 @@ public class MenuController {
 
     @Autowired
     private OrderDetailService orderDetailService;
+
+
+    @Autowired
+    private TableService tableService;
 
     /*  Get values for menu page */
     @RequestMapping(value = "current={currentPage}&size={sizePage}", method = RequestMethod.GET)
@@ -66,7 +69,7 @@ public class MenuController {
     }
 
     /* Get Data for table */
-    @RequestMapping(value = "table/{idTable}", method = RequestMethod.GET)
+        @RequestMapping(value = "table/{idTable}", method = RequestMethod.GET)
     public ResponseEntity<List<MenuOrderDTO>> getMenuOrderDTO(@PathVariable("idTable") Long idTable) {
         List<MenuOrderDTO> menuOrderDTOS = new ArrayList<>();
         MenuOrderDTO menuOrderDTO;
@@ -75,7 +78,7 @@ public class MenuController {
         Order order = orderService.getOrderByTableId(idTable);
 
         /* Get orders detail by order id */
-        List<OrderDetail> orderDetails = orderDetailService.getOrdersDetail(order.getIdOrder());
+        List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
         for(OrderDetail orderDetail: orderDetails) {
             menuOrderDTO = new MenuOrderDTO();
             menuOrderDTO.setOrderId(order.getIdOrder());
@@ -84,9 +87,44 @@ public class MenuController {
                 menuOrderDTO.setQuantity(orderDetail.getNumberProduct());
                 menuOrderDTO.setPrice(orderDetail.getProduct().getPriceProduct());
                 menuOrderDTO.setTotalPrice(orderDetail.getTotalProduct());
+                menuOrderDTO.setProductId(orderDetail.getProduct().getIdProduct());
             }
             menuOrderDTOS.add(menuOrderDTO);
         };
         return new ResponseEntity<>(menuOrderDTOS , HttpStatus.OK);
+    }
+
+    /* Click button Order*/
+    @RequestMapping(value = "table/{idTable}/{idEmployee}", method = RequestMethod.POST)
+    public ResponseEntity<Order> handleOrder(@PathVariable("idTable") Long idTable ,@RequestBody List<MenuOrderDTO> menuOrderDTOInput
+    ,@PathVariable("idEmployee") Long idEmployee)  {
+        /* Define object */
+        Order orderSaved = new Order();
+        OrderDetail orderDetail = null;
+        Order order = new Order();
+        Employee employee = employeeService.getEmployeeById(idEmployee);
+        Table table = tableService.getTableById(idTable);
+        Product product = new Product();
+        List<OrderDetail> orderDetails = new ArrayList<>();
+
+        for(MenuOrderDTO menuOrderDTO : menuOrderDTOInput) {
+            orderDetail = new OrderDetail();
+            orderDetail.setNumberProduct(menuOrderDTO.getQuantity());
+            orderDetails.add(orderDetail);
+            product = productService.getProductById(menuOrderDTO.getProductId());
+
+            for(OrderDetail ord: orderDetails) {
+                order.setTable(table);
+                order.setEmployee(employee);
+                order.setDateOrder(LocalDate.now());
+                orderSaved=orderService.saveOrder(order);
+            }
+
+            orderDetail.setOrder(order);
+            orderDetail.setProduct(product);
+            orderDetailService.save(orderDetail);
+        }
+
+        return new ResponseEntity<>(orderSaved, HttpStatus.OK);
     }
 }

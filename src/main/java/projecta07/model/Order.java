@@ -3,6 +3,7 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -13,7 +14,7 @@ public class Order {
     private Long idOrder;
 
     @Column(name = "date_order")
-    private String dateOrder;
+    private LocalDate dateOrder;
 
     @Column(name = "total_order")
     private Double totalOrder;
@@ -54,10 +55,20 @@ public class Order {
         this.orderDetailList = orderDetailList;
     }
 
+    public double calculateTotalPrice(List<OrderDetail> orderDetails, Order order) {
+        double totalProduct = 0;
+        for (OrderDetail ord : orderDetails) {
+            if (ord.getOrder().getIdOrder() == order.getIdOrder()) {
+                totalProduct += ord.getProduct().getPriceProduct() * ord.getNumberProduct();
+            }
+        }
+        return totalProduct;
+    }
+
     public Order() {
     }
 
-    public Order(Long idOrder, String dateOrder, Double totalOrder) {
+    public Order(Long idOrder, LocalDate dateOrder, Double totalOrder) {
         this.idOrder = idOrder;
         this.dateOrder = dateOrder;
         this.totalOrder = totalOrder;
@@ -71,11 +82,11 @@ public class Order {
         this.idOrder = idOrder;
     }
 
-    public String getDateOrder() {
+    public LocalDate getDateOrder() {
         return dateOrder;
     }
 
-    public void setDateOrder(String dateOrder) {
+    public void setDateOrder(LocalDate dateOrder) {
         this.dateOrder = dateOrder;
     }
 

@@ -33,8 +33,7 @@ public class OrderDetailService implements IOrderDetailService {
     }
 
     /* get Order Detail by Order Id*/
-    public List<OrderDetail> getOrdersDetail(Long id) {
+    public List<OrderDetail> getOrderDetailsByOrderId(Long id) {
         return this.orderDetailRepository.getOrderDetailsByOrderId(id);
-
     }
 }
