@@ -1,14 +1,9 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Role {
@@ -20,23 +15,19 @@ public class Role {
     @Column(name = "name_role")
     private String nameRole;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<User> users;
+    @OneToMany(mappedBy = "role")
+    @JsonBackReference(value = "role_userRole")
+    List<UserRole> userRoleList;
 
     public Role() {
     }
 
-    public Role(String nameRole) {
-        this.nameRole = nameRole;
+    public List<UserRole> getUserRoleList() {
+        return userRoleList;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUserRoleList(List<UserRole> userRoleList) {
+        this.userRoleList = userRoleList;
     }
 
     public Role(Long idRole, String nameRole) {
