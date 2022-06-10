@@ -9,6 +9,7 @@ import projecta07.model.Feedback;
 import projecta07.service.impl.FeedbackService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @RestController
 @CrossOrigin
@@ -20,6 +21,9 @@ public class FeedbackController {
 
     @PostMapping("/createFeedback")
     public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
+        String codeFeedback = "FB-" + Math.floor(Math.random()* 99);
+        feedback.setCodeFeedback(codeFeedback);
+        feedback.setDateFeedback(LocalDate.now());
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
