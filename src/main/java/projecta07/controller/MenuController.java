@@ -69,7 +69,7 @@ public class MenuController {
     }
 
     /* Get Data for table */
-        @RequestMapping(value = "table/{idTable}", method = RequestMethod.GET)
+    @RequestMapping(value = "table/{idTable}", method = RequestMethod.GET)
     public ResponseEntity<List<MenuOrderDTO>> getMenuOrderDTO(@PathVariable("idTable") Long idTable) {
         List<MenuOrderDTO> menuOrderDTOS = new ArrayList<>();
         MenuOrderDTO menuOrderDTO;
@@ -79,7 +79,7 @@ public class MenuController {
 
         /* Get orders detail by order id */
         List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
-        for(OrderDetail orderDetail: orderDetails) {
+        for (OrderDetail orderDetail : orderDetails) {
             menuOrderDTO = new MenuOrderDTO();
             menuOrderDTO.setOrderId(order.getIdOrder());
             if (orderDetail.getOrder().getIdOrder() == menuOrderDTO.getOrderId()) {
@@ -90,39 +90,57 @@ public class MenuController {
                 menuOrderDTO.setProductId(orderDetail.getProduct().getIdProduct());
             }
             menuOrderDTOS.add(menuOrderDTO);
-        };
-        return new ResponseEntity<>(menuOrderDTOS , HttpStatus.OK);
+        }
+        ;
+        return new ResponseEntity<>(menuOrderDTOS, HttpStatus.OK);
     }
 
     /* Click button Order*/
     @RequestMapping(value = "table/{idTable}/{idEmployee}", method = RequestMethod.POST)
-    public ResponseEntity<Order> handleOrder(@PathVariable("idTable") Long idTable ,@RequestBody List<MenuOrderDTO> menuOrderDTOInput
-    ,@PathVariable("idEmployee") Long idEmployee)  {
+    public ResponseEntity<Order> handleOrder(@PathVariable("idTable") Long idTable, @RequestBody List<MenuOrderDTO> menuOrderDTOInput
+            , @PathVariable("idEmployee") Long idEmployee) {
         /* Define object */
         Order orderSaved = new Order();
-        OrderDetail orderDetail = null;
+        OrderDetail orderDetail;
         Order order = new Order();
         Employee employee = employeeService.getEmployeeById(idEmployee);
         Table table = tableService.getTableById(idTable);
-        Product product = new Product();
+        Product product;
         List<OrderDetail> orderDetails = new ArrayList<>();
 
-        for(MenuOrderDTO menuOrderDTO : menuOrderDTOInput) {
+        /* Calculate total price in order detail */
+        double totalPriceOrderDetail = 0;
+        double totalPriceOrder;
+
+        for (MenuOrderDTO menuOrderDTO : menuOrderDTOInput) {
             orderDetail = new OrderDetail();
             orderDetail.setNumberProduct(menuOrderDTO.getQuantity());
-            orderDetails.add(orderDetail);
+            /* Get product */
             product = productService.getProductById(menuOrderDTO.getProductId());
 
-            for(OrderDetail ord: orderDetails) {
-                order.setTable(table);
-                order.setEmployee(employee);
-                order.setDateOrder(LocalDate.now());
-                orderSaved=orderService.saveOrder(order);
-            }
+            /* set value for order */
+            order.setTable(table);
+            order.setEmployee(employee);
+            order.setDateOrder(LocalDate.now());
 
+            /* set value for order detail */
             orderDetail.setOrder(order);
             orderDetail.setProduct(product);
+
+            /* Save order */
+            orderSaved = orderService.saveOrder(order);
+            /* Get total price in order detail */
+            totalPriceOrderDetail = orderDetail.calculateTotalPriceOrderDetail(orderDetail);
+            orderDetail.setTotalProduct(totalPriceOrderDetail);
+            orderDetails.add(orderDetail);
+
             orderDetailService.save(orderDetail);
+
+            /* Set total price for order */
+            totalPriceOrder = order.calculateTotalPriceInOrder(orderDetails , orderSaved);
+            orderSaved.setTotalOrder(totalPriceOrder);
+            /* Update total price for order */
+            orderService.saveOrder(orderSaved);
         }
 
         return new ResponseEntity<>(orderSaved, HttpStatus.OK);

@@ -55,14 +55,15 @@ public class Order {
         this.orderDetailList = orderDetailList;
     }
 
-    public double calculateTotalPrice(List<OrderDetail> orderDetails, Order order) {
-        double totalProduct = 0;
+    /* Calculate total price in order*/
+    public double calculateTotalPriceInOrder(List<OrderDetail> orderDetails, Order order) {
+        double totalPrice = 0;
         for (OrderDetail ord : orderDetails) {
             if (ord.getOrder().getIdOrder() == order.getIdOrder()) {
-                totalProduct += ord.getProduct().getPriceProduct() * ord.getNumberProduct();
+                totalPrice += ord.getTotalProduct();
             }
         }
-        return totalProduct;
+        return totalPrice;
     }
 
     public Order() {
