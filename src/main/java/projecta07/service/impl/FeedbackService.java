@@ -1,6 +1,8 @@
 package projecta07.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import projecta07.model.Feedback;
 import projecta07.repository.IFeedbackRepository;
@@ -15,13 +17,13 @@ public class FeedbackService implements IFeedbackService {
     private IFeedbackRepository iFeedbackRepository;
 
     @Override
-    public List<Feedback> findAll() {
-        return iFeedbackRepository.findAll();
+    public Page<Feedback> findAll(Pageable pageable) {
+        return iFeedbackRepository.findAll(pageable);
     }
 
     @Override
-    public List<Feedback> findAllFeedbackByDateFeedback(String date) {
-        return iFeedbackRepository.findAllFeedbackByDateFeedback(date);
+    public Page<Feedback> findAllFeedbackByDateFeedback(String date, Pageable pageable) {
+        return iFeedbackRepository.findAllFeedbackByDateFeedback(date, pageable);
     }
 
     @Override

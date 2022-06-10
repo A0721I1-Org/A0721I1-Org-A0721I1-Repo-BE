@@ -25,8 +25,8 @@ public class FeedbackController {
     private FeedbackService feedbackService;
 
     @GetMapping("manager/api/feedback/")
-    public ResponseEntity<Iterable<Feedback>> findAllFeedback() {
-        List<Feedback> feedbackList = feedbackService.findAll();
+    public ResponseEntity<Iterable<Feedback>> findAllFeedback(Pageable pageable) {
+        Page<Feedback> feedbackList = feedbackService.findAll(pageable);
         if (feedbackList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -34,16 +34,16 @@ public class FeedbackController {
     }
 
     @GetMapping("manager/api/feedback/search/{date}")
-    public ResponseEntity<Iterable<Feedback>> findAllFeedbackByDateFeedback(@PathVariable String date) {
+    public ResponseEntity<Iterable<Feedback>> findAllFeedbackByDateFeedback( @PathVariable String date,Pageable pageable)  {
         String dateSearch = date.replace("-","/");
-        List<Feedback> feedbackListByDate = feedbackService.findAllFeedbackByDateFeedback(dateSearch);
+        Page<Feedback> feedbackListByDate = feedbackService.findAllFeedbackByDateFeedback(dateSearch, pageable);
         if (feedbackListByDate.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(feedbackListByDate,HttpStatus.OK);
     }
 
-    @GetMapping("manager/api/feedback/{id}")
+    @GetMapping("manager/api/feedback/view/{id}")
     public ResponseEntity<Feedback> findFeedbackById(@PathVariable Long id) {
         Optional<Feedback> feedbackOptional = feedbackService.findFeedbackById(id);
         if (!feedbackOptional.isPresent()) {
