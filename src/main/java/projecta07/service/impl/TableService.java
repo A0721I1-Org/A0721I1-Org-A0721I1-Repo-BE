@@ -10,13 +10,13 @@ import projecta07.repository.ITableRepository;
 import projecta07.service.ITableService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TableService implements ITableService{
     @Autowired
     private ITableRepository iTableRepository;
 
+    @Override
     public List<Table> findAll() {
         return iTableRepository.findAll();
     }
@@ -27,9 +27,16 @@ public class TableService implements ITableService{
     }
 
     @Override
-    public Optional<Table> findTableById(Long id) {
-        return iTableRepository.findById(id);
+    public Table findTableById(Long id) {
+        return iTableRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Table updateTable(Table table) {
+        return iTableRepository.save(table);
+    }
+
+    @Override
     public Table save(Table table) {
         return iTableRepository.save(table);
     }

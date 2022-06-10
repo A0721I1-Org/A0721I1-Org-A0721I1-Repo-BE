@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITableService {
+    Table updateTable(Table table);
     List<Table> findAll();
     void deleteTableById(Long id);
-    Optional<Table> findTableById(Long id);
+    Table findTableById(Long id);
     Table save(Table table);
-
+    //HuyNN search and paging method
     Page<Table> findAll(Pageable pageable);
     Page<Table> findAllByStatusAndEmptyTableAndCodeTable(Status status, Boolean emptyTable, String codeTable, Pageable pageable);
     Page<Table> findAllByStatusAndEmptyTable(Status status, Boolean emptyTable, Pageable pageable);

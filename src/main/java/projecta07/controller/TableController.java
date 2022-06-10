@@ -15,26 +15,24 @@ import projecta07.dto.TableDTO;
 import projecta07.model.Status;
 import projecta07.service.IStatusService;
 import projecta07.validate.ValidateTableDTO;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
-@RequestMapping("/table")
+@RequestMapping("/manager")
 @CrossOrigin(origins = "*")
 public class TableController {
-
     @Autowired
     private ValidateTableDTO validateTableDTO;
-
     @Autowired
     private IStatusService iStatusService;
 
     @Autowired
     private ITableService iTableService = new TableService();
 
-    // QuangNV method create Table
+    //QuangNV method create Table
     @PostMapping("/createTable")
     public ResponseEntity<?> createTable(@Valid @RequestBody TableDTO tableDTO, BindingResult bindingResult) {
         Boolean check = true;
@@ -61,9 +59,9 @@ public class TableController {
         }
     }
 
-    //QuangNV method getAllStatus
-    @GetMapping("/getAllStatus")
-    public ResponseEntity<List<Status>> getAllStatus() {
+    //QuangNV method find all status
+    @GetMapping("/findAllStatus")
+    public ResponseEntity<List<Status>> findAllStatus() {
         List<Status> statusList = iStatusService.findAll();
         if (statusList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -72,8 +70,8 @@ public class TableController {
         }
     }
 
-    //HuyNN method getAllTable
-    @GetMapping("/getAllTable")
+    //HuyNN method find all table
+    @GetMapping("/findAllTable")
     public ResponseEntity<Iterable<Table>> getAllTable(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @PageableDefault(size = 5) Pageable pageable) {
         Page<Table> tables;
         Status status = null;
@@ -105,15 +103,36 @@ public class TableController {
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
-    //HuyNN method deleteTable
+    //HuyNN method delete table
     @DeleteMapping("/deleteTable/{id}")
     public ResponseEntity<Table> deleteTableById(@PathVariable Long id) {
-        Optional<Table> table = iTableService.findTableById(id);
-        if (!table.isPresent()) {
+        Table table = iTableService.findTableById(id);
+        if (table == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         iTableService.deleteTableById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // ThaoPTT method find table by Id
+    @GetMapping("/findTableById/{id}")
+    public ResponseEntity<Table> findTableById(@PathVariable("id") Long id) {
+        Table tableOptional = iTableService.findTableById(id);
+        if (tableOptional == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(tableOptional, HttpStatus.OK);
+    }
+
+    // ThaoPTT method update table
+    @PutMapping(value = "/updateTable/{id}")
+    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @RequestBody Table table) {
+        Table tableOptional = iTableService.findTableById(id);
+        if (tableOptional == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        iTableService.updateTable(table);
+        Table updatedTable = iTableService.findTableById(id);
+        return new ResponseEntity<Table>(updatedTable, HttpStatus.OK);
+    }
 }
