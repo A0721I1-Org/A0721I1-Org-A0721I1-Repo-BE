@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IFeedbackService {
-    List<Feedback> findAll();
-    List<Feedback> findAllFeedbackByDateFeedback(String date);
+    Page<Feedback> findAll(Pageable pageable);
+    Page<Feedback> findAllFeedbackByDateFeedback(String date, Pageable pageable);
     Optional<Feedback> findFeedbackById(Long id);
     void saveFeedback(Feedback feedback);
 }
