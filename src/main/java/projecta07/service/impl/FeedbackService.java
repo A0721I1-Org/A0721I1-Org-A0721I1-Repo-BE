@@ -6,14 +6,31 @@ import projecta07.model.Feedback;
 import projecta07.repository.IFeedbackRepository;
 import projecta07.service.IFeedbackService;
 
-@Service
-public class FeedbackService  implements IFeedbackService{
+import java.util.List;
+import java.util.Optional;
 
+@Service
+public class FeedbackService implements IFeedbackService {
     @Autowired
-    private IFeedbackRepository feedbackRepository;
+    private IFeedbackRepository iFeedbackRepository;
+
+    @Override
+    public List<Feedback> findAll() {
+        return iFeedbackRepository.findAll();
+    }
+
+    @Override
+    public List<Feedback> findAllFeedbackByDateFeedback(String date) {
+        return iFeedbackRepository.findAllFeedbackByDateFeedback(date);
+    }
+
+    @Override
+    public Optional<Feedback> findFeedbackById(Long id) {
+        return iFeedbackRepository.findById(id);
+    }
 
     @Override
     public void saveFeedback(Feedback feedback) {
-        feedbackRepository.save(feedback);
+        iFeedbackRepository.save(feedback);
     }
 }
