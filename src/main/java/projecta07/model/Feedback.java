@@ -1,6 +1,9 @@
 package projecta07.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class Feedback {
@@ -15,19 +18,32 @@ public class Feedback {
     @Column(name = "date_feedback")
     private String dateFeedback;
 
+    @NotBlank
     @Column(name = "content_feedback")
     private String contentFeedback;
 
+    @Pattern(regexp = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W|_]+", message = "Định dạng tên không đúng")
+    @NotBlank
     @Column(name = "name_people_feedback")
     private String namePeopleFeedback;
 
+    @NotBlank
+    @Email
     @Column(name = "email_people_feedback")
     private String emailPeopleFeedback;
 
+    @NotBlank
     @Column(name = "image_feedback")
     private String imageFeedback;
 
     public Feedback() {
+    }
+
+    public Feedback(String contentFeedback, String namePeopleFeedback, String emailPeopleFeedback, String imageFeedback) {
+        this.contentFeedback = contentFeedback;
+        this.namePeopleFeedback = namePeopleFeedback;
+        this.emailPeopleFeedback = emailPeopleFeedback;
+        this.imageFeedback = imageFeedback;
     }
 
     public Feedback(Long idFeedback, String codeFeedback, String dateFeedback, String contentFeedback, String namePeopleFeedback, String emailPeopleFeedback, String imageFeedback) {
