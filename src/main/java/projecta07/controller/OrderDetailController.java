@@ -3,13 +3,13 @@ package projecta07.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.OrderDetail;
-import projecta07.model.Product;
 import projecta07.service.IOrderDetailService;
-import projecta07.service.IProductService;
-import projecta07.service.impl.OrderDetailService;
 
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,17 +41,23 @@ public class OrderDetailController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody OrderDetail orderDetail) {
+    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody @Valid OrderDetail orderDetail, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(orderDetailService.save(orderDetail), HttpStatus.CREATED);
+
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<OrderDetail> updateBlog(@PathVariable Long id, @RequestBody OrderDetail orderDetail){
+    public ResponseEntity<OrderDetail> updateBlog(@PathVariable Long id, @RequestBody @Valid OrderDetail orderDetail, BindingResult bindingResult){
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
         if(!orderDetailOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
-            //blog khi update khong truyen vao id, thi phai setId can de update
+            if(bindingResult.hasFieldErrors()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             orderDetail.setIdOrderDetail(orderDetailOptional.get().getIdOrderDetail());
             return new ResponseEntity<>(orderDetailService.save(orderDetail),HttpStatus.OK);
         }

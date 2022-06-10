@@ -3,6 +3,10 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
@@ -12,6 +16,9 @@ public class OrderDetail {
     @Column(name = "id_order_detail")
     private Long idOrderDetail;
 
+
+    @Min(value = 1, message = "Số lượng tối thiểu là 1!")
+    @Max(value = 10, message = "Số lượng tối đà là 10!")
     @Column(name = "number_product")
     private int numberProduct;
 
