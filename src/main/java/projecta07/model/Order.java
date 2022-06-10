@@ -27,6 +27,8 @@ public class Order {
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
+    private boolean statusOrder;
+
     @OneToMany(mappedBy = "order")
     @JsonBackReference(value = "order_ordeDetail")
     private List<OrderDetail> orderDetailList;
@@ -73,6 +75,14 @@ public class Order {
         this.idOrder = idOrder;
         this.dateOrder = dateOrder;
         this.totalOrder = totalOrder;
+    }
+
+    public boolean isStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
     public Long getIdOrder() {
