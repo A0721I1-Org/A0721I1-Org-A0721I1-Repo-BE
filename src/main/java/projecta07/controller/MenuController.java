@@ -1,7 +1,6 @@
 package projecta07.controller;
 
-import javafx.scene.control.Tab;
-import org.aspectj.weaver.ast.Or;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
