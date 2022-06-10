@@ -70,9 +70,19 @@ public class TableController {
         }
     }
 
-    //HuyNN method find all table
+    //QuangNV method find all table
     @GetMapping("/findAllTable")
-    public ResponseEntity<Iterable<Table>> getAllTable(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @PageableDefault(size = 5) Pageable pageable) {
+    public ResponseEntity<Iterable<Table>> findAllTable() {
+        List<Table> tables = iTableService.findAll();
+        if (tables.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tables, HttpStatus.OK);
+    }
+
+    //HuyNN method find all table with search and paging
+    @GetMapping("/findAllTablePaging")
+    public ResponseEntity<Iterable<Table>> findAllTablePaging(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @PageableDefault(size = 5) Pageable pageable) {
         Page<Table> tables;
         Status status = null;
         if (idStatus.isPresent()) {
