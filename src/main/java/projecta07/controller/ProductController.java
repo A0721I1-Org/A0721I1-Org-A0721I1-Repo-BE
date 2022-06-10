@@ -9,6 +9,7 @@ import projecta07.service.impl.ProductService;
 import projecta07.service.impl.TypeProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
@@ -40,5 +41,18 @@ public class ProductController {
         }else {
             return new ResponseEntity<>(productList,HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity create(@RequestBody Product product) {
+        productService.createProduct(product);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Product> editProduct(@PathVariable Long id, @RequestBody Product product) {
+        Optional<Product> product1 = productService.findById(id);
+        productService.createProduct(product);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }
