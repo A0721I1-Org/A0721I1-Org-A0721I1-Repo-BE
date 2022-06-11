@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("menu")
+@CrossOrigin("http://localhost:4200/")
 public class MenuController {
 
     @Autowired
@@ -122,6 +123,9 @@ public class MenuController {
             order.setEmployee(employee);
             order.setDateOrder(LocalDate.now());
 
+            /* not payment yet */
+            order.setStatusOrder(false);
+
             /* set value for order detail */
             orderDetail.setOrder(order);
             orderDetail.setProduct(product);
@@ -143,5 +147,19 @@ public class MenuController {
         }
 
         return new ResponseEntity<>(orderSaved, HttpStatus.OK);
+    }
+
+    /* Click button Payment */
+    @RequestMapping(value = "table/{idOrder}/payment", method = RequestMethod.PATCH)
+    public ResponseEntity<Order> handlePayment(@PathVariable("idOrder") Long idOrder) {
+        /* Get order */
+        Order order = orderService.getOrderById(idOrder);
+
+        if(order == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        order.setStatusOrder(true);
+        orderService.saveOrder(order);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
