@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("menu")
+@CrossOrigin("http://localhost:4200/")
 public class MenuController {
 
     @Autowired
