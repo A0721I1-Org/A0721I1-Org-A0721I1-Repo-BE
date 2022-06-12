@@ -7,6 +7,7 @@ import projecta07.repository.IStatusRepository;
 import projecta07.service.IStatusService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StatusService implements IStatusService {
@@ -14,22 +15,12 @@ public class StatusService implements IStatusService {
     private IStatusRepository iStatusRepository;
 
     @Override
-    public List<Status> getAll() {
-        return iStatusRepository.findAll();
-    }
-
-    @Override
-    public Status getStatusById(Long id) {
-        return iStatusRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Status updateStatus(Status status) {
-        return iStatusRepository.save(status);
-    }
-
-    @Override
     public List<Status> findAll() {
         return iStatusRepository.findAllStatus();
+    }
+
+    @Override
+    public Optional<Status> findStatusById(Long id) {
+        return iStatusRepository.findById(id);
     }
 }
