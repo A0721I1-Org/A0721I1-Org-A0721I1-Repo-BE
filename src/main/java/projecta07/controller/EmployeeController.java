@@ -23,6 +23,7 @@ public class EmployeeController {
     @Autowired
     private IPositionService positionService;
     //VinhTQ
+
     @GetMapping("/list")
     public ResponseEntity<List<Employee>> showList() {
         List<Employee> employeeList = employeeService.findAll();
@@ -32,7 +33,7 @@ public class EmployeeController {
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
     //VinhTQ
-    @GetMapping("/delete/{id}")
+    @DeleteMapping  ("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         if (employeeService.findEmployeeById(id) != null) {
             employeeService.deleteEmployee(id);

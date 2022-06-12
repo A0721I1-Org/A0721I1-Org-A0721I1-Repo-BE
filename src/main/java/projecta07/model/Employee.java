@@ -45,7 +45,7 @@ public class Employee {
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
 //    @JsonBackReference(value = "employee_user1")
-    private User user1;
+    private User user;
     @ManyToOne(targetEntity = Position.class)
     @JoinColumn(name = "id_position", nullable = false)
     private Position position;
@@ -55,7 +55,7 @@ public class Employee {
     private List<Order> orderList;
 
 
-    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
+    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user, Position position, List<Order> orderList) {
         this.idEmployee = idEmployee;
         this.nameEmployee = nameEmployee;
         this.addressEmployee = addressEmployee;
@@ -63,7 +63,7 @@ public class Employee {
         this.genderEmployee = genderEmployee;
         this.dateOfBirthEmployee = dateOfBirthEmployee;
         this.salaryEmployee = salaryEmployee;
-        this.user1 = user1;
+        this.user = user;
         this.position = position;
         this.orderList = orderList;
     }
@@ -80,12 +80,12 @@ public class Employee {
         this.idEmployee = idEmployee;
     }
 
-    public User getUser1() {
-        return user1;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setUser(User user1) {
+        this.user = user1;
     }
 
 //    public User getUser() {
