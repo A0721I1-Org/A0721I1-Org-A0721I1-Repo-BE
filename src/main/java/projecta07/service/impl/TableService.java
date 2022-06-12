@@ -1,5 +1,6 @@
 package projecta07.service.impl;
 
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projecta07.dto.DetailOrderTableDTO;
@@ -20,8 +21,34 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public void save(Table table) {
-        tableRepository.save(table);
+    public Table save(Table table) {
+        return tableRepository.save(table);
+    }
+
+    private ITableRepository iTableRepository;
+
+    @Override
+    public List<Table> getAll() {
+       return iTableRepository.findAll();
+    }
+    @Override
+    public List<Table> findAll() {
+        return iTableRepository.findAll();
+    }
+
+    @Override
+    public Table getTableById(Long id) {
+        return iTableRepository.findById(id).orElse(null);
+    }
+
+    public Table findTableById(Long id) {
+        return iTableRepository.findTableById(id);
+    }
+
+
+    @Override
+    public Table updateTable(Table table) {
+        return iTableRepository.save(table);
     }
 
 

@@ -1,25 +1,41 @@
 package projecta07.controller;
 
-import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
+import projecta07.dto.TableDTO;
 import projecta07.model.Order;
 import projecta07.model.OrderDetail;
+import projecta07.model.Status;
 import projecta07.model.Table;
+import projecta07.service.IStatusService;
+import projecta07.service.ITableService;
 import projecta07.service.impl.OrderDetailService;
 import projecta07.service.impl.OrderService;
 import projecta07.service.impl.StatusService;
 import projecta07.service.impl.TableService;
+import projecta07.validate.ValidateTableDTO;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/table")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/manager")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class TableController {
+
+    @Autowired
+    private ValidateTableDTO validateTableDTO;
+    @Autowired
+    private ITableService iTableService;
+
+    @Autowired
+    private IStatusService iStatusService;
+
     @Autowired
     private TableService tableService;
 
@@ -32,55 +48,131 @@ public class TableController {
     @Autowired
     private OrderDetailService orderDetailService;
 
+    //BinTK
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
         List<Table> tables = tableService.findAllEmptyTable();
-        List<Order> orders = orderService.findAll();
+        Order order = new Order();
 
-        for (Table table : tables) {
-            for (Order or : orders) {
-                if (or.getTable().getIdTable() == table.getIdTable() && or != null) {
-                    table.setEmptyTable(false);
-                } else {
-                    table.setEmptyTable(true);
-                }
-                tableService.save(table);
-            }
-        }
         if (tables.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            for(Table table: tables) {
+                order = orderService.findOrderOfTableById(table.getIdTable());
+                if(order == null) {
+                    table.setEmptyTable(true);
+                    tableService.save(table);
+                    continue;
+                }
+                table.setEmptyTable(false);
+                tableService.save(table);
+            }
+            return new ResponseEntity<>(tables, HttpStatus.OK);
         }
-        return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
-    @GetMapping("/detailTable/{id}")
-    public ResponseEntity<DetailOrderTableDTO> findAllOrderByTableId(@PathVariable Long id) {
-        Order order = orderService.findOrderOfTableById(id);
-        List<OrderDetail> orderDetails = orderDetailService.getOrderDetailByOrderId(order.getIdOrder());
-
-        DetailOrderTableDTO detailOrderTableDTO = new DetailOrderTableDTO();
-        for (OrderDetail o : orderDetails) {
-            detailOrderTableDTO.setNameProduct(o.getProduct().getNameProduct());
-            detailOrderTableDTO.setPriceProduct(o.getProduct().getPriceProduct());
-            detailOrderTableDTO.setNumberProduct(o.getNumberProduct());
-        }
-        detailOrderTableDTO.setCodeTable(order.getTable().getCodeTable());
-        detailOrderTableDTO.setTotalOrder(order.getTotalOrder());
-        return new ResponseEntity<>(detailOrderTableDTO, HttpStatus.OK);
+    @PostMapping("/saveOrderInTable")
+    public ResponseEntity<Order> saveOrderInTable(@RequestBody Order order) {
+        return new ResponseEntity<>(orderService.save(order), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deleteOrderInTable/{id}")
-    public ResponseEntity<Order> deleteOrderInTable(@PathVariable Long id) {
+    //BinTK
+    //BinTK
+    @GetMapping("/emptyTable/detailTable/{id}")
+    public ResponseEntity<List<DetailOrderTableDTO>> findAllOrderByTableId(@PathVariable Long id) {
+
         Order order = orderService.findOrderOfTableById(id);
-        /*List<OrderDetail> orderDetails = orderDetailService.getOrderDetailByOrderId(order.getIdOrder());*/
+        List<DetailOrderTableDTO> orderDetailDTOS = new ArrayList<>();
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<OrderDetail> orderDetails = orderDetailService.getOrderDetailByOrderId(order.getIdOrder());
+
+            DetailOrderTableDTO detailOrderTableDTO;
+            for (OrderDetail o : orderDetails) {
+                detailOrderTableDTO = new DetailOrderTableDTO();
+                detailOrderTableDTO.setNameProduct(o.getProduct().getNameProduct());
+                detailOrderTableDTO.setPriceProduct(o.getProduct().getPriceProduct());
+                detailOrderTableDTO.setNumberProduct(o.getNumberProduct());
+                detailOrderTableDTO.setTotalOrder(order.getTotalOrder());
+                detailOrderTableDTO.setCodeTable(order.getTable().getCodeTable());
+                orderDetailDTOS.add(detailOrderTableDTO);
+            }
+            return new ResponseEntity<>(orderDetailDTOS, HttpStatus.OK);
         }
+    }
+
+    //BinTK
+    //BinTK
+    @DeleteMapping("/deleteOrderInTable/{idTable}")
+    public ResponseEntity<Order> deleteOrderInTable(@PathVariable("idTable") Long id) {
+        /* Delete order */
         orderService.cancelTable(id);
-        List<Table> tables = tableService.findAllEmptyTable();
-        for (Table table : tables) {
-            table.setEmptyTable(false);
+        findAllEmptyTable();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    //BinTK
+
+    // QuangNV method create Table
+    @PostMapping("/createTable")
+    public ResponseEntity<?> createTable(@Valid @RequestBody TableDTO tableDTO, BindingResult bindingResult) {
+        Boolean check = true;
+        validateTableDTO.validate(tableDTO, bindingResult);
+        List<Table> tableList = iTableService.findAll();
+        for (Integer i = 0; i < tableList.size(); i++) {
+            if (tableList.get(i).getCodeTable().equals(tableDTO.getCodeTable())) {
+                check = false;
+                break;
+            }
         }
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        if (bindingResult.hasErrors() || !check) {
+            if (bindingResult.hasErrors()) {
+                return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.NOT_MODIFIED);
+            } else {
+                return new ResponseEntity<>("Da ton tai id", HttpStatus.NOT_MODIFIED);
+            }
+        } else {
+            Table table = new Table();
+            table.setStatus(tableDTO.getStatus());
+            table.setCodeTable(tableDTO.getCodeTable());
+            table.setEmptyTable(tableDTO.getEmptyTable());
+            return new ResponseEntity<>(iTableService.save(table), HttpStatus.OK);
+        }
+    }
+
+    //QuangNV method getAllStatus
+    @GetMapping("/getAllStatus")
+    public ResponseEntity<List<Status>> getAllStatus() {
+        List<Status> statusList = iStatusService.findAll();
+        if (statusList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(statusList, HttpStatus.OK);
+        }
+    }
+
+    // QuangNV method getAllTable
+    @GetMapping("/getAllTable")
+    public ResponseEntity<List<Table>> getAllTable() {
+        List<Table> list = iTableService.findAll();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    // ThaoPTT method update-table
+    @GetMapping("/update-table/{id}")
+    public ResponseEntity<Table> getTableId(@PathVariable("id") Long id) {
+        Table tableOptional = iTableService.getTableById(id);
+        return new ResponseEntity<>(tableOptional, HttpStatus.OK);
+    }
+
+    /* update table */
+    @PutMapping(value = "/update-table/{id}")
+    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @RequestBody Table table) {
+        Table tableOptional = iTableService.getTableById(id);
+        if (tableOptional == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        iTableService.updateTable(table);
+        return new ResponseEntity<Table>(tableOptional, HttpStatus.OK);
     }
 }

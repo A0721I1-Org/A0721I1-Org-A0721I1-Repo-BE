@@ -3,6 +3,7 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class Status {
     private String nameStatus;
 
     @OneToMany(mappedBy = "status")
-    @JsonBackReference
+    @JsonBackReference(value = "status-table")
     private List<Table> tableList;
 
     public Status() {

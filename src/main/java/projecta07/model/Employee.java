@@ -12,9 +12,6 @@ public class Employee {
     @Column(name = "id_employee")
     private Long idEmployee;
 
-    @Column(name = "code_employee")
-    private String codeEmployee;
-
     @Column(name = "name_employee")
     private String nameEmployee;
 
@@ -34,6 +31,7 @@ public class Employee {
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference(value = "employee-user")
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user1;
 
@@ -42,8 +40,27 @@ public class Employee {
     private Position position;
 
     @OneToMany(mappedBy = "employee")
-    @JsonBackReference
+    @JsonBackReference(value = "employee-order")
     private List<Order> orderList;
+
+    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
+        this.idEmployee = idEmployee;
+        this.nameEmployee = nameEmployee;
+        this.addressEmployee = addressEmployee;
+        this.phoneEmployee = phoneEmployee;
+        this.genderEmployee = genderEmployee;
+        this.dateOfBirthEmployee = dateOfBirthEmployee;
+        this.salaryEmployee = salaryEmployee;
+        this.user1 = user1;
+        this.position = position;
+        this.orderList = orderList;
+    }
+
+
+    public Employee() {
+
+    }
+
 
     public Long getIdEmployee() {
         return idEmployee;
@@ -91,14 +108,6 @@ public class Employee {
 
     public void setId(Long id) {
         this.idEmployee = id;
-    }
-
-    public String getCodeEmployee() {
-        return codeEmployee;
-    }
-
-    public void setCodeEmployee(String codeEmployee) {
-        this.codeEmployee = codeEmployee;
     }
 
     public String getNameEmployee() {

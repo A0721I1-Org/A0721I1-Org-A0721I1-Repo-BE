@@ -1,8 +1,10 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Entity
@@ -22,12 +24,13 @@ public class Order {
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
     @OneToMany(mappedBy = "order")
-    @JsonBackReference
+    @JsonBackReference(value = "order-orderDetail")
     private List<OrderDetail> orderDetailList;
 
     public Table getTable() {
