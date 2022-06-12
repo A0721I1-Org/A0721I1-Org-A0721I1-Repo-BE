@@ -21,7 +21,7 @@ public class FeedbackController {
 
     @PostMapping("/createFeedback")
     public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
-        String codeFeedback = "FB-" + Math.floor(Math.random()* 99);
+        String codeFeedback = "FB-" + Math.floor(Math.random()* 999);
         feedback.setCodeFeedback(codeFeedback);
         feedback.setDateFeedback(LocalDate.now());
         if (bindingResult.hasFieldErrors()) {
