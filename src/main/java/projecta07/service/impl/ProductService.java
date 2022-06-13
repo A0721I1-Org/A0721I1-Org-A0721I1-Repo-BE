@@ -41,6 +41,16 @@ public class ProductService implements IProductService {
         return this.productRepository.getProductsByTypeProductId(id , currentPage ,  size);
     }
 
+    /* Get amount of products */
+    public int getAmountOfProducts() {
+        return this.productRepository.getAmountOfProducts();
+    }
+
+    /* Get amount of products by id type */
+    public int getAmountOfProductsByTypeId(Long id) {
+        return this.productRepository.getAmountOfProductsByTypeId(id);
+    }
+
     /* Get product by product id */
     public Product getProductById(Long id) {
         return this.productRepository.findById(id).orElse(null);
