@@ -29,11 +29,18 @@ public class TableService implements ITableService {
 
     @Override
     public Table updateTable(Table table) {
+        //check2 ()
+        //check3()
         return iTableRepository.save(table);
     }
 
     public Table save(Table table) {
+        //check 1()
+        // check 2()
+        // check 3()
         return iTableRepository.save(table);
     }
-
+    //check 1()
+    // check 2()
+    // check 3()
 }
