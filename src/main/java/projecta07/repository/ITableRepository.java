@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import projecta07.model.Table;
 
-
 @Repository
 public interface ITableRepository extends JpaRepository<Table, Long> {
+    @Query(value = "select * from `table` where id_table = ?1" , nativeQuery = true)
+    Table findTableById(Long id);
+
     //HuyNN search and paging query method
     @Query(value = "select id_table, code_table, empty_table, id_status from `Table`", nativeQuery = true)
     Page<Table> findAll(Pageable pageable);
@@ -34,4 +36,5 @@ public interface ITableRepository extends JpaRepository<Table, Long> {
 
     @Query(value = "select id_table, code_table, empty_table, id_status from `Table` where empty_table = :emptyTable", nativeQuery = true)
     Page<Table> findAllByEmptyTable(Boolean emptyTable, Pageable pageable);
+
 }

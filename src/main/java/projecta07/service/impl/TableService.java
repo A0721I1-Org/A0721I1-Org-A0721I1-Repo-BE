@@ -1,9 +1,11 @@
 package projecta07.service.impl;
 
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import projecta07.dto.DetailOrderTableDTO;
 import projecta07.model.Status;
 import projecta07.model.Table;
 import projecta07.repository.ITableRepository;
@@ -12,13 +14,35 @@ import projecta07.service.ITableService;
 import java.util.List;
 
 @Service
-public class TableService implements ITableService{
+public class TableService implements ITableService {
     @Autowired
+    private ITableRepository tableRepository;
+
+    @Override
+    public List<Table> findAllEmptyTable() {
+        return tableRepository.findAll();
+    }
+
+    @Override
+    public List<Table> getAll() {
+        return tableRepository.findAll();
+    }
+
+    @Override
+    public Table getTableById(Long id) {
+        return tableRepository.findTableById(id);
+    }
+
+    @Override
+    public Table save(Table table) {
+        return tableRepository.save(table);
+    }
+
     private ITableRepository iTableRepository;
 
     @Override
     public List<Table> findAll() {
-        return iTableRepository.findAll();
+        return tableRepository.findAll();
     }
 
     @Override
@@ -26,18 +50,13 @@ public class TableService implements ITableService{
         iTableRepository.deleteById(id);
     }
 
-    @Override
     public Table findTableById(Long id) {
-        return iTableRepository.findById(id).orElse(null);
+        return iTableRepository.findTableById(id);
     }
+
 
     @Override
     public Table updateTable(Table table) {
-        return iTableRepository.save(table);
-    }
-
-    @Override
-    public Table save(Table table) {
         return iTableRepository.save(table);
     }
 
