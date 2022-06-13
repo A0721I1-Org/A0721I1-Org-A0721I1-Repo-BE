@@ -37,6 +37,18 @@ public class MenuController {
     @Autowired
     private TableService tableService;
 
+    /* Get amount of products */
+    @RequestMapping(value = "amount-products", method = RequestMethod.GET)
+    public ResponseEntity<Integer> getAmountOfProducts() {
+        return new ResponseEntity<>(this.productService.getAmountOfProducts() , HttpStatus.OK);
+    }
+
+    /* Get amount of products by id type product */
+    @RequestMapping(value = "amount-products/idType={idType}" , method = RequestMethod.GET)
+    public ResponseEntity<Integer> getAmountOfProductsByIdType(@PathVariable("idType") Long idType) {
+        return new ResponseEntity<>(this.productService.getAmountOfProductsByTypeId(idType) , HttpStatus.OK);
+    }
+
     /*  Get values for menu page */
     @RequestMapping(value = "current={currentPage}&size={sizePage}", method = RequestMethod.GET)
     public ResponseEntity<List<Product>> getProducts(@PathVariable("currentPage") int currentPage
