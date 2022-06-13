@@ -3,6 +3,8 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -13,9 +15,10 @@ public class Order {
     private Long idOrder;
 
     @Column(name = "date_order")
+//    @NotEmpty(message = "Ngày tạo không được để trống")
     private String dateOrder;
-
     @Column(name = "total_order")
+//    @NotEmpty(message = "Tổng tiền hoá đơn không được để trống")
     private Double totalOrder;
 
     @ManyToOne
@@ -23,6 +26,7 @@ public class Order {
     private Table table;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 

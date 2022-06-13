@@ -1,5 +1,7 @@
 package projecta07.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +18,7 @@ public class OrderDetail {
     private Double totalProduct;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_order", nullable = false)
     private Order order;
 
