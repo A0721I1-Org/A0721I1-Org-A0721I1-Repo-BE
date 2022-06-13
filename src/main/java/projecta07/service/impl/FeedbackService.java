@@ -1,19 +1,37 @@
 package projecta07.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import projecta07.model.Feedback;
 import projecta07.repository.IFeedbackRepository;
 import projecta07.service.IFeedbackService;
 
-@Service
-public class FeedbackService  implements IFeedbackService{
+import java.util.Optional;
 
+@Service
+public class FeedbackService implements IFeedbackService {
     @Autowired
-    private IFeedbackRepository feedbackRepository;
+    private IFeedbackRepository iFeedbackRepository;
+
+    @Override
+    public Page<Feedback> findAll(Pageable pageable) {
+        return iFeedbackRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Feedback> findAllFeedbackByDateFeedback(String date, Pageable pageable) {
+        return iFeedbackRepository.findAllFeedbackByDateFeedback(date, pageable);
+    }
+
+    @Override
+    public Optional<Feedback> findFeedbackById(Long id) {
+        return iFeedbackRepository.findById(id);
+    }
 
     @Override
     public void saveFeedback(Feedback feedback) {
-        feedbackRepository.save(feedback);
+        iFeedbackRepository.save(feedback);
     }
 }
