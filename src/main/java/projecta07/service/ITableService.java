@@ -12,11 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITableService {
-    List<Table> findAllEmptyTable();
 
     List<Table> getAll();
-
-    Table getTableById(Long id);
 
     Table updateTable(Table table);
 
