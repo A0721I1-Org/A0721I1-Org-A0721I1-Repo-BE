@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order-detail")
+@CrossOrigin(origins = "http://localhost:4200")
 public class OrderDetailController {
     @Autowired
     private IOrderDetailService orderDetailService;
@@ -50,7 +51,7 @@ public class OrderDetailController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<OrderDetail> updateBlog(@PathVariable Long id, @RequestBody @Valid OrderDetail orderDetail, BindingResult bindingResult){
+    public ResponseEntity<OrderDetail> updateOrderDetail(@PathVariable Long id, @RequestBody @Valid OrderDetail orderDetail, BindingResult bindingResult){
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
         if(!orderDetailOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
