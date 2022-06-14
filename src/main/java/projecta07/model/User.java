@@ -28,8 +28,13 @@ public class User {
     @JsonBackReference
     private Employee employee;
 
+
+//    @OneToMany(mappedBy = "user")
+//    @JsonBackReference(value = "user_userRole")
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
+
 
     private List<UserRole> userRoleList;
 
