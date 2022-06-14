@@ -1,15 +1,22 @@
 package projecta07.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
 import projecta07.service.IEmployeeService;
+
 import java.util.List;
+
 import org.springframework.validation.BindingResult;
 import projecta07.model.Position;
 import projecta07.service.IPositionService;
+
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -22,18 +29,20 @@ public class EmployeeController {
     private IEmployeeService employeeService;
     @Autowired
     private IPositionService positionService;
-    //VinhTQ
-
     @GetMapping("/list")
-    public ResponseEntity<List<Employee>> showList() {
-        List<Employee> employeeList = employeeService.findAll();
-        if (employeeList.isEmpty()) {
-            return new ResponseEntity<List<Employee>>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Page<Employee>> showList(
+            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Employee> employeePage = employeeService.findAllPage(pageable);
+        if (employeePage.isEmpty()) {
+            return new ResponseEntity<Page<Employee>>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
+        return new ResponseEntity<Page<Employee>>(employeePage, HttpStatus.OK);
     }
+
     //VinhTQ
-    @DeleteMapping  ("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         if (employeeService.findEmployeeById(id) != null) {
             employeeService.deleteEmployee(id);
@@ -41,6 +50,7 @@ public class EmployeeController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     //VinhTQ
     @GetMapping("/search/{username}/{name}/{phone}")
     public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone) {
@@ -59,8 +69,9 @@ public class EmployeeController {
         }
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
+
     @GetMapping("/position")
-    public  ResponseEntity<Iterable<Employee>> findAllPosition(){
+    public ResponseEntity<Iterable<Employee>> findAllPosition() {
         List<Position> positions = positionService.listPosition();
         if (positions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -68,11 +79,11 @@ public class EmployeeController {
         return new ResponseEntity(positions, HttpStatus.OK);
     }
 
-    @PostMapping(value="/create-employee")
-    public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee, BindingResult bindingResult){
-        if (bindingResult.hasFieldErrors()){
+    @PostMapping(value = "/create-employee")
+    public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }else {
+        } else {
             employeeService.saveEmployee(employee);
 //        User user =  findUserByUsername(employee.getUser().getUsername());
 //        user.setPassword("123456");
@@ -81,14 +92,14 @@ public class EmployeeController {
     }
 
     @PutMapping(value = "/update-employee/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id,@Valid @RequestBody Employee employee,BindingResult bindingResult) {
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @Valid @RequestBody Employee employee, BindingResult bindingResult) {
         Optional<Employee> employeeOptional = employeeService.findByIdEmployee(id);
         if (!employeeOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
-            if (bindingResult.hasFieldErrors()){
+        } else {
+            if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }else {
+            } else {
                 employee.setId(employeeOptional.get().getId());
                 employeeService.saveEmployee(employee);
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -102,8 +113,8 @@ public class EmployeeController {
         Employee employee = employeeService.findEmployeeByIdUser(idUser);
         if (employee == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
-            return new ResponseEntity<>(employee,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(employee, HttpStatus.OK);
         }
     }
 }

@@ -1,5 +1,7 @@
 package projecta07.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import projecta07.model.Employee;
 
 import java.util.List;
@@ -9,6 +11,8 @@ public interface IEmployeeService {
     Employee findEmployeeByIdUser(Long IdUser);
 
     List<Employee> findAll();
+
+    Page<Employee> findAllPage(Pageable pageable);
 
     Employee findEmployeeById(long id);
 
