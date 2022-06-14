@@ -80,7 +80,7 @@ public class MenuController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    /* Get Data for table */
+    /* Get Data DTO for table */
     @RequestMapping(value = "table/{idTable}", method = RequestMethod.GET)
     public ResponseEntity<List<MenuOrderDTO>> getMenuOrderDTO(@PathVariable("idTable") Long idTable) {
         List<MenuOrderDTO> menuOrderDTOS = new ArrayList<>();
@@ -103,7 +103,7 @@ public class MenuController {
             }
             menuOrderDTOS.add(menuOrderDTO);
         }
-        ;
+
         return new ResponseEntity<>(menuOrderDTOS, HttpStatus.OK);
     }
 
@@ -121,7 +121,7 @@ public class MenuController {
         List<OrderDetail> orderDetails = new ArrayList<>();
 
         /* Calculate total price in order detail */
-        double totalPriceOrderDetail = 0;
+        double totalPriceOrderDetail;
         double totalPriceOrder;
 
         for (MenuOrderDTO menuOrderDTO : menuOrderDTOInput) {
@@ -154,6 +154,7 @@ public class MenuController {
             /* Set total price for order */
             totalPriceOrder = order.calculateTotalPriceInOrder(orderDetails , orderSaved);
             orderSaved.setTotalOrder(totalPriceOrder);
+
             /* Update total price for order */
             orderService.saveOrder(orderSaved);
         }
