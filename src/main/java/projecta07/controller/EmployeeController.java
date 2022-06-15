@@ -137,4 +137,14 @@ public class EmployeeController {
             return new ResponseEntity<>(employee, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/find-id-employee/{id}")
+    public ResponseEntity<Employee> findByIdEmployee(@PathVariable Long id) {
+        Employee employee = employeeService.findEmployeeById(id);
+        if (employee == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(employee,HttpStatus.OK);
+        }
+    }
 }
