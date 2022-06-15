@@ -36,4 +36,9 @@ public class OrderDetailService implements IOrderDetailService {
     public List<OrderDetail> getOrderDetailsByOrderId(Long id) {
         return this.orderDetailRepository.getOrderDetailsByOrderId(id);
     }
+
+    /* Delete order detail by id and order id */
+    public void deleteById(Long orderDetailId) {
+        this.orderDetailRepository.deleteById(orderDetailId);
+    }
 }
