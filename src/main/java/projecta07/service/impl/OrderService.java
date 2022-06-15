@@ -14,32 +14,28 @@ import java.util.List;
 @Transactional
 public class OrderService implements IOrderService {
     @Autowired
-    private IOrderRepository orderRepository;
+    private IOrderRepository iOrderService;
 
     @Override
     public Order findOrderOfTableById(Long id) {
-        return orderRepository.getAllOrderByIdTable(id);
+        return iOrderService.getAllOrderByIdTable(id);
     }
 
     @Override
     public void cancelTable(Long id) {
-        orderRepository.removeOrderToTable(id);
+        iOrderService.removeOrderToTable(id);
     }
 
     @Override
     public List<Order> findAll() {
-        return orderRepository.findAll();
+        return iOrderService.findAll();
     }
 
     @Override
-    public Order save(Order order) {
-        return orderRepository.save(order);
+    public Order saveOrder(Order order) {
+        return iOrderService.save(order);
     }
 
-    @Override
-    public Order findById(Long id) {
-        return orderRepository.findOrderById(id);
-    }
 
 
 }
