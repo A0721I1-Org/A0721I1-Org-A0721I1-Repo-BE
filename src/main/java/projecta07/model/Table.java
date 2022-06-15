@@ -3,9 +3,6 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -40,9 +37,7 @@ public class Table {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+
 
     public Table() {
     }
@@ -75,5 +70,9 @@ public class Table {
 
     public void setEmptyTable(Boolean emptyTable) {
         this.emptyTable = emptyTable;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

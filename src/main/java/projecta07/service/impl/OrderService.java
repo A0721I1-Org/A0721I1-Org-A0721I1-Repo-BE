@@ -36,5 +36,10 @@ public class OrderService implements IOrderService {
         return orderRepository.save(order);
     }
 
+    @Override
+    public Order findById(Long id) {
+        return orderRepository.findOrderById(id);
+    }
+
 
 }

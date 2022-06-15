@@ -8,10 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
+import projecta07.dto.TableUpdateDTO;
 import projecta07.model.Table;
 import projecta07.repository.ITableRepository;
+import projecta07.service.IOrderDetailService;
+import projecta07.service.IOrderService;
 import projecta07.service.ITableService;
-import projecta07.service.impl.TableService;
 import org.springframework.validation.BindingResult;
 import projecta07.dto.TableDTO;
 import projecta07.model.Order;
@@ -19,14 +21,8 @@ import projecta07.model.OrderDetail;
 import projecta07.model.Status;
 import projecta07.service.IStatusService;
 
-import projecta07.service.impl.OrderDetailService;
-import projecta07.service.impl.OrderService;
-import projecta07.service.impl.StatusService;
-
 import projecta07.validate.ValidateTableDTO;
-
 import javax.validation.Valid;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,21 +43,15 @@ public class TableController {
 //    private ITableService iTableService = new TableService();
 
     @Autowired
-    private TableService tableService;
+    private IOrderService orderService;
 
     @Autowired
-    private StatusService statusService;
-
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private OrderDetailService orderDetailService;
+    private IOrderDetailService orderDetailService;
 
     //BinTK
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
-        List<Table> tables = tableService.findAll();
+        List<Table> tables = iTableService.getAll();
         Order order = new Order();
 
         if (tables.isEmpty()) {
@@ -71,19 +61,28 @@ public class TableController {
                 order = orderService.findOrderOfTableById(table.getIdTable());
                 if (order == null) {
                     table.setEmptyTable(true);
-                    tableService.save(table);
+                    iTableService.save(table);
                     continue;
                 }
                 table.setEmptyTable(false);
-                tableService.save(table);
+                iTableService.save(table);
             }
             return new ResponseEntity<>(tables, HttpStatus.OK);
         }
     }
 
-    @PostMapping("/saveOrderInTable")
+    @PostMapping("/emptyTable/saveOrderInTable")
     public ResponseEntity<Order> saveOrderInTable(@RequestBody Order order) {
         return new ResponseEntity<>(orderService.save(order), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/emptyTable/getOrder/{idOrder}")
+    public ResponseEntity<Order> findOrderById(@PathVariable("idOrder") Long id) {
+        Order order = orderService.findById(id);
+        if (order == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     //BinTK
@@ -114,7 +113,7 @@ public class TableController {
 
     //BinTK
     //BinTK
-    @DeleteMapping("/deleteOrderInTable/{idTable}")
+    @DeleteMapping("/emptyTable/deleteOrderInTable/{idTable}")
     public ResponseEntity<Order> deleteOrderInTable(@PathVariable("idTable") Long id) {
         /* Delete order */
         orderService.cancelTable(id);
@@ -170,12 +169,6 @@ public class TableController {
         }
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
-
-    // ThaoPTT method update-table
- /*   @GetMapping("/update-table/{id}")
-    public ResponseEntity<Table> getTableId(@PathVariable("id") Long id) {
-        Table tableOptional = iTableService.getTableById(id);
-    }*/
 
     //HuyNN method find all table with search and paging
     @GetMapping("/findAllTablePaging")
@@ -235,30 +228,15 @@ public class TableController {
         return new ResponseEntity<>(tableOptional, HttpStatus.OK);
     }
 
-
-    /* update table */
-//    @PutMapping(value = "/update-table/{id}")
-//    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @Valid @RequestBody Table table) {
-//        Table tableOptional = iTableService.getTableById(id);
-//        if(table.getStatus().getIdStatus() == null)
-//        {
-//            throw new ResourceException(HttpStatus.BAD_REQUEST,"chua nhap status");
-//        }
-//        if (tableOptional == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//                iTableService.updateTable(table);
-//                return new ResponseEntity<Table>(tableOptional, HttpStatus.OK);
-//            }
     // ThaoPTT method update table
     @PutMapping(value = "/updateTable/{id}")
-    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @RequestBody Table table) {
+    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @RequestBody TableUpdateDTO tableUpdateDTO) {
         Table tableOptional = iTableService.findTableById(id);
         if (tableOptional == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        iTableService.updateTable(table);
-        return new ResponseEntity<Table>(tableOptional, HttpStatus.OK);
+        tableOptional.setStatus(tableUpdateDTO.getStatus());
+        return new ResponseEntity<>(iTableService.save(tableOptional), HttpStatus.OK);
     }
 }
 

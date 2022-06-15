@@ -21,5 +21,6 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "delete from `order` where `order`.id_table = ?1", nativeQuery = true)
     void removeOrderToTable(Long id);
 
-
+    @Query(value = "select * from `order` where `order`.id_order = ?1",nativeQuery = true)
+    Order findOrderById(Long id);
 }
