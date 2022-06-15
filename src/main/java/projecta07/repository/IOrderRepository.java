@@ -7,6 +7,6 @@ import projecta07.model.Order;
 
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Long> {
-    @Query(value = "select * from `order` where id_table = 1 and statusOrder = 0" , nativeQuery = true)
+    @Query(value = "select * from `order` where statusOrder=0 and id_table = ?1" , nativeQuery = true)
     Order getOrderByTableId(Long id);
 }

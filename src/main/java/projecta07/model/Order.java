@@ -23,6 +23,8 @@ public class Order {
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
+    private boolean statusOrder;
+
     @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
@@ -73,6 +75,15 @@ public class Order {
         this.idOrder = idOrder;
         this.dateOrder = dateOrder;
         this.totalOrder = totalOrder;
+    }
+
+
+    public boolean isStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
     public Long getIdOrder() {
