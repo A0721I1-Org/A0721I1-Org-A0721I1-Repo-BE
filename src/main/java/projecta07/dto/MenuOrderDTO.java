@@ -7,8 +7,17 @@ public class MenuOrderDTO {
     private int quantity;
     private double price;
     private double totalPrice;
+    private long totalPageDTO;
 
     public MenuOrderDTO() {}
+
+    public long getTotalPageDTO() {
+        return totalPageDTO;
+    }
+
+    public void setTotalPageDTO(long totalPageDTO) {
+        this.totalPageDTO = totalPageDTO;
+    }
 
     public Long getProductId() {
         return productId;
