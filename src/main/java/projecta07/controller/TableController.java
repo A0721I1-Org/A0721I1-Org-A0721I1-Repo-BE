@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
 import projecta07.model.*;
 import projecta07.service.*;
-import projecta07.service.impl.TableService;
 import org.springframework.validation.BindingResult;
 import projecta07.dto.TableDTO;
 import projecta07.service.ITableService;
@@ -32,11 +31,12 @@ public class TableController {
 
     @Autowired
     private ValidateTableDTO validateTableDTO;
+
     @Autowired
     private IStatusService iStatusService;
 
     @Autowired
-    private ITableService iTableService = new TableService();
+    private ITableService iTableService;
 
     @Autowired
     private IOrderService iOrderService;
@@ -240,5 +240,18 @@ public class TableController {
         Table updatedTable = iTableService.findTableById(id);
         return new ResponseEntity<Table>(updatedTable, HttpStatus.OK);
     }
+    @GetMapping("/checkId")
+    public ResponseEntity<List<Table>> checkId(@RequestParam String id){
+        List<Table> list = iTableService.findAll();
+        List<Table> tables = new ArrayList<>();
+        for (Integer i=0;i<list.size();i++){
+            if (list.get(i).getCodeTable().equals(id)){
+                tables.add(list.get(i));
+                return new ResponseEntity<>(tables, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
 
