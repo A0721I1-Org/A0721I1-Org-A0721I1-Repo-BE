@@ -106,6 +106,8 @@ public class MenuController {
                 menuOrderDTO = new MenuOrderDTO();
                 menuOrderDTO.setOrderId(order.getIdOrder());
                 if (orderDetail.getOrder().getIdOrder() == menuOrderDTO.getOrderId()) {
+                    menuOrderDTO.setOrderId(orderDetail.getOrder().getIdOrder());
+                    menuOrderDTO.setOrderDetailId(orderDetail.getIdOrderDetail());
                     menuOrderDTO.setNameProduct(orderDetail.getProduct().getNameProduct());
                     menuOrderDTO.setQuantity(orderDetail.getNumberProduct());
                     menuOrderDTO.setPrice(orderDetail.getProduct().getPriceProduct());
@@ -205,6 +207,13 @@ public class MenuController {
 
         tableService.saveTable(table);
         orderService.saveOrder(order);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /* Click button delete food */
+    @RequestMapping(value = "table/delete/{idOrderDetail}" , method = RequestMethod.DELETE)
+    public ResponseEntity<OrderDetail> handleDelete(@PathVariable("idOrderDetail") Long idOrderDetail) {
+        orderDetailService.deleteById(idOrderDetail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

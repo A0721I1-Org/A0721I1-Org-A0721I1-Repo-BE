@@ -2,6 +2,7 @@ package projecta07.dto;
 
 public class MenuOrderDTO {
     private Long productId;
+    private Long orderDetailId;
     private Long orderId;
     private String nameProduct;
     private int quantity;
@@ -10,6 +11,14 @@ public class MenuOrderDTO {
     private long totalPageDTO;
 
     public MenuOrderDTO() {}
+
+    public Long getOrderDetailId() {
+        return orderDetailId;
+    }
+
+    public void setOrderDetailId(Long orderDetailId) {
+        this.orderDetailId = orderDetailId;
+    }
 
     public long getTotalPageDTO() {
         return totalPageDTO;
