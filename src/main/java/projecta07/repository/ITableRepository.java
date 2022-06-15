@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import projecta07.model.Table;
 
 @Repository
-public interface ITableRepository extends JpaRepository<Table, Long> {
-    @Query(value = "select * from `table` where id_table = ?1" , nativeQuery = true)
+
+
+public interface ITableRepository extends JpaRepository<Table,Long> {
+    @Query(value = "select * from `table` where `table`.id_table = ?1" , nativeQuery = true)
     Table findTableById(Long id);
 
     //HuyNN search and paging query method
