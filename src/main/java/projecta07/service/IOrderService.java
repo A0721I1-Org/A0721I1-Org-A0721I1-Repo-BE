@@ -7,10 +7,12 @@ import java.util.List;
 
 public interface IOrderService {
     Order findOrderOfTableById(Long id);
-    void cancelTable(Long id);
-    List<Order> findAll();
-    Order save(Order order);
 
-    Order findById(Long id);
+    void cancelTable(Long id);
+
+    List<Order> findAll();
+
+    Order saveOrder(Order order);
+
 
 }
