@@ -16,6 +16,7 @@ import projecta07.service.ITableService;
 import projecta07.validate.ValidateTableDTO;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class TableController {
     //BinTK
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
-        List<Table> tables = iTableService.getAll();
+        List<Table> tables = iTableService.findAll();
         Order order = new Order();
 
         if (tables.isEmpty()) {
@@ -66,14 +67,18 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}")
-    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable) {
+    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}/{dateOrder}")
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable,
+                                                  @PathVariable("dateOrder") String dateOrder) {
         Employee employee = iEmployeeService.getEmployeeById(idEmployee);
         Table table = iTableService.findTableById(idTable);
 
+
         Order order = new Order();
         order.setTable(table);
+        order.setStatusOrder(false);
         order.setEmployee(employee);
+        order.setDateOrder(String.valueOf((LocalDate.now())));
 
         iOrderService.saveOrder(order);
         return new ResponseEntity<>(HttpStatus.CREATED);
