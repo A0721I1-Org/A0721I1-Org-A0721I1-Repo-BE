@@ -35,7 +35,7 @@ public class TableController {
     private IStatusService iStatusService;
 
     @Autowired
-    private ITableService iTableService = new TableService();
+    private ITableService iTableService;
 
     @Autowired
     private IOrderService iOrderService;
@@ -235,5 +235,16 @@ public class TableController {
         Table updatedTable = iTableService.findTableById(id);
         return new ResponseEntity<Table>(updatedTable, HttpStatus.OK);
     }
+    @GetMapping("/checkId")
+    public ResponseEntity<Boolean> checkId(@RequestParam String id){
+        List<Table> list = iTableService.findAll();
+        for (Integer i=0;i<list.size();i++){
+            if (list.get(i).getCodeTable().equals(id)){
+                return new ResponseEntity<>(true, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
 }
 
