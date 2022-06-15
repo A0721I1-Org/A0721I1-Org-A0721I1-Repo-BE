@@ -12,10 +12,17 @@ import java.util.List;
 public class EmployeeService implements IEmployeeService {
 
     @Autowired
-    private IEmployeeRepository employeeRepository;
+    private IEmployeeRepository iEmployeeService;
 
     @Override
     public List<Employee> findAll() {
-        return employeeRepository.findAll();
+        return iEmployeeService.findAll();
     }
+
+    @Override
+    public Employee getEmployeeById(Long id) {
+        return iEmployeeService.findById(id).orElse(null);
+    }
+
+
 }

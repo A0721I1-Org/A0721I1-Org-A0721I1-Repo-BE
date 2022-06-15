@@ -18,11 +18,6 @@ public class TableService implements ITableService {
     private ITableRepository iTableService;
 
     @Override
-    public List<Table> getAll() {
-        return iTableService.findAll();
-    }
-
-    @Override
     public Table save(Table table) {
         return iTableService.save(table);
     }

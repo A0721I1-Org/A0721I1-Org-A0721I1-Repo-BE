@@ -1,19 +1,14 @@
 package projecta07.service;
 
-import projecta07.dto.DetailOrderTableDTO;
-import projecta07.model.Order;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import projecta07.model.Status;
 import projecta07.model.Table;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface ITableService {
-
-    List<Table> getAll();
 
     Table updateTable(Table table);
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,6 +16,9 @@ public class Order {
 
     @Column(name = "date_order")
     private String dateOrder;
+
+    @Column(name = "status_order")
+    private Boolean statusOrder;
 
     @Column(name = "total_order")
     private Double totalOrder;
@@ -58,6 +61,14 @@ public class Order {
     }
 
     public Order() {
+    }
+
+    public Boolean getStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(Boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
     public Order(Long idOrder, String dateOrder, Double totalOrder) {
