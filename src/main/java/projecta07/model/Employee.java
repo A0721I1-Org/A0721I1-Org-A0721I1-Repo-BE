@@ -45,6 +45,7 @@ public class Employee {
 //    @NotEmpty(message = "không được để trống")
 //    @JsonBackReference(value = "employee_user1")
     private User user;
+
     @ManyToOne(targetEntity = Position.class)
     @JoinColumn(name = "id_position", nullable = false)
     private Position position;
