@@ -8,16 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
-import projecta07.model.Table;
+import projecta07.model.*;
 import projecta07.service.*;
 import projecta07.service.impl.TableService;
 import org.springframework.validation.BindingResult;
 import projecta07.dto.TableDTO;
-import projecta07.model.Order;
-import projecta07.model.OrderDetail;
-import projecta07.model.Status;
 import projecta07.service.ITableService;
 import projecta07.validate.ValidateTableDTO;
+
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +27,9 @@ import java.util.Optional;
 public class TableController {
 
     @Autowired
+    private IEmployeeService iEmployeeService;
+
+    @Autowired
     private ValidateTableDTO validateTableDTO;
     @Autowired
     private IStatusService iStatusService;
@@ -37,10 +38,10 @@ public class TableController {
     private ITableService iTableService = new TableService();
 
     @Autowired
-    private IOrderService orderService;
+    private IOrderService iOrderService;
 
     @Autowired
-    private IOrderDetailService orderDetailService;
+    private IOrderDetailService iOrderDetailService;
 
     //BinTK
     @GetMapping("/emptyTable")
@@ -52,7 +53,7 @@ public class TableController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             for (Table table : tables) {
-                order = orderService.findOrderOfTableById(table.getIdTable());
+                order = iOrderService.findOrderOfTableById(table.getIdTable());
                 if (order == null) {
                     table.setEmptyTable(true);
                     iTableService.save(table);
@@ -65,18 +66,17 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable")
-    public ResponseEntity<Order> saveOrderInTable(@RequestBody Order order) {
-        return new ResponseEntity<>(orderService.save(order), HttpStatus.CREATED);
-    }
+    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}")
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable) {
+        Employee employee = iEmployeeService.getEmployeeById(idEmployee);
+        Table table = iTableService.findTableById(idTable);
 
-    @GetMapping("/emptyTable/getOrder/{idOrder}")
-    public ResponseEntity<Order> findOrderById(@PathVariable("idOrder") Long id) {
-        Order order = orderService.findById(id);
-        if (order == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        Order order = new Order();
+        order.setTable(table);
+        order.setEmployee(employee);
+
+        iOrderService.saveOrder(order);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     //BinTK
@@ -84,22 +84,27 @@ public class TableController {
     @GetMapping("/emptyTable/detailTable/{id}")
     public ResponseEntity<List<DetailOrderTableDTO>> findAllOrderByTableId(@PathVariable Long id) {
 
-        Order order = orderService.findOrderOfTableById(id);
+        Order order = iOrderService.findOrderOfTableById(id);
         List<DetailOrderTableDTO> orderDetailDTOS = new ArrayList<>();
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            List<OrderDetail> orderDetails = orderDetailService.getOrderDetailByOrderId(order.getIdOrder());
-
+            List<OrderDetail> orderDetails = iOrderDetailService.getOrderDetailByOrderId(order.getIdOrder());
             DetailOrderTableDTO detailOrderTableDTO;
-            for (OrderDetail o : orderDetails) {
+            if (orderDetails.size() == 0) {
                 detailOrderTableDTO = new DetailOrderTableDTO();
-                detailOrderTableDTO.setNameProduct(o.getProduct().getNameProduct());
-                detailOrderTableDTO.setPriceProduct(o.getProduct().getPriceProduct());
-                detailOrderTableDTO.setNumberProduct(o.getNumberProduct());
-                detailOrderTableDTO.setTotalOrder(order.getTotalOrder());
                 detailOrderTableDTO.setCodeTable(order.getTable().getCodeTable());
                 orderDetailDTOS.add(detailOrderTableDTO);
+            } else {
+                for (OrderDetail o : orderDetails) {
+                    detailOrderTableDTO = new DetailOrderTableDTO();
+                    detailOrderTableDTO.setNameProduct(o.getProduct().getNameProduct());
+                    detailOrderTableDTO.setPriceProduct(o.getProduct().getPriceProduct());
+                    detailOrderTableDTO.setNumberProduct(o.getNumberProduct());
+                    detailOrderTableDTO.setTotalOrder(order.getTotalOrder());
+                    detailOrderTableDTO.setCodeTable(order.getTable().getCodeTable());
+                    orderDetailDTOS.add(detailOrderTableDTO);
+                }
             }
             return new ResponseEntity<>(orderDetailDTOS, HttpStatus.OK);
         }
@@ -110,7 +115,7 @@ public class TableController {
     @DeleteMapping("/emptyTable/deleteOrderInTable/{idTable}")
     public ResponseEntity<Order> deleteOrderInTable(@PathVariable("idTable") Long id) {
         /* Delete order */
-        orderService.cancelTable(id);
+        iOrderService.cancelTable(id);
         findAllEmptyTable();
         return new ResponseEntity<>(HttpStatus.OK);
     }
