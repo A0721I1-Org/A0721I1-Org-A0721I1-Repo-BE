@@ -13,8 +13,6 @@ import java.util.Optional;
 
 public interface ITableService {
 
-    List<Table> getAll();
-
     Table updateTable(Table table);
 
     List<Table> findAll();
