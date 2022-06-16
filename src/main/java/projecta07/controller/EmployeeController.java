@@ -101,9 +101,9 @@ public class EmployeeController {
             user.setUsername(employee.getUser().getUsername());
             user.setPassword(EncrypPasswordUtils.EncrypPasswordUtils(employee.getUser().getPassword()));;
             roles.add(roleService.findByName("ROLE_STAFF"));
-        if (employee.getPosition().getNamePosition().equals("Quản lý")){
-            roles.add(roleService.findByName("ROLE_MANAGER"));
-        }
+            if (employee.getPosition().getNamePosition().equals("Quản lý")){
+                roles.add(roleService.findByName("ROLE_MANAGER"));
+            }
             user.setRoles(roles);
 //            userService.saveUser(user);
             employeeService.saveEmployee(employee);

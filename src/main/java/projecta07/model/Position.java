@@ -1,6 +1,8 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,18 +18,19 @@ public class Position {
     private String namePosition;
 
     @OneToMany(mappedBy = "position")
-    @JsonBackReference(value = "position_employee")
-    private List<Employee> employeeList;
+
+    @JsonBackReference(value = "position_employeeLis")
+    private List<Employee> employeeLis;
 
     public Position() {
     }
 
     public List<Employee> getEmployeeLis() {
-        return employeeList;
+        return employeeLis;
     }
 
     public void setEmployeeLis(List<Employee> employeeLis) {
-        this.employeeList = employeeLis;
+        this.employeeLis = employeeLis;
     }
 
     public Long getIdPosition() {
