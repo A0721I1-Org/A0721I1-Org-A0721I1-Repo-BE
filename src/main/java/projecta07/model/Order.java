@@ -1,8 +1,10 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -15,6 +17,9 @@ public class Order {
     @Column(name = "date_order")
     private String dateOrder;
 
+    @Column(name = "status_order")
+    private Boolean statusOrder;
+
     @Column(name = "total_order")
     private Double totalOrder;
 
@@ -22,6 +27,7 @@ public class Order {
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
@@ -55,6 +61,14 @@ public class Order {
     }
 
     public Order() {
+    }
+
+    public Boolean getStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(Boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
     public Order(Long idOrder, String dateOrder, Double totalOrder) {

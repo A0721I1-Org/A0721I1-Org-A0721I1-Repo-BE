@@ -9,9 +9,20 @@ import projecta07.service.ITableService;
 import java.util.List;
 
 @Service
-public class TableService implements ITableService{
+public class TableService implements ITableService {
     @Autowired
     private ITableRepository iTableRepository;
+
+    @Override
+    public Table save(Table table) {
+        return iTableRepository.save(table);
+    }
+
+
+    @Override
+    public List<Table> findAll() {
+        return iTableRepository.findAll();
+    }
 
     @Override
     public void deleteTableById(Long id) {
@@ -20,22 +31,12 @@ public class TableService implements ITableService{
 
     @Override
     public Table findTableById(Long id) {
-        return iTableRepository.findById(id).orElse(null);
+        return iTableRepository.findTableById(id);
     }
 
     @Override
     public Table updateTable(Table table) {
         return iTableRepository.save(table);
-    }
-
-    @Override
-    public Table save(Table table) {
-        return iTableRepository.save(table);
-    }
-
-    @Override
-    public List<Table> findAll() {
-        return iTableRepository.findAll();
     }
 
     @Override
@@ -57,6 +58,4 @@ public class TableService implements ITableService{
     public List<Table> findAllByEmptyTable(Boolean emptyTable) {
         return iTableRepository.findAllByEmptyTable(emptyTable);
     }
-
-
 }

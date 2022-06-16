@@ -4,33 +4,124 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import projecta07.model.Table;
-import projecta07.service.ITableService;
-import projecta07.service.impl.TableService;
+import projecta07.dto.DetailOrderTableDTO;
+import projecta07.model.*;
+import projecta07.service.*;
 import org.springframework.validation.BindingResult;
 import projecta07.dto.TableDTO;
-import projecta07.model.Status;
-import projecta07.service.IStatusService;
+import projecta07.service.ITableService;
 import projecta07.validate.ValidateTableDTO;
+
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/manager")
 @CrossOrigin(origins = "http://localhost:4200/")
-public class
-TableController {
+
+public class TableController {
+
+    @Autowired
+    private IEmployeeService iEmployeeService;
+
     @Autowired
     private ValidateTableDTO validateTableDTO;
+
     @Autowired
     private IStatusService iStatusService;
 
     @Autowired
-    private ITableService iTableService = new TableService();
+    private ITableService iTableService;
 
-    //QuangNV method create Table
+    @Autowired
+    private IOrderService iOrderService;
+
+    @Autowired
+    private IOrderDetailService iOrderDetailService;
+
+    //BinTK
+    @GetMapping("/emptyTable")
+    public ResponseEntity<List<Table>> findAllEmptyTable() {
+        List<Table> tables = iTableService.findAll();
+        Order order = new Order();
+
+        if (tables.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            for (Table table : tables) {
+                order = iOrderService.findOrderOfTableById(table.getIdTable());
+                if (order == null) {
+                    table.setEmptyTable(true);
+                    iTableService.save(table);
+                    continue;
+                }
+                table.setEmptyTable(false);
+                iTableService.save(table);
+            }
+            return new ResponseEntity<>(tables, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}/{dateOrder}")
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable,
+                                                  @PathVariable("dateOrder") String dateOrder) {
+        Employee employee = iEmployeeService.getEmployeeById(idEmployee);
+        Table table = iTableService.findTableById(idTable);
+
+
+        Order order = new Order();
+        order.setTable(table);
+        order.setStatusOrder(false);
+        order.setEmployee(employee);
+        order.setDateOrder(String.valueOf((LocalDate.now())));
+
+        iOrderService.saveOrder(order);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    //BinTK
+    @GetMapping("/emptyTable/detailTable/{id}")
+    public ResponseEntity<List<DetailOrderTableDTO>> findAllOrderByTableId(@PathVariable Long id) {
+
+        Order order = iOrderService.findOrderOfTableById(id);
+        List<DetailOrderTableDTO> orderDetailDTOS = new ArrayList<>();
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<OrderDetail> orderDetails = iOrderDetailService.getOrderDetailByOrderId(order.getIdOrder());
+            DetailOrderTableDTO detailOrderTableDTO;
+            if (orderDetails.size() == 0) {
+                detailOrderTableDTO = new DetailOrderTableDTO();
+                detailOrderTableDTO.setCodeTable(order.getTable().getCodeTable());
+                orderDetailDTOS.add(detailOrderTableDTO);
+            } else {
+                for (OrderDetail o : orderDetails) {
+                    detailOrderTableDTO = new DetailOrderTableDTO();
+                    detailOrderTableDTO.setNameProduct(o.getProduct().getNameProduct());
+                    detailOrderTableDTO.setPriceProduct(o.getProduct().getPriceProduct());
+                    detailOrderTableDTO.setNumberProduct(o.getNumberProduct());
+                    detailOrderTableDTO.setTotalOrder(order.getTotalOrder());
+                    detailOrderTableDTO.setCodeTable(order.getTable().getCodeTable());
+                    orderDetailDTOS.add(detailOrderTableDTO);
+                }
+            }
+            return new ResponseEntity<>(orderDetailDTOS, HttpStatus.OK);
+        }
+    }
+
+    //BinTK
+    @DeleteMapping("/emptyTable/deleteOrderInTable/{idTable}")
+    public ResponseEntity<Order> deleteOrderInTable(@PathVariable("idTable") Long id) {
+        /* Delete order */
+        iOrderService.cancelTable(id);
+        findAllEmptyTable();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // QuangNV method create Table
     @PostMapping("/createTable")
     public ResponseEntity<?> createTable(@Valid @RequestBody TableDTO tableDTO, BindingResult bindingResult) {
         Boolean check = true;
@@ -147,4 +238,20 @@ TableController {
         Table updatedTable = iTableService.findTableById(id);
         return new ResponseEntity<Table>(updatedTable, HttpStatus.OK);
     }
+
+    // QuangNV
+    @GetMapping("/checkId")
+    public ResponseEntity<List<Table>> checkId(@RequestParam String id){
+        List<Table> list = iTableService.findAll();
+        List<Table> tables = new ArrayList<>();
+        for (Integer i=0;i<list.size();i++){
+            if (list.get(i).getCodeTable().equals(id)){
+                tables.add(list.get(i));
+                return new ResponseEntity<>(tables, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
+
