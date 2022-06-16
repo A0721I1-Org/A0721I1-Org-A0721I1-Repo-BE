@@ -33,6 +33,14 @@ public class Employee {
     @Column(name = "salary_employee")
     private Double salaryEmployee;
 
+    @Column(name = "email_employee")
+    private String emailEmployee;
+
+    @Column(name="reset_password_token")
+    private String resetPasswordToken;
+
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user1;
@@ -44,6 +52,22 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     @JsonBackReference
     private List<Order> orderList;
+
+    public Employee() {
+    }
+
+    public Employee(String codeEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
+        this.codeEmployee = codeEmployee;
+        this.nameEmployee = nameEmployee;
+        this.addressEmployee = addressEmployee;
+        this.phoneEmployee = phoneEmployee;
+        this.genderEmployee = genderEmployee;
+        this.dateOfBirthEmployee = dateOfBirthEmployee;
+        this.salaryEmployee = salaryEmployee;
+        this.user1 = user1;
+        this.position = position;
+        this.orderList = orderList;
+    }
 
     public Long getIdEmployee() {
         return idEmployee;
@@ -147,5 +171,20 @@ public class Employee {
 
     public void setSalaryEmployee(Double salaryEmployee) {
         this.salaryEmployee = salaryEmployee;
+    }
+
+    public String getEmailEmployee() {
+        return emailEmployee;
+    }
+
+    public void setEmailEmployee(String emailEmployee) {
+        this.emailEmployee = emailEmployee;
+    }
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 }
