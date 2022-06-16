@@ -1,7 +1,6 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,16 +17,26 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user1")
+    @OneToOne(mappedBy = "user")
+    @JsonBackReference
     private Employee employee;
 
     @ManyToMany
     @JoinTable(
+
             name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_role")
     )
     private Set<Role> roles;
+
+//    @OneToMany(mappedBy = "user")
+//    @JsonBackReference(value = "user_userRole")
+
+
+//    @OneToMany(mappedBy = "user")
+//    @JsonBackReference(value = "user_userRole")
+
 
     public Employee getEmployee() {
         return employee;
@@ -47,7 +56,6 @@ public class User {
 
     public User() {
     }
-
     public User(Long idUser, String username, String password) {
         this.idUser = idUser;
         this.username = username;
