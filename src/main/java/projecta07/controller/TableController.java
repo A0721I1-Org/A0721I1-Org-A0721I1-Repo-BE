@@ -1,9 +1,6 @@
 package projecta07.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +21,6 @@ import projecta07.service.IStatusService;
 
 import projecta07.model.*;
 import projecta07.service.*;
-import org.springframework.validation.BindingResult;
-import projecta07.dto.TableDTO;
-import projecta07.service.ITableService;
 
 import projecta07.validate.ValidateTableDTO;
 
@@ -39,6 +33,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/manager")
 @CrossOrigin(origins = "http://localhost:4200/")
+
 public class TableController {
 
     @Autowired
@@ -52,9 +47,6 @@ public class TableController {
     @Autowired
     private ITableService iTableService;
 
-
-//    @Autowired
-//    private ITableService iTableService = new TableService();
 
 
     @Autowired
@@ -104,7 +96,6 @@ public class TableController {
     }
 
     //BinTK
-    //BinTK
     @GetMapping("/emptyTable/detailTable/{id}")
     public ResponseEntity<List<DetailOrderTableDTO>> findAllOrderByTableId(@PathVariable Long id) {
 
@@ -135,7 +126,6 @@ public class TableController {
     }
 
     //BinTK
-    //BinTK
     @DeleteMapping("/emptyTable/deleteOrderInTable/{idTable}")
     public ResponseEntity<Order> deleteOrderInTable(@PathVariable("idTable") Long id) {
         /* Delete order */
@@ -143,7 +133,6 @@ public class TableController {
         findAllEmptyTable();
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    //BinTK
 
     // QuangNV method create Table
     @PostMapping("/createTable")
@@ -193,33 +182,20 @@ public class TableController {
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
-    //HuyNN method find all table with search and paging
-    @GetMapping("/findAllTablePaging")
-    public ResponseEntity<Iterable<Table>> findAllTablePaging(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @PageableDefault(size = 5) Pageable
-            pageable) {
-        Page<Table> tables;
-        Status status = null;
-        if (idStatus.isPresent()) {
-            status = iStatusService.findStatusById(idStatus.get()).get();
-        }
+    //HuyNN method find all table with search
+    @GetMapping("/findAllTableWithSearch")
+    public ResponseEntity<Iterable<Table>> findAllTableWithSearch(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable) {
+        List<Table> tables;
         if (codeTable.isPresent()) {
-            if (idStatus.isPresent() && emptyTable.isPresent()) {
-                tables = iTableService.findAllByStatusAndEmptyTableAndCodeTable(status, emptyTable.get(), codeTable.get(), pageable);
-            } else if (idStatus.isPresent()) {
-                tables = iTableService.findAllByStatusAndCodeTable(status, codeTable.get(), pageable);
-            } else if (emptyTable.isPresent()) {
-                tables = iTableService.findAllByCodeTableAndEmptyTable(codeTable.get(), emptyTable.get(), pageable);
-            } else {
-                tables = iTableService.findByCodeTable(codeTable.get(), pageable);
-            }
-        } else if (idStatus.isPresent() && emptyTable.isPresent()) {
-            tables = iTableService.findAllByStatusAndEmptyTable(status, emptyTable.get(), pageable);
-        } else if (idStatus.isPresent()) {
-            tables = iTableService.findAllByStatus(status, pageable);
+            tables = iTableService.findByCodeTable(codeTable.get());
+        } else if (emptyTable.isPresent() && idStatus.isPresent()) {
+            tables = iTableService.findAllByStatusAndEmptyTable(idStatus.get(), emptyTable.get());
         } else if (emptyTable.isPresent()) {
-            tables = iTableService.findAllByEmptyTable(emptyTable.get(), pageable);
+            tables = iTableService.findAllByEmptyTable(emptyTable.get());
+        } else if (idStatus.isPresent()) {
+            tables = iTableService.findAllByStatus(idStatus.get());
         } else {
-            tables = iTableService.findAll(pageable);
+            tables = iTableService.findAll();
         }
         if (tables.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -238,8 +214,21 @@ public class TableController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Autowired
-    private ITableRepository iTableRepository;
+    //HuyNN method update emptyTable
+    @PutMapping("/updateEmptyTable/{id}")
+    public ResponseEntity<Table> updateEmptyTable(@PathVariable Long id) {
+        Table table = iTableService.findTableById(id);
+        if (table == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (table.getEmptyTable()) {
+            table.setEmptyTable(false);
+        } else {
+            table.setEmptyTable(true);
+        }
+        iTableService.updateTable(table);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     // ThaoPTT method find table by Id
     @GetMapping("/findTableById/{id}")
@@ -261,12 +250,14 @@ public class TableController {
         tableOptional.setStatus(tableUpdateDTO.getStatus());
         return new ResponseEntity<>(iTableService.save(tableOptional), HttpStatus.OK);
     }
+
+    // QuangNV
     @GetMapping("/checkId")
     public ResponseEntity<List<Table>> checkId(@RequestParam String id){
         List<Table> list = iTableService.findAll();
         List<Table> tables = new ArrayList<>();
         for (Integer i=0;i<list.size();i++){
-            if (list.get(i).getCodeTable().equals(id)){
+            if (list.get(   i).getCodeTable().equals(id)){
                 tables.add(list.get(i));
                 return new ResponseEntity<>(tables, HttpStatus.OK);
             }

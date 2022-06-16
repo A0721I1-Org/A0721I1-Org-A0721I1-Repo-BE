@@ -7,8 +7,6 @@ public class TableUpdateDTO {
     private String codeTable;
     private Boolean emptyTable;
     private Status status;
-
-
     public TableUpdateDTO() {
     }
 
