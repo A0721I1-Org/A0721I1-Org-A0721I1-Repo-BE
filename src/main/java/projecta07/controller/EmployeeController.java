@@ -40,7 +40,6 @@ public class EmployeeController {
     @Autowired
     private IRoleService roleService;
 
-
     @GetMapping("/list")
     public ResponseEntity<Page<Employee>> showList(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,

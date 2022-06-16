@@ -31,6 +31,9 @@ public class User {
 
 
 
+//    @OneToMany(mappedBy = "user")
+//    @JsonBackReference(value = "user_userRole")
+
     public Employee getEmployee() {
         return employee;
     }
