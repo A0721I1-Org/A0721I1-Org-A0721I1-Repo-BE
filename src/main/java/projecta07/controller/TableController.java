@@ -245,7 +245,7 @@ public class TableController {
         List<Table> list = iTableService.findAll();
         List<Table> tables = new ArrayList<>();
         for (Integer i=0;i<list.size();i++){
-            if (list.get(i).getCodeTable().equals(id)){
+            if (list.get(   i).getCodeTable().equals(id)){
                 tables.add(list.get(i));
                 return new ResponseEntity<>(tables, HttpStatus.OK);
             }
