@@ -1,9 +1,8 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -18,12 +17,19 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user1")
+    @OneToOne(mappedBy = "user")
+    @JsonBackReference
     private Employee employee;
 
-    @OneToMany(mappedBy = "user")
-    @JsonBackReference(value = "user_userRole")
-    private List<UserRole> userRoleList;
+    @ManyToMany
+    @JoinTable(
+    name = "user_role",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
+
+
 
     public Employee getEmployee() {
         return employee;
@@ -33,17 +39,16 @@ public class User {
         this.employee = employee;
     }
 
-    public List<UserRole> getUserRoleList() {
-        return userRoleList;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserRoleList(List<UserRole> userRoleList) {
-        this.userRoleList = userRoleList;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public User() {
     }
-
     public User(Long idUser, String username, String password) {
         this.idUser = idUser;
         this.username = username;
