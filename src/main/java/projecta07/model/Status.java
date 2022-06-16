@@ -12,6 +12,7 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "id_status")
+    @NotEmpty(message = "test")
     private Long idStatus;
 
     @Column(name = "name_status")
