@@ -1,6 +1,7 @@
 package projecta07.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import projecta07.model.Employee;
 import projecta07.model.User;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public interface IUserService {
     void deleteAll(Iterable<? extends User> iterable);
 
     void deleteAll();
+
+    void saveUser(User user);
 
     UserDetails loadUserByUsername(String username);
 
