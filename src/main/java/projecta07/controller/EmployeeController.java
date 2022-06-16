@@ -40,7 +40,6 @@ public class EmployeeController {
     @Autowired
     private IRoleService roleService;
 
-
     @GetMapping("/list")
     public ResponseEntity<Page<Employee>> showList(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
@@ -104,6 +103,9 @@ public class EmployeeController {
         if (employee.getPosition().getNamePosition().equals("Quản lý")){
             roles.add(roleService.findByName("ROLE_MANAGER"));
         }
+            if (employee.getPosition().getNamePosition().equals("Quản lý")){
+                roles.add(roleService.findByName("ROLE_MANAGER"));
+            }
             user.setRoles(roles);
 //            userService.saveUser(user);
             employeeService.saveEmployee(employee);
@@ -135,6 +137,16 @@ public class EmployeeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(employee, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/find-id-employee/{id}")
+    public ResponseEntity<Employee> findByIdEmployee(@PathVariable Long id) {
+        Employee employee = employeeService.findEmployeeById(id);
+        if (employee == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(employee,HttpStatus.OK);
         }
     }
 }

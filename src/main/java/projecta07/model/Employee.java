@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Employee {
 
     @Column(name = "salary_employee")
     @NotNull(message = "không được để trống")
-//    @Min(value = 100000.0, message = "mức lương thấp nhất là 100,000")
+    @Min(value = 100000, message = "mức lương thấp nhất là 100,000")
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -87,14 +88,6 @@ public class Employee {
     public void setUser(User user1) {
         this.user = user1;
     }
-
-//    public User getUser() {
-//        return user1;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user1 = user;
-//    }
 
     public Position getPosition() {
         return position;
