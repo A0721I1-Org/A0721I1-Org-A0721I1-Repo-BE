@@ -13,6 +13,7 @@ public class TableService implements ITableService {
     @Autowired
     private ITableRepository iTableRepository;
 
+
     @Override
     public Table save(Table table) {
         return iTableRepository.save(table);
@@ -58,4 +59,5 @@ public class TableService implements ITableService {
     public List<Table> findAllByEmptyTable(Boolean emptyTable) {
         return iTableRepository.findAllByEmptyTable(emptyTable);
     }
+
 }

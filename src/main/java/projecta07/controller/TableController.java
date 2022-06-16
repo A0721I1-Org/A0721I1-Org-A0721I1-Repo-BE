@@ -5,11 +5,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
-import projecta07.model.*;
-import projecta07.service.*;
+import projecta07.dto.TableUpdateDTO;
+import projecta07.model.Table;
+import projecta07.repository.ITableRepository;
+import projecta07.service.IOrderDetailService;
+import projecta07.service.IOrderService;
+import projecta07.service.ITableService;
 import org.springframework.validation.BindingResult;
 import projecta07.dto.TableDTO;
-import projecta07.service.ITableService;
+import projecta07.model.Order;
+import projecta07.model.OrderDetail;
+import projecta07.model.Status;
+import projecta07.service.IStatusService;
+
+
+import projecta07.model.*;
+import projecta07.service.*;
+
 import projecta07.validate.ValidateTableDTO;
 
 import javax.validation.Valid;
@@ -32,9 +44,10 @@ public class TableController {
 
     @Autowired
     private IStatusService iStatusService;
-
     @Autowired
     private ITableService iTableService;
+
+
 
     @Autowired
     private IOrderService iOrderService;
@@ -229,14 +242,13 @@ public class TableController {
 
     // ThaoPTT method update table
     @PutMapping(value = "/updateTable/{id}")
-    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @RequestBody Table table) {
+    public ResponseEntity<Table> updateTable(@PathVariable("id") Long id, @RequestBody TableUpdateDTO tableUpdateDTO) {
         Table tableOptional = iTableService.findTableById(id);
         if (tableOptional == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        iTableService.updateTable(table);
-        Table updatedTable = iTableService.findTableById(id);
-        return new ResponseEntity<Table>(updatedTable, HttpStatus.OK);
+        tableOptional.setStatus(tableUpdateDTO.getStatus());
+        return new ResponseEntity<>(iTableService.save(tableOptional), HttpStatus.OK);
     }
 
     // QuangNV
