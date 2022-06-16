@@ -12,5 +12,4 @@ import java.util.List;
 public interface IOrderDetailRepository extends JpaRepository<OrderDetail , Long> {
     @Query("select od from OrderDetail od where od.order.idOrder = ?1")
     List<OrderDetail> getOrderDetailsByOrderId(Long id);
-
 }

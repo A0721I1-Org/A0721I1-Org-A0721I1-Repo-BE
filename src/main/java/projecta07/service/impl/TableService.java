@@ -11,6 +11,10 @@ public class TableService implements ITableService {
     @Autowired
     private ITableRepository tableRepository;
 
+    public Table saveTable(Table table) {
+        return tableRepository.save(table);
+    }
+
     public Table getTableById(Long id) {
         return tableRepository.findById(id).orElse(null);
     }
