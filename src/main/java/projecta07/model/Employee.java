@@ -89,14 +89,6 @@ public class Employee {
         this.user = user1;
     }
 
-//    public User getUser() {
-//        return user1;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user1 = user;
-//    }
-
     public Position getPosition() {
         return position;
     }
