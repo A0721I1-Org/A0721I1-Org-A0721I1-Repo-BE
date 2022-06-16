@@ -9,13 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
+import projecta07.model.Role;
+import projecta07.model.User;
 import projecta07.service.IEmployeeService;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.validation.BindingResult;
 import projecta07.model.Position;
 import projecta07.service.IPositionService;
+import projecta07.service.IRoleService;
+import projecta07.service.IUserService;
+import projecta07.ultil.EncrypPasswordUtils;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -29,6 +35,12 @@ public class EmployeeController {
     private IEmployeeService employeeService;
     @Autowired
     private IPositionService positionService;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private IRoleService roleService;
+
+
     @GetMapping("/list")
     public ResponseEntity<Page<Employee>> showList(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
@@ -84,9 +96,17 @@ public class EmployeeController {
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
+            HashSet<Role> roles = new HashSet<>();
+            User user = employee.getUser();
+            user.setUsername(employee.getUser().getUsername());
+            user.setPassword(EncrypPasswordUtils.EncrypPasswordUtils(employee.getUser().getPassword()));;
+            roles.add(roleService.findByName("ROLE_STAFF"));
+        if (employee.getPosition().getNamePosition().equals("Quản lý")){
+            roles.add(roleService.findByName("ROLE_MANAGER"));
+        }
+            user.setRoles(roles);
+//            userService.saveUser(user);
             employeeService.saveEmployee(employee);
-//        User user =  findUserByUsername(employee.getUser().getUsername());
-//        user.setPassword("123456");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
