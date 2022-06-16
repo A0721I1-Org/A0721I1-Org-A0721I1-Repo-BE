@@ -1,9 +1,6 @@
 package projecta07.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +19,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/manager")
-@CrossOrigin(origins = "*")
-public class TableController {
+@CrossOrigin(origins = "http://localhost:4200/")
+public class
+TableController {
     @Autowired
     private ValidateTableDTO validateTableDTO;
     @Autowired
@@ -80,32 +78,20 @@ public class TableController {
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
-    //HuyNN method find all table with search and paging
-    @GetMapping("/findAllTablePaging")
-    public ResponseEntity<Iterable<Table>> findAllTablePaging(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @PageableDefault(size = 5) Pageable pageable) {
-        Page<Table> tables;
-        Status status = null;
-        if (idStatus.isPresent()) {
-            status = iStatusService.findStatusById(idStatus.get()).get();
-        }
+    //HuyNN method find all table with search
+    @GetMapping("/findAllTableWithSearch")
+    public ResponseEntity<Iterable<Table>> findAllTableWithSearch(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable) {
+        List<Table> tables;
         if (codeTable.isPresent()) {
-            if (idStatus.isPresent() && emptyTable.isPresent()) {
-                tables = iTableService.findAllByStatusAndEmptyTableAndCodeTable(status, emptyTable.get(), codeTable.get(), pageable);
-            } else if (idStatus.isPresent()){
-                tables = iTableService.findAllByStatusAndCodeTable(status, codeTable.get(), pageable);
-            } else if (emptyTable.isPresent()){
-                tables = iTableService.findAllByCodeTableAndEmptyTable(codeTable.get(), emptyTable.get(), pageable);
-            } else {
-                tables = iTableService.findByCodeTable(codeTable.get(), pageable);
-            }
-        } else if (idStatus.isPresent() && emptyTable.isPresent()){
-            tables = iTableService.findAllByStatusAndEmptyTable(status, emptyTable.get(), pageable);
+            tables = iTableService.findByCodeTable(codeTable.get());
+        } else if (emptyTable.isPresent() && idStatus.isPresent()) {
+            tables = iTableService.findAllByStatusAndEmptyTable(idStatus.get(), emptyTable.get());
+        } else if (emptyTable.isPresent()) {
+            tables = iTableService.findAllByEmptyTable(emptyTable.get());
         } else if (idStatus.isPresent()) {
-            tables = iTableService.findAllByStatus(status, pageable);
-        } else if (emptyTable.isPresent()){
-            tables = iTableService.findAllByEmptyTable(emptyTable.get(), pageable);
+            tables = iTableService.findAllByStatus(idStatus.get());
         } else {
-            tables = iTableService.findAll(pageable);
+            tables = iTableService.findAll();
         }
         if (tables.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -121,6 +107,22 @@ public class TableController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         iTableService.deleteTableById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //HuyNN method update emptyTable
+    @PutMapping("/updateEmptyTable/{id}")
+    public ResponseEntity<Table> updateEmptyTable(@PathVariable Long id) {
+        Table table = iTableService.findTableById(id);
+        if (table == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (table.getEmptyTable()) {
+            table.setEmptyTable(false);
+        } else {
+            table.setEmptyTable(true);
+        }
+        iTableService.updateTable(table);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
