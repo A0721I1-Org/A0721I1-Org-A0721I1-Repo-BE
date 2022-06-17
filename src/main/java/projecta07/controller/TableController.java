@@ -17,11 +17,8 @@ import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.model.Status;
 import projecta07.service.IStatusService;
-
-
 import projecta07.model.*;
 import projecta07.service.*;
-
 import projecta07.validate.ValidateTableDTO;
 
 import javax.validation.Valid;
@@ -44,10 +41,9 @@ public class TableController {
 
     @Autowired
     private IStatusService iStatusService;
+    
     @Autowired
     private ITableService iTableService;
-
-
 
     @Autowired
     private IOrderService iOrderService;
@@ -253,11 +249,11 @@ public class TableController {
 
     // QuangNV
     @GetMapping("/checkId")
-    public ResponseEntity<List<Table>> checkId(@RequestParam String id){
+    public ResponseEntity<List<Table>> checkId(@RequestParam String id) {
         List<Table> list = iTableService.findAll();
         List<Table> tables = new ArrayList<>();
-        for (Integer i=0;i<list.size();i++){
-            if (list.get(   i).getCodeTable().equals(id)){
+        for (Integer i = 0; i < list.size(); i++) {
+            if (list.get(i).getCodeTable().equals(id)) {
                 tables.add(list.get(i));
                 return new ResponseEntity<>(tables, HttpStatus.OK);
             }
