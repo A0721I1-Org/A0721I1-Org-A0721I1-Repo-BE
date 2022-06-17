@@ -77,7 +77,7 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable")
+    @PostMapping("/emptyTable/saveOrderInTable")
     public ResponseEntity<Order> saveOrderInTable(@RequestParam("idUser") Long idUser,
                                                   @RequestParam("idTable") Long idTable) {
         Employee employee = iEmployeeService.findEmployeeByUser(idUser);
