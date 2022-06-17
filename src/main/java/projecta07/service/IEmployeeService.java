@@ -14,8 +14,6 @@ import java.util.Optional;
 public interface IEmployeeService {
     Employee findEmployeeByIdUser(Long IdUser);
 
-    Employee getEmployeeById(Long id);
-
     List<Employee> findAll();
 
     Page<Employee> findAllPage(Pageable pageable);

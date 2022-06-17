@@ -81,7 +81,7 @@ public class TableController {
     @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}/{dateOrder}")
     public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable,
                                                   @PathVariable("dateOrder") String dateOrder) {
-        Employee employee = iEmployeeService.getEmployeeById(idEmployee);
+        Employee employee = iEmployeeService.findEmployeeById(idEmployee);
         Table table = iTableService.findTableById(idTable);
 
 

@@ -8,56 +8,51 @@ import projecta07.model.Employee;
 import projecta07.repository.IEmployeeRepository;
 import projecta07.service.IEmployeeService;
 
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class EmployeeService implements IEmployeeService {
-
     @Autowired
-    private IEmployeeRepository iEmployeeRepository;
-
-    @Override
-    public List<Employee> findAll() {
-        return iEmployeeRepository.findAll();
-    }
-
-    @Override
-    public Employee getEmployeeById(Long id) {
-        return iEmployeeRepository.findById(id).orElse(null);
-    }
+    private IEmployeeRepository employeeRepository;
 
     @Override
     public Employee findEmployeeByIdUser(Long IdUser) {
-        return iEmployeeRepository.findEmployeeByIdUser(IdUser);
+        return employeeRepository.findEmployeeByIdUser(IdUser);
+    }
+
+    @Override
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
     }
 
     @Override
     public Page<Employee> findAllPage(Pageable pageable) {
-        return iEmployeeRepository.findAll(pageable);
+        return employeeRepository.findAll(pageable);
     }
 
     @Override
     public Employee findEmployeeById(long id) {
-        return iEmployeeRepository.findEmployeeById(id);
+        return employeeRepository.findEmployeeById(id);
     }
 
     @Override
     public void deleteEmployee(long id) {
-        iEmployeeRepository.deleteById(id);
+        employeeRepository.deleteById(id);
     }
 
     @Override
     public List<Employee> searchEmployee(String username, String name, String phone) {
-        return iEmployeeRepository.searchAllEmployee(username, name, phone);
+        return employeeRepository.searchAllEmployee(username, name, phone);
     }
 
     public void saveEmployee(Employee employee) {
-        iEmployeeRepository.save(employee);
+        employeeRepository.save(employee);
     }
 
     @Override
     public Optional<Employee> findByIdEmployee(Long id) {
-        return iEmployeeRepository.findById(id);
+        return employeeRepository.findById(id);
     }
 }
