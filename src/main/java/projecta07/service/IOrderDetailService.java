@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IOrderDetailService {
     List<OrderDetail> getOrderDetailByOrderId(Long id);
+
     void deleteOrderDetailInTable(Long id);
 }

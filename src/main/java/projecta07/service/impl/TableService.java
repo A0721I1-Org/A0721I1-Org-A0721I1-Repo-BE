@@ -13,6 +13,7 @@ public class TableService implements ITableService {
     @Autowired
     private ITableRepository iTableRepository;
 
+
     @Override
     public Table save(Table table) {
         return iTableRepository.save(table);
@@ -34,10 +35,6 @@ public class TableService implements ITableService {
         return iTableRepository.findTableById(id);
     }
 
-    @Override
-    public Table updateTable(Table table) {
-        return iTableRepository.save(table);
-    }
 
     @Override
     public List<Table> findAllByStatusAndEmptyTable(Long idStatus, Boolean emptyTable) {
@@ -58,4 +55,5 @@ public class TableService implements ITableService {
     public List<Table> findAllByEmptyTable(Boolean emptyTable) {
         return iTableRepository.findAllByEmptyTable(emptyTable);
     }
+
 }

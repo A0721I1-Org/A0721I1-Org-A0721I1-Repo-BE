@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ITableRepository extends JpaRepository<Table,Long> {
+
     @Query(value = "select * from `table` where `table`.id_table = ?1" , nativeQuery = true)
     Table findTableById(Long id);
 

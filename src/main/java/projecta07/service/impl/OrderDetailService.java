@@ -10,16 +10,22 @@ import java.util.List;
 
 @Service
 public class OrderDetailService implements IOrderDetailService {
+
     @Autowired
-    private IOrderDetailRepository orderDetailRepository;
+    private IOrderDetailRepository iOrderDetailRepository;
+
     @Override
     /* getOrderDetailByOrderId */
     public List<OrderDetail> getOrderDetailByOrderId(Long id) {
-        return orderDetailRepository.getAllOrderDetailByOrderId(id);
+        return iOrderDetailRepository.getAllOrderDetailByOrderId(id);
     }
 
     @Override
     public void deleteOrderDetailInTable(Long id) {
-
     }
+
+
+
+
+
 }

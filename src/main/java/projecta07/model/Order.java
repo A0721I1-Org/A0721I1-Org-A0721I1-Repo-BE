@@ -33,7 +33,7 @@ public class Order {
     private Employee employee;
 
     @OneToMany(mappedBy = "order")
-    @JsonBackReference(value = "order-orderDetail")
+    @JsonBackReference(value = "order_orderDetail")
     private List<OrderDetail> orderDetailList;
 
     public Table getTable() {
