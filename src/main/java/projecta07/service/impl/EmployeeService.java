@@ -22,6 +22,13 @@ public class EmployeeService implements IEmployeeService {
         return employeeRepository.findEmployeeByIdUser(IdUser);
     }
 
+    //phương thức của bin
+    @Override
+    public Employee findEmployeeByUser(Long idUser) {
+        return employeeRepository.findEmployeeById_User(idUser);
+    }
+    //
+
     @Override
     public List<Employee> findAll() {
         return employeeRepository.findAll();
