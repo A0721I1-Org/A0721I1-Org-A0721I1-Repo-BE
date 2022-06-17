@@ -41,4 +41,9 @@ public class OrderDetailService implements IOrderDetailService {
     public void deleteById(Long orderDetailId) {
         this.orderDetailRepository.deleteById(orderDetailId);
     }
+
+    /* Get order detail by id without Optional */
+    public OrderDetail getById(Long orderDetailId) {
+        return this.orderDetailRepository.findById(orderDetailId).orElse(null);
+    }
 }
