@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface IOrderDetailService {
     Iterable<OrderDetail> findAll();
+
     Optional<OrderDetail> findById(Long id);
+
     OrderDetail save(OrderDetail orderDetail);
+
     void delete(Long id);
 }

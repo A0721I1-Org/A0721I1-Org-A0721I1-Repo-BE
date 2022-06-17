@@ -1,6 +1,8 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,7 +21,6 @@ public class Position {
     @JsonBackReference(value = "position_employee")
     private List<Employee> employeeList;
 
-
     public Position() {
     }
 
@@ -29,6 +30,14 @@ public class Position {
 
     public void setEmployeeList(List<Employee> employeeList) {
         this.employeeList = employeeList;
+    }
+
+    public List<Employee> getEmployeeLis() {
+        return employeeList;
+    }
+
+    public void setEmployeeLis(List<Employee> employeeLis) {
+        this.employeeList = employeeLis;
     }
 
     public Long getIdPosition() {

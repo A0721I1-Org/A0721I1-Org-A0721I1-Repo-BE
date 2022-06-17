@@ -8,10 +8,16 @@ import projecta07.service.IProductService;
 import java.util.Optional;
 import java.util.List;
 
+import java.util.List;
+
 @Service
-public class ProductService implements IProductService {
+public class ProductService  implements IProductService {
     @Autowired
     private IProductRepository productRepository;
+
+    @Autowired
+    IProductRepository iProductRepository;
+
     @Override
     public Iterable<Product> findAll() {
         return productRepository.findAll();
@@ -31,6 +37,17 @@ public class ProductService implements IProductService {
     public void delete(Long id) {
         productRepository.deleteById(id);
     }
+
+    @Override
+    public List<Product> findAllProductNew() {
+        return iProductRepository.findAllProductNew();
+    }
+
+    @Override
+    public List<Product> findMostAll() {
+        return iProductRepository.findMostAll();
+    }
+
     /* Get products with pagination */
     public List<Product> getProductsWithPagination(int currentPage , int size) {
         return this.productRepository.getProductsWithPagination(currentPage , size);
@@ -55,4 +72,16 @@ public class ProductService implements IProductService {
     public Product getProductById(Long id) {
         return this.productRepository.findById(id).orElse(null);
     }
+
+//    @Override
+//    public List<Product> Search(String nameProduct) {
+//        return null;
+//    }
+
+//
+//
+//    public List<Product> Search(String nameProduct) {
+//        return iProductRepository.findProductByNameProductContaining(nameProduct);
+//    }
+
 }
