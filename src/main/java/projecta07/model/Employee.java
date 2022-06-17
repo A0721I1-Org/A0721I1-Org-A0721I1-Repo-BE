@@ -56,22 +56,9 @@ public class Employee {
     @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
-    public Employee() {}
-
-
-    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user, Position position, List<Order> orderList) {
-        this.idEmployee = idEmployee;
-        this.nameEmployee = nameEmployee;
-        this.addressEmployee = addressEmployee;
-        this.phoneEmployee = phoneEmployee;
-        this.genderEmployee = genderEmployee;
-        this.dateOfBirthEmployee = dateOfBirthEmployee;
-        this.salaryEmployee = salaryEmployee;
-        this.user = user;
-        this.position = position;
-        this.orderList = orderList;
+    public Employee() {
+        //khoi tao constructor khong tham so
     }
-
     public Long getIdEmployee() {
         return idEmployee;
     }
