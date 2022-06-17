@@ -6,8 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.service.IOrderDetailService;
+import projecta07.service.impl.OrderDetailService;
+import projecta07.service.impl.OrderService;
 
 
 import javax.validation.Valid;
@@ -21,6 +24,12 @@ import java.util.Optional;
 public class OrderDetailController {
     @Autowired
     private IOrderDetailService orderDetailService;
+
+    @Autowired
+    private OrderDetailService ordService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<OrderDetail>> findAll() {
@@ -42,13 +51,20 @@ public class OrderDetailController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody @Valid OrderDetail orderDetail, BindingResult bindingResult) {
-        if(bindingResult.hasFieldErrors()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(orderDetailService.save(orderDetail), HttpStatus.CREATED);
+    @RequestMapping(value = "/add-to-cart/{idOrder}" , method = RequestMethod.POST)
+    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody @Valid OrderDetail orderDetail,
+                                                       @PathVariable("idOrder") Long idOrder) {
+        /* Get order by id and get list orderdetail */
+        Order order = orderService.getOrderById(idOrder);
+        List<OrderDetail> orderDetails = ordService.getOrderDetailsByOrderId(idOrder);
 
+        /* Save and add order detail to list  */
+        orderDetails.add(ordService.save(orderDetail));
+
+        /* Update total price in order */
+        order.setTotalOrder(new Order().calculateTotalPriceInOrder(orderDetails , order));
+        orderService.saveOrder(order);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}")

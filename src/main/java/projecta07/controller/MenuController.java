@@ -2,6 +2,7 @@ package projecta07.controller;
 
 
 //import javafx.scene.control.Tab;
+import com.sun.xml.bind.v2.model.core.ID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -211,9 +212,23 @@ public class MenuController {
     }
 
     /* Click button delete food */
-    @RequestMapping(value = "table/delete/{idOrderDetail}" , method = RequestMethod.DELETE)
-    public ResponseEntity<OrderDetail> handleDelete(@PathVariable("idOrderDetail") Long idOrderDetail) {
+    @RequestMapping(value = "table/delete/{idOrderDetail}/{idOrder}" , method = RequestMethod.DELETE)
+    public ResponseEntity<OrderDetail> handleDelete(@PathVariable("idOrderDetail") Long idOrderDetail
+    , @PathVariable("idOrder") Long idOrder) {
+        Order order = orderService.getOrderById(idOrder);
+        double totalPriceOrderDetail;
+
+        /* Delete food */
         orderDetailService.deleteById(idOrderDetail);
+
+        /* Get list order detail after remove */
+        List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(idOrder);
+
+        /* Edit total price in order */
+        totalPriceOrderDetail = order.calculateTotalPriceInOrder(orderDetails , order);
+        order.setTotalOrder(totalPriceOrderDetail);
+        orderService.saveOrder(order);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
