@@ -16,10 +16,12 @@ public class Position {
     private String namePosition;
 
     @OneToMany(mappedBy = "position")
+
     @JsonBackReference(value = "position_employeeLis")
     private List<Employee> employeeLis;
 
     public Position() {
+        // khoi tao constructor khong tham so
     }
 
     public List<Employee> getEmployeeLis() {

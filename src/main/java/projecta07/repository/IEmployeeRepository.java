@@ -14,12 +14,10 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
 
     //VinhTQ
     @Query(value = "SELECT  id_employee, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n " +
-            "user.id_user,user.username, user.password, role.id_role,role.name_role " +
+            "user.id_user,user.username " +
             "FROM employee \n" +
             "inner join position on employee.id_position = position.id_position \n" +
-            "inner join user on employee.id_user = user.id_user \n " +
-            "inner join userrole on user.id_user = userrole.id_user \n " +
-            "inner join role on userrole.id_role = role.id_role \n " +
+            "inner join user on employee.id_user = user.id_user \n" +
             "where user.username like concat('%' ,?1,'%') " +
             "and employee.name_employee like concat('%' ,?2,'%') " +
             "and employee.phone_employee like concat('%' ,?3,'%') ", nativeQuery = true)
