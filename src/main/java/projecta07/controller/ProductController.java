@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Product;
+import projecta07.model.TypeProduct;
 import projecta07.service.impl.ProductService;
 import projecta07.service.impl.TypeProductService;
 
@@ -16,8 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/product")
 @CrossOrigin("*")
+@RequestMapping("/product")
+
 public class ProductController {
     @Autowired
     ProductService productService;
@@ -41,6 +43,15 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else {
             return new ResponseEntity<>(productList1,HttpStatus.OK);
+        }
+    }
+    @GetMapping("/type")
+    public ResponseEntity<List<TypeProduct>> findByAllTypeproduct(){
+        List<TypeProduct> typeProducts=typeProductService.findByAll();
+        if (typeProducts.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            return new ResponseEntity<>(typeProducts,HttpStatus.OK);
         }
     }
     @DeleteMapping("/{id}")
@@ -76,10 +87,15 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<Product> editProduct(@PathVariable Long id, @RequestBody Product product) {
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Product> editProduct(@PathVariable Long id) {
         Optional<Product> product1 = productService.findById(id);
-        productService.createProduct(product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return new ResponseEntity<>(product1.get(), HttpStatus.OK);
+    }
+
+    @PatchMapping("/edit")
+    public ResponseEntity edit(@RequestBody Product product) {
+        productService.editProduct(product);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 }
