@@ -1,7 +1,7 @@
 package projecta07.controller;
 
 
-import javafx.scene.control.Tab;
+//import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("menu")
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin("*")
 public class MenuController {
 
     @Autowired
