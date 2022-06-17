@@ -9,7 +9,8 @@ import projecta07.service.IProductService;
 import projecta07.service.impl.ProductService;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Optional;import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products")

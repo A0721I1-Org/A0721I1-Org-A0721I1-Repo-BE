@@ -1,6 +1,5 @@
 package projecta07.controller;
 
-
 //import javafx.scene.control.Tab;
 import com.sun.xml.bind.v2.model.core.ID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
+
 @RequestMapping("menu")
 @CrossOrigin("*")
+@RestController
 public class MenuController {
 
     @Autowired
@@ -164,7 +166,7 @@ public class MenuController {
                 /* set value for order */
                 order.setTable(table);
                 order.setEmployee(employee);
-                order.setDateOrder(LocalDate.now());
+                order.setDateOrder(String.valueOf(LocalDate.now()));
             }
 
             /* not payment yet */

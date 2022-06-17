@@ -1,8 +1,6 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,6 +20,7 @@ public class Position {
     private List<Employee> employeeList;
 
     public Position() {
+        // khoi tao constructor khong tham so
     }
 
     public List<Employee> getEmployeeList() {

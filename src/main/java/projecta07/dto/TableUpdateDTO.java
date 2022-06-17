@@ -2,28 +2,19 @@ package projecta07.dto;
 
 import projecta07.model.Status;
 
-
-public class TableDTO {
+public class TableUpdateDTO {
     private Long idTable;
     private String codeTable;
     private Boolean emptyTable;
-
-    private String nameStatus;
-    private Long idStatus;
-
     private Status status;
-
-
-    public TableDTO() {
+    public TableUpdateDTO() {
     }
 
-
-    public TableDTO(Long idTable, String codeTable, Boolean emptyTable, String nameStatus, Long idStatus) {
+    public TableUpdateDTO(Long idTable, String codeTable, Boolean emptyTable, Status status) {
         this.idTable = idTable;
         this.codeTable = codeTable;
         this.emptyTable = emptyTable;
-        this.nameStatus = nameStatus;
-        this.idStatus = idStatus;
+        this.status = status;
     }
 
     public Long getIdTable() {
@@ -48,22 +39,6 @@ public class TableDTO {
 
     public void setEmptyTable(Boolean emptyTable) {
         this.emptyTable = emptyTable;
-    }
-
-    public String getNameStatus() {
-        return nameStatus;
-    }
-
-    public void setNameStatus(String nameStatus) {
-        this.nameStatus = nameStatus;
-    }
-
-    public Long getIdStatus() {
-        return idStatus;
-    }
-
-    public void setIdStatus(Long idStatus) {
-        this.idStatus = idStatus;
     }
 
     public Status getStatus() {

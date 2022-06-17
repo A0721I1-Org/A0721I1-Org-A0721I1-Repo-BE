@@ -11,11 +11,23 @@ import java.util.Optional;
 @Service
 public class OrderDetailService implements IOrderDetailService {
     @Autowired
+    private IOrderDetailRepository iOrderDetailRepository;
+
     private IOrderDetailRepository orderDetailRepository;
 
     @Override
+    /* getOrderDetailByOrderId */
+    public List<OrderDetail> getOrderDetailByOrderId(Long id) {
+        return iOrderDetailRepository.getAllOrderDetailByOrderId(id);
+    }
+
+    @Override
+    public void deleteOrderDetailInTable(Long id) {
+    }
+
+    @Override
     public Iterable<OrderDetail> findAll() {
-        return orderDetailRepository.findAll();
+        return null;
     }
 
     @Override
@@ -41,10 +53,5 @@ public class OrderDetailService implements IOrderDetailService {
     /* Delete order detail by id and order id */
     public void deleteById(Long orderDetailId) {
         this.orderDetailRepository.deleteById(orderDetailId);
-    }
-
-    /* Get order detail by id without Optional */
-    public OrderDetail getById(Long orderDetailId) {
-        return this.orderDetailRepository.findById(orderDetailId).orElse(null);
     }
 }

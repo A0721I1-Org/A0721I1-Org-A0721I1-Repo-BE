@@ -1,6 +1,7 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +15,10 @@ public class Order {
     private Long idOrder;
 
     @Column(name = "date_order")
-    private LocalDate dateOrder;
+    private String dateOrder;
+
+    @Column(name = "status_order")
+    private Boolean statusOrder;
 
     @Column(name = "total_order")
     private Double totalOrder;
@@ -23,9 +27,8 @@ public class Order {
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
-    private boolean statusOrder;
-
-    @ManyToOne(targetEntity = Employee.class)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
@@ -72,9 +75,14 @@ public class Order {
     }
 
     public Order(Long idOrder, LocalDate dateOrder, Double totalOrder) {
-        this.idOrder = idOrder;
-        this.dateOrder = dateOrder;
-        this.totalOrder = totalOrder;
+
+    }
+    public Boolean getStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(Boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
 
@@ -94,11 +102,11 @@ public class Order {
         this.idOrder = idOrder;
     }
 
-    public LocalDate getDateOrder() {
+    public String getDateOrder() {
         return dateOrder;
     }
 
-    public void setDateOrder(LocalDate dateOrder) {
+    public void setDateOrder(String dateOrder) {
         this.dateOrder = dateOrder;
     }
 

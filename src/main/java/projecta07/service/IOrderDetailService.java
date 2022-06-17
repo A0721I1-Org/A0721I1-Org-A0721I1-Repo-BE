@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderDetailService {
+    List<OrderDetail> getOrderDetailByOrderId(Long id);
+
+    void deleteOrderDetailInTable(Long id);
+
     Iterable<OrderDetail> findAll();
 
     Optional<OrderDetail> findById(Long id);
