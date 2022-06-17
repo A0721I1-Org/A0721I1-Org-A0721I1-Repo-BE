@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import projecta07.model.OrderDetail;
 import projecta07.service.IOrderDetailService;
 
@@ -61,6 +62,16 @@ public class OrderDetailController {
             }
             orderDetail.setIdOrderDetail(orderDetailOptional.get().getIdOrderDetail());
             return new ResponseEntity<>(orderDetailService.save(orderDetail),HttpStatus.OK);
+        }
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<OrderDetail> deleteCustomer(@PathVariable Long id){
+        Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
+        if(orderDetailOptional.isPresent()){
+            orderDetailService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
