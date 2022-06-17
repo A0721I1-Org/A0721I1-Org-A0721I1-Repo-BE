@@ -1,15 +1,8 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.springframework.data.annotation.Reference;
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -28,15 +21,18 @@ public class User {
     @JsonBackReference
     private Employee employee;
 
+    @ManyToMany
+    @JoinTable(
+    name = "user_role",
+    joinColumns = @JoinColumn(name = "id_user"),
+    inverseJoinColumns = @JoinColumn(name = "id_role")
+    )
+    private Set<Role> roles;
+
+
 
 //    @OneToMany(mappedBy = "user")
 //    @JsonBackReference(value = "user_userRole")
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
-
-
-    private List<UserRole> userRoleList;
 
     public Employee getEmployee() {
         return employee;
@@ -46,12 +42,12 @@ public class User {
         this.employee = employee;
     }
 
-    public List<UserRole> getUserRoleList() {
-        return userRoleList;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserRoleList(List<UserRole> userRoleList) {
-        this.userRoleList = userRoleList;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public User() {

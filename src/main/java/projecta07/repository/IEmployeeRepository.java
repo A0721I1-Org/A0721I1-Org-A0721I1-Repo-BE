@@ -32,8 +32,8 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
             "            from employee \n" +
             "            inner join position on employee.id_position = position.id_position\n" +
             "            inner join user on employee.id_user = user.id_user\n" +
-            "            inner join userrole on user.id_user = userrole.id_user\n" +
-            "            inner join role on userrole.id_role = role.id_role\n" +
+            "            inner join user_role on user.id_user = user_role.id_user\n" +
+            "            inner join role on user_role.id_role = role.id_role\n" +
             "            where employee.id_user=?1", nativeQuery = true)
     Employee findEmployeeByIdUser(Long idUser);
 }
