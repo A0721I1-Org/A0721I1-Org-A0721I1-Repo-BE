@@ -2,7 +2,11 @@ package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -13,37 +17,47 @@ public class Employee {
     private Long idEmployee;
 
     @Column(name = "name_employee")
+    @NotEmpty(message = "không được để trống")
     private String nameEmployee;
 
     @Column(name = "address_employee")
+    @NotEmpty(message = "không được để trống")
     private String addressEmployee;
 
     @Column(name = "phone_employee")
+    @NotEmpty(message = "không được để trống")
     private String phoneEmployee;
 
     @Column(name = "gender_employee")
+//    @NotEmpty(message = "không được để trống")
     private boolean genderEmployee;
 
     @Column(name = "date_of_birth_employee")
+    @NotEmpty(message = "không được để trống")
     private String dateOfBirthEmployee;
 
     @Column(name = "salary_employee")
+    @NotNull(message = "không được để trống")
+    @Min(value = 100000, message = "mức lương thấp nhất là 100,000")
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JsonBackReference(value = "employee-user")
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-    private User user1;
+//    @NotEmpty(message = "không được để trống")
+//    @JsonBackReference(value = "employee_user1")
+    private User user;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Position.class)
     @JoinColumn(name = "id_position", nullable = false)
     private Position position;
 
     @OneToMany(mappedBy = "employee")
-    @JsonBackReference(value = "employee-order")
+    @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
-    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
+
+    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user, Position position, List<Order> orderList) {
         this.idEmployee = idEmployee;
         this.nameEmployee = nameEmployee;
         this.addressEmployee = addressEmployee;
@@ -51,7 +65,7 @@ public class Employee {
         this.genderEmployee = genderEmployee;
         this.dateOfBirthEmployee = dateOfBirthEmployee;
         this.salaryEmployee = salaryEmployee;
-        this.user1 = user1;
+        this.user = user;
         this.position = position;
         this.orderList = orderList;
     }
@@ -70,20 +84,12 @@ public class Employee {
         this.idEmployee = idEmployee;
     }
 
-    public User getUser1() {
-        return user1;
-    }
-
-    public void setUser1(User user1) {
-        this.user1 = user1;
-    }
-
     public User getUser() {
-        return user1;
+        return user;
     }
 
-    public void setUser(User user) {
-        this.user1 = user;
+    public void setUser(User user1) {
+        this.user = user1;
     }
 
     public Position getPosition() {

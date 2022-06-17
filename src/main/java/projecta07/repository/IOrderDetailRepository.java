@@ -8,8 +8,8 @@ import projecta07.model.OrderDetail;
 import java.util.List;
 
 @Repository
-public interface IOrderDetailRepository extends JpaRepository<OrderDetail,Long> {
+public interface IOrderDetailRepository extends JpaRepository<OrderDetail, Long> {
 
-    @Query(value = "select * from orderdetail where id_order = ?1",nativeQuery = true)
+    @Query(value = "select * from orderdetail where id_order = ?1", nativeQuery = true)
     List<OrderDetail> getAllOrderDetailByOrderId(Long id);
 }
