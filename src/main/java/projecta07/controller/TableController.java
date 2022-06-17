@@ -48,7 +48,6 @@ public class TableController {
     private ITableService iTableService;
 
 
-
     @Autowired
     private IOrderService iOrderService;
 
@@ -78,20 +77,19 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}/{dateOrder}")
-    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable,
-                                                  @PathVariable("dateOrder") String dateOrder) {
-        Employee employee = iEmployeeService.findEmployeeById(idEmployee);
+    @PostMapping("/emptyTable/saveOrderInTable")
+    public ResponseEntity<Order> saveOrderInTable(@RequestParam("idUser") Long idUser,
+                                                  @RequestParam("idTable") Long idTable) {
+        Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
-
 
         Order order = new Order();
         order.setTable(table);
         order.setStatusOrder(false);
         order.setEmployee(employee);
         order.setDateOrder(String.valueOf((LocalDate.now())));
-
         iOrderService.saveOrder(order);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -237,11 +235,11 @@ public class TableController {
 
     // QuangNV
     @GetMapping("/checkId")
-    public ResponseEntity<List<Table>> checkId(@RequestParam String id){
+    public ResponseEntity<List<Table>> checkId(@RequestParam String id) {
         List<Table> list = iTableService.findAll();
         List<Table> tables = new ArrayList<>();
-        for (Integer i=0;i<list.size();i++){
-            if (list.get(   i).getCodeTable().equals(id)){
+        for (Integer i = 0; i < list.size(); i++) {
+            if (list.get(i).getCodeTable().equals(id)) {
                 tables.add(list.get(i));
                 return new ResponseEntity<>(tables, HttpStatus.OK);
             }
