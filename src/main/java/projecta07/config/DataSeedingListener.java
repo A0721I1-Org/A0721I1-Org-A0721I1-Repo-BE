@@ -37,28 +37,27 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             roleRepository.save(new Role("ROLE_BLOCK"));
         }
 
-        //them admin
-        if (userRepository.findByUsername("manager102") == null){
-            User manager = new User();
-            manager.setUsername("manager102");
-            manager.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByNameRole("ROLE_MANAGER"));
-            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
-            manager.setRoles(roles);
-            userRepository.save(manager);
-        }
-//
-//        //Them Nhân viên
-        if (userRepository.findByUsername("staff1") == null){
-            User staff = new User();
-            staff.setUsername("staff1");
-            staff.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
-            staff.setRoles(roles);
-            userRepository.save(staff);
-        }
+//        if (userRepository.findByUsername("manager102") == null){
+//            User manager = new User();
+//            manager.setUsername("manager102");
+//            manager.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
+//            HashSet<Role> roles = new HashSet<>();
+//            roles.add(roleRepository.findByNameRole("ROLE_MANAGER"));
+//            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
+//            manager.setRoles(roles);
+//            userRepository.save(manager);
+//        }
+////
+////        //Them Nhân viên
+//        if (userRepository.findByUsername("staff1") == null){
+//            User staff = new User();
+//            staff.setUsername("staff1");
+//            staff.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
+//            HashSet<Role> roles = new HashSet<>();
+//            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
+//            staff.setRoles(roles);
+//            userRepository.save(staff);
+//        }
 //
 //        if (userRepository.findByUsername("staff2") == null){
 //            User staff = new User();

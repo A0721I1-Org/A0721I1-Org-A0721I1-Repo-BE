@@ -1,5 +1,4 @@
 package projecta07.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
@@ -114,7 +113,10 @@ public class EmployeeController {
             user.setPassword(EncrypPasswordUtils.EncrypPasswordUtils(employee.getUser().getPassword()));
             ;
             roles.add(roleService.findByName("ROLE_STAFF"));
-            if (employee.getPosition().getNamePosition().equals("Quản lý")) {
+        if (employee.getPosition().getNamePosition().equals("Quản lý")){
+            roles.add(roleService.findByName("ROLE_MANAGER"));
+        }
+            if (employee.getPosition().getNamePosition().equals("Quản lý")){
                 roles.add(roleService.findByName("ROLE_MANAGER"));
             }
             user.setRoles(roles);
