@@ -21,6 +21,7 @@ public class Position {
     private List<Employee> employeeLis;
 
     public Position() {
+        // khoi tao constructor khong tham so
     }
 
     public List<Employee> getEmployeeLis() {
