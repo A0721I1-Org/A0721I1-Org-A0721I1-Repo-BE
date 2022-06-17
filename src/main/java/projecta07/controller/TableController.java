@@ -214,22 +214,6 @@ public class TableController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //HuyNN method update emptyTable
-    @PutMapping("/updateEmptyTable/{id}")
-    public ResponseEntity<Table> updateEmptyTable(@PathVariable Long id) {
-        Table table = iTableService.findTableById(id);
-        if (table == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (table.getEmptyTable()) {
-            table.setEmptyTable(false);
-        } else {
-            table.setEmptyTable(true);
-        }
-        iTableService.updateTable(table);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     // ThaoPTT method find table by Id
     @GetMapping("/findTableById/{id}")
     public ResponseEntity<Table> findTableById(@PathVariable("id") Long id) {

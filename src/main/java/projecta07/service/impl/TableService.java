@@ -35,10 +35,6 @@ public class TableService implements ITableService {
         return iTableRepository.findTableById(id);
     }
 
-    @Override
-    public Table updateTable(Table table) {
-        return iTableRepository.save(table);
-    }
 
     @Override
     public List<Table> findAllByStatusAndEmptyTable(Long idStatus, Boolean emptyTable) {
