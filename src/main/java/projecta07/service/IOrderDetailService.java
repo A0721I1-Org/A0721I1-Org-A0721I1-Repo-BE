@@ -17,4 +17,6 @@ public interface IOrderDetailService {
     OrderDetail save(OrderDetail orderDetail);
 
     void delete(Long id);
+
+    List<OrderDetail> findAllWithList();
 }
