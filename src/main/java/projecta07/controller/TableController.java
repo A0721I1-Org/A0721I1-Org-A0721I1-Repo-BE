@@ -74,20 +74,19 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}/{dateOrder}")
-    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable,
-                                                  @PathVariable("dateOrder") String dateOrder) {
-        Employee employee = iEmployeeService.getEmployeeById(idEmployee);
+    @PostMapping("/emptyTable/saveOrderInTable")
+    public ResponseEntity<Order> saveOrderInTable(@RequestParam("idUser") Long idUser,
+                                                  @RequestParam("idTable") Long idTable) {
+        Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
-
 
         Order order = new Order();
         order.setTable(table);
         order.setStatusOrder(false);
         order.setEmployee(employee);
         order.setDateOrder(String.valueOf((LocalDate.now())));
-
         iOrderService.saveOrder(order);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -207,22 +206,6 @@ public class TableController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         iTableService.deleteTableById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    //HuyNN method update emptyTable
-    @PutMapping("/updateEmptyTable/{id}")
-    public ResponseEntity<Table> updateEmptyTable(@PathVariable Long id) {
-        Table table = iTableService.findTableById(id);
-        if (table == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (table.getEmptyTable()) {
-            table.setEmptyTable(false);
-        } else {
-            table.setEmptyTable(true);
-        }
-        iTableService.updateTable(table);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

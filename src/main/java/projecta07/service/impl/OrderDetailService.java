@@ -10,8 +10,9 @@ import java.util.List;
 
 @Service
 public class OrderDetailService implements IOrderDetailService {
-/*    @Autowired
-    private IOrderDetailRepository orderDetailRepository;*/
+
+    @Autowired
+    private IOrderDetailRepository iOrderDetailRepository;
 
     @Override
     /* getOrderDetailByOrderId */
@@ -21,10 +22,6 @@ public class OrderDetailService implements IOrderDetailService {
 
     @Override
     public void deleteOrderDetailInTable(Long id) {
-
     }
-    @Autowired
-    private IOrderDetailRepository iOrderDetailRepository;
-
 
 }

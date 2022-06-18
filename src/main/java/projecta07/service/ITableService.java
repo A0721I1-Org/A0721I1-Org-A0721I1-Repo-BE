@@ -4,7 +4,6 @@ import projecta07.model.Table;
 import java.util.List;
 public interface ITableService {
     List<Table> findAll();
-    Table updateTable(Table table);
     void deleteTableById(Long id);
     Table findTableById(Long id);
     Table save(Table table);

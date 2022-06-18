@@ -70,11 +70,8 @@ public class Employee {
         this.orderList = orderList;
     }
 
-
     public Employee() {
-
     }
-
 
     public Long getIdEmployee() {
         return idEmployee;
