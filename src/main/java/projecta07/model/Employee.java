@@ -55,13 +55,9 @@ public class Employee {
     @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
-
-
-
     public Employee() {
         //khoi tao constructor khong tham so
     }
-
     public Long getIdEmployee() {
         return idEmployee;
     }

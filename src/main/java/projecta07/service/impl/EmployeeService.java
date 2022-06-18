@@ -17,6 +17,10 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     private IEmployeeRepository employeeRepository;
 
+    public Employee getEmployeeById(Long id) {
+        return this.employeeRepository.findById(id).orElse(null);
+    }
+
     @Override
     public Employee findEmployeeByIdUser(Long IdUser) {
         return employeeRepository.findEmployeeByIdUser(IdUser);

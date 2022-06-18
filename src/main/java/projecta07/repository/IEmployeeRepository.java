@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 @Repository
-public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
+public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
     //VinhTQ
     @Query(value = "select * from employee  where id_employee =?1", nativeQuery = true)
     Employee findEmployeeById(long id);

@@ -1,6 +1,7 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -35,7 +36,6 @@ public class User {
 
 //    @OneToMany(mappedBy = "user")
 //    @JsonBackReference(value = "user_userRole")
-
 
     public Employee getEmployee() {
         return employee;

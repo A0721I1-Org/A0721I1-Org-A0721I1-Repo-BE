@@ -7,25 +7,49 @@ import projecta07.repository.IOrderDetailRepository;
 import projecta07.service.IOrderDetailService;
 
 import java.util.List;
-
+import java.util.Optional;
 @Service
 public class OrderDetailService implements IOrderDetailService {
-
     @Autowired
-    private IOrderDetailRepository iOrderDetailRepository;
+    private IOrderDetailRepository orderDetailRepository;
 
     @Override
     /* getOrderDetailByOrderId */
     public List<OrderDetail> getOrderDetailByOrderId(Long id) {
-        return iOrderDetailRepository.getAllOrderDetailByOrderId(id);
+        return orderDetailRepository.getAllOrderDetailByOrderId(id);
     }
 
     @Override
     public void deleteOrderDetailInTable(Long id) {
     }
 
+    @Override
+    public Iterable<OrderDetail> findAll() {
+        return null;
+    }
 
+    @Override
+    public Optional<OrderDetail> findById(Long id) {
+        return orderDetailRepository.findById(id);
+    }
 
+    @Override
+    public OrderDetail save(OrderDetail orderDetail) {
+        return orderDetailRepository.save(orderDetail);
+    }
 
+    @Override
+    public void delete(Long id) {
+        orderDetailRepository.deleteById(id);
+    }
 
+    /* get Order Detail by Order Id*/
+    public List<OrderDetail> getOrderDetailsByOrderId(Long id) {
+        return this.orderDetailRepository.getAllOrderDetailByOrderId(id);
+    }
+
+    /* Delete order detail by id and order id */
+    public void deleteById(Long orderDetailId) {
+        this.orderDetailRepository.deleteById(orderDetailId);
+    }
 }
