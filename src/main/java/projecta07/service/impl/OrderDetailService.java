@@ -24,8 +24,4 @@ public class OrderDetailService implements IOrderDetailService {
     public void deleteOrderDetailInTable(Long id) {
     }
 
-
-
-
-
 }

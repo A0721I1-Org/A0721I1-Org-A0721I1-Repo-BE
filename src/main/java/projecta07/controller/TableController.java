@@ -17,11 +17,8 @@ import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.model.Status;
 import projecta07.service.IStatusService;
-
-
 import projecta07.model.*;
 import projecta07.service.*;
-
 import projecta07.validate.ValidateTableDTO;
 
 import javax.validation.Valid;
@@ -44,9 +41,9 @@ public class TableController {
 
     @Autowired
     private IStatusService iStatusService;
+    
     @Autowired
     private ITableService iTableService;
-
 
     @Autowired
     private IOrderService iOrderService;

@@ -14,10 +14,7 @@ import projecta07.model.User;
 import projecta07.repository.UserRepository;
 import projecta07.service.IUserService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements IUserService, UserDetailsService {

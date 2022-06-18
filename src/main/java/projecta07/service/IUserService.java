@@ -1,13 +1,12 @@
 package projecta07.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import projecta07.model.Employee;
 import projecta07.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface IUserService {
+public interface IUserService{
     User save(User user);
 
     Iterable<User> saveAll(Iterable<User> users);

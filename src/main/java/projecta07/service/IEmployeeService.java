@@ -19,6 +19,8 @@ public interface IEmployeeService {
     //
     List<Employee> findAll();
 
+    Employee getEmployeeById(Long id);
+
     Page<Employee> findAllPage(Pageable pageable);
 
     Employee findEmployeeById(long id);
