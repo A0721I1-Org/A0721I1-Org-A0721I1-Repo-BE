@@ -21,9 +21,9 @@ import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("menu")
-@CrossOrigin("*")
 @RestController
+@RequestMapping("menu")
+@CrossOrigin("http://localhost:4200/")
 public class MenuController {
 
     @Autowired
@@ -100,7 +100,7 @@ public class MenuController {
 
         /* Get orders detail by order id */
         List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
-        if(orderDetails.size() == 0) {
+        if(orderDetails.isEmpty()) {
             menuOrderDTO = new MenuOrderDTO();
             menuOrderDTO.setOrderId(order.getIdOrder());
             menuOrderDTOS.add(menuOrderDTO);

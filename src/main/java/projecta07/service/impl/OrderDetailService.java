@@ -11,14 +11,12 @@ import java.util.Optional;
 @Service
 public class OrderDetailService implements IOrderDetailService {
     @Autowired
-    private IOrderDetailRepository iOrderDetailRepository;
-
     private IOrderDetailRepository orderDetailRepository;
 
     @Override
     /* getOrderDetailByOrderId */
     public List<OrderDetail> getOrderDetailByOrderId(Long id) {
-        return iOrderDetailRepository.getAllOrderDetailByOrderId(id);
+        return orderDetailRepository.getAllOrderDetailByOrderId(id);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class OrderDetailService implements IOrderDetailService {
 
     /* get Order Detail by Order Id*/
     public List<OrderDetail> getOrderDetailsByOrderId(Long id) {
-        return this.orderDetailRepository.getOrderDetailsByOrderId(id);
+        return this.orderDetailRepository.getAllOrderDetailByOrderId(id);
     }
 
     /* Delete order detail by id and order id */
