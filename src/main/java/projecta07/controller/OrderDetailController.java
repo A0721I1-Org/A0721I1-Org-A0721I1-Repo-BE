@@ -32,11 +32,10 @@ public class OrderDetailController {
 
     @GetMapping("")
     public ResponseEntity<Iterable<OrderDetail>> findAll() {
-        List<OrderDetail> orderDetails = (List<OrderDetail>) orderDetailService.findAll();
+        List<OrderDetail> orderDetails = orderDetailService.findAllWithList();
         if (orderDetails.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        System.out.println(orderDetails);
         return new ResponseEntity<>(orderDetails, HttpStatus.OK);
     }
 
