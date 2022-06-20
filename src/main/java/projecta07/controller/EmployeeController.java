@@ -115,7 +115,7 @@ public class EmployeeController {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
-                employee.setId(employeeOptional.get().getId());
+                employee.setId(employeeOptional.get().getIdEmployee());
                 employeeService.saveEmployee(employee);
                 return new ResponseEntity<>(HttpStatus.OK);
             }

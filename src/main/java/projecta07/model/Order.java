@@ -32,6 +32,9 @@ public class Order {
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
+//    @Column(name = "status")
+//    private String status;
+
     @OneToMany(mappedBy = "order")
     @JsonBackReference(value = "order_ordeDetail")
     private List<OrderDetail> orderDetailList;
