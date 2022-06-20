@@ -1,6 +1,8 @@
 package projecta07.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import projecta07.model.Employee;
 import projecta07.repository.IEmployeeRepository;
@@ -23,6 +25,11 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public List<Employee> findAll() {
         return employeeRepository.findAll();
+    }
+
+    @Override
+    public Page<Employee> findAllPage(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
     }
 
     @Override
