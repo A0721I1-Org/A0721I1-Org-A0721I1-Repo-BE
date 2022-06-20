@@ -45,23 +45,8 @@ public class TableController {
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
         List<Table> tables = iTableService.findAll();
-        Order order = new Order();
 
-        if (tables.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            for (Table table : tables) {
-                order = iOrderService.findOrderOfTableById(table.getIdTable());
-                if (order == null) {
-                    table.setEmptyTable(true);
-                    iTableService.save(table);
-                    continue;
-                }
-                table.setEmptyTable(false);
-                iTableService.save(table);
-            }
-            return new ResponseEntity<>(tables, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(tables , HttpStatus.OK);
     }
 
     /* BinTK */
