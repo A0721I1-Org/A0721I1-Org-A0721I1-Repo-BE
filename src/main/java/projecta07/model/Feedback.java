@@ -33,7 +33,6 @@ public class Feedback {
     @Column(name = "email_people_feedback")
     private String emailPeopleFeedback;
 
-    @NotBlank
     @Column(name = "image_feedback")
     private String imageFeedback;
 
