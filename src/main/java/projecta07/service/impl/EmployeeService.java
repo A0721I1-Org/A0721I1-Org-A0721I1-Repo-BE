@@ -64,7 +64,7 @@ public class EmployeeService implements IEmployeeService {
             e.setResetPasswordToken(token);
             employeeRepos.save(e);
         } else {
-            throw new EmployeeNotFoundException("Could not find any employee with the email " + email);
+            throw new EmployeeNotFoundException("Lỗi: Không thể tìm thấy email của bạn đã đăng ký:" + email);
         }
     }
     // Hàm 2
