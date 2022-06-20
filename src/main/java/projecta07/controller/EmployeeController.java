@@ -54,9 +54,8 @@ public class EmployeeController {
     }
 
     //VinhTQ
-    @GetMapping("/search/{username}/{name}/{phone}/page={currentPage}&size={sizePage}")
-    public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone,
-                                                         @PathVariable("currentPage") int currentPage, @PathVariable("sizePage") int sizePage) {
+    @GetMapping("/search/{username}/{name}/{phone}")
+    public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone) {
         if (username.equals("null")) {
             username = "";
         }
@@ -66,12 +65,8 @@ public class EmployeeController {
         if (phone.equals("null")) {
             phone = "";
         }
-        List<Employee> employees = employeeService.searchEmployee(username, name, phone);
-        Pageable employeeList = PageRequest.of(currentPage, sizePage);
-        int start = (int) employeeList.getOffset();
-        int end = Math.min((start + employeeList.getPageSize()), employees.size());
-        Page<Employee> employeeSearchPage = new PageImpl<>(employees.subList(start, end), employeeList, sizePage);
-        return new ResponseEntity<List<Employee>>(employeeSearchPage.getContent(), HttpStatus.OK);
+        List<Employee> employeeList = employeeService.searchEmployee(username, name, phone);
+        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
     @GetMapping("/position")
