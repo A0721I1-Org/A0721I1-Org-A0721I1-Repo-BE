@@ -37,26 +37,10 @@ public class EmployeeController {
     private IRoleService roleService;
 
     //VinhTQ
-    @GetMapping("/length/list")
-    public ResponseEntity<Integer> getLengthOfEmployees() {
-        return new ResponseEntity<>(employeeService.findAll().size(), HttpStatus.ACCEPTED);
-    }
-
-    //VinhTQ
-    @GetMapping("/length/search/{username}/{name}/{phone}")
-    public ResponseEntity<Integer> getLengthOfEmployeeSearch(@PathVariable String username, @PathVariable String name, @PathVariable String phone) {
-        return new ResponseEntity<>(employeeService.searchEmployee(username, name, phone).size(), HttpStatus.ACCEPTED);
-    }
-
-    //VinhTQ
-    @GetMapping("/list/page={currentPage}&size={sizePage}")
-    public ResponseEntity<List<Employee>> showList(@PathVariable("currentPage") int currentPage, @PathVariable("sizePage") int sizePage) {
-        List<Employee> employees = employeeService.findAll();
-        Pageable employeeList = PageRequest.of(currentPage, sizePage);
-        int start = (int) employeeList.getOffset();
-        int end = Math.min((start + employeeList.getPageSize()), employees.size());
-        Page<Employee> employeePage = new PageImpl<>(employees.subList(start, end), employeeList, sizePage);
-        return new ResponseEntity<List<Employee>>(employeePage.getContent(), HttpStatus.OK);
+    @GetMapping("/list")
+    public ResponseEntity<List<Employee>> showList() {
+        List<Employee> employeeList = employeeService.findAll();
+        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
     //VinhTQ
