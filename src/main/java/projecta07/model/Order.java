@@ -23,7 +23,7 @@ public class Order {
     @Column(name = "total_order")
     private Double totalOrder;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Table.class)
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
@@ -33,7 +33,7 @@ public class Order {
     private Employee employee;
 
     @OneToMany(mappedBy = "order")
-    @JsonBackReference(value = "order_orderDetail")
+    @JsonBackReference(value = "order_ordeDetail")
     private List<OrderDetail> orderDetailList;
 
     public Table getTable() {
@@ -60,9 +60,23 @@ public class Order {
         this.orderDetailList = orderDetailList;
     }
 
+    /* Calculate total price in order*/
+    public double calculateTotalPriceInOrder(List<OrderDetail> orderDetails, Order order) {
+        double totalPrice = 0;
+        for (OrderDetail ord : orderDetails) {
+            if (ord.getOrder().getIdOrder() == order.getIdOrder()) {
+                totalPrice += ord.getTotalProduct();
+            }
+        }
+        return totalPrice;
+    }
+
     public Order() {
     }
 
+    public Order(Long idOrder, LocalDate dateOrder, Double totalOrder) {
+
+    }
     public Boolean getStatusOrder() {
         return statusOrder;
     }
@@ -71,10 +85,13 @@ public class Order {
         this.statusOrder = statusOrder;
     }
 
-    public Order(Long idOrder, String dateOrder, Double totalOrder) {
-        this.idOrder = idOrder;
-        this.dateOrder = dateOrder;
-        this.totalOrder = totalOrder;
+
+    public boolean isStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
     public Long getIdOrder() {

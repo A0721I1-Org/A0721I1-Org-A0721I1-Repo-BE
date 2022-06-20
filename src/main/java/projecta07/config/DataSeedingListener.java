@@ -37,7 +37,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             roleRepository.save(new Role("ROLE_BLOCK"));
         }
 
-        //them admin
         if (userRepository.findByUsername("manager102") == null){
             User manager = new User();
             manager.setUsername("manager102");
@@ -48,12 +47,8 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             manager.setRoles(roles);
             userRepository.save(manager);
         }
-
-
-        //Them Nhân viên
 //
 //        //Them Nhân viên
-
         if (userRepository.findByUsername("staff1") == null){
             User staff = new User();
             staff.setUsername("staff1");
@@ -63,7 +58,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             staff.setRoles(roles);
             userRepository.save(staff);
         }
-
 
         if (userRepository.findByUsername("staff2") == null){
             User staff = new User();

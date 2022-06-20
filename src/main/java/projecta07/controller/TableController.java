@@ -3,20 +3,15 @@ package projecta07.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
-import projecta07.dto.TableUpdateDTO;
-import projecta07.model.Table;
-import projecta07.repository.ITableRepository;
-import projecta07.service.IOrderDetailService;
-import projecta07.service.IOrderService;
-import projecta07.service.ITableService;
-import org.springframework.validation.BindingResult;
 import projecta07.dto.TableDTO;
 import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.model.Status;
 import projecta07.service.IStatusService;
+import projecta07.dto.TableUpdateDTO;
 import projecta07.model.*;
 import projecta07.service.*;
 import projecta07.validate.ValidateTableDTO;
@@ -30,7 +25,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/manager")
 @CrossOrigin(origins = "http://localhost:4200/")
-
 public class TableController {
 
     @Autowired
@@ -41,7 +35,7 @@ public class TableController {
 
     @Autowired
     private IStatusService iStatusService;
-    
+
     @Autowired
     private ITableService iTableService;
 
@@ -74,20 +68,27 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable")
-    public ResponseEntity<Order> saveOrderInTable(@RequestParam("idUser") Long idUser,
-                                                  @RequestParam("idTable") Long idTable) {
+
+
+    /* BinTK */
+    @PostMapping("/emptyTable/saveOrderInTable/{idUser}/{idTable}")
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idUser") Long idUser,
+                                                  @PathVariable("idTable") Long idTable) {
         Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
 
         Order order = new Order();
+        /* lấy order trả về sau khi lưu */
+        Order ordered;
+
+        /* Đặt giá trị cho order */
         order.setTable(table);
         order.setStatusOrder(false);
         order.setEmployee(employee);
         order.setDateOrder(String.valueOf((LocalDate.now())));
-        iOrderService.saveOrder(order);
+        ordered = iOrderService.saveOrder(order);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(ordered, HttpStatus.CREATED);
     }
 
     //BinTK
