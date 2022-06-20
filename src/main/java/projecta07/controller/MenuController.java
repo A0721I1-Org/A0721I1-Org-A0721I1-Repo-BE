@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("menu")
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public class MenuController {
 
     @Autowired

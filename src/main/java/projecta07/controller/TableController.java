@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/manager")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public class TableController {
 
     @Autowired
@@ -64,20 +64,25 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable")
-    public ResponseEntity<Order> saveOrderInTable(@RequestParam("idUser") Long idUser,
-                                                  @RequestParam("idTable") Long idTable) {
+    /* BinTK */
+    @PostMapping("/emptyTable/saveOrderInTable/{idUser}/{idTable}")
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idUser") Long idUser,
+                                                  @PathVariable("idTable") Long idTable) {
         Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
 
         Order order = new Order();
+        /* lấy order trả về sau khi lưu */
+        Order ordered;
+
+        /* Đặt giá trị cho order */
         order.setTable(table);
         order.setStatusOrder(false);
         order.setEmployee(employee);
         order.setDateOrder(String.valueOf((LocalDate.now())));
-        iOrderService.saveOrder(order);
+        ordered = iOrderService.saveOrder(order);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(ordered , HttpStatus.CREATED);
     }
 
     //BinTK

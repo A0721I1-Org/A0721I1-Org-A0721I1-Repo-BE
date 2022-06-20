@@ -13,6 +13,7 @@ public class TableService implements ITableService {
     @Autowired
     private ITableRepository tableRepository;
 
+    @Autowired
     private ITableRepository iTableRepository;
 
     public Table saveTable(Table table) {
