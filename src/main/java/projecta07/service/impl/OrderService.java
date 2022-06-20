@@ -29,6 +29,7 @@ public class OrderService implements IOrderService {
         return this.orderRepository.findById(id).orElse(null);
     }
 
+    @Autowired
     private IOrderRepository iOrderService;
 
     @Override
