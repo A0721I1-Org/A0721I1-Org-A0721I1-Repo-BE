@@ -6,25 +6,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
+import projecta07.model.Position;
 import projecta07.model.Role;
 import projecta07.model.User;
 import projecta07.service.IEmployeeService;
-
-import java.util.HashSet;
-import java.util.List;
-
-import org.springframework.validation.BindingResult;
-import projecta07.model.Position;
 import projecta07.service.IPositionService;
 import projecta07.service.IRoleService;
 import projecta07.service.IUserService;
 import projecta07.ultil.EncrypPasswordUtils;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/manager/api/employee")
@@ -134,7 +131,7 @@ public class EmployeeController {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
-                employee.setId(employeeOptional.get().getId());
+                employee.setId(employeeOptional.get().getIdEmployee());
                 employeeService.saveEmployee(employee);
                 return new ResponseEntity<>(HttpStatus.OK);
             }

@@ -3,25 +3,13 @@ package projecta07.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
-import projecta07.dto.TableUpdateDTO;
-import projecta07.model.Table;
-import projecta07.repository.ITableRepository;
-import projecta07.service.IOrderDetailService;
-import projecta07.service.IOrderService;
-import projecta07.service.ITableService;
-import org.springframework.validation.BindingResult;
 import projecta07.dto.TableDTO;
-import projecta07.model.Order;
-import projecta07.model.OrderDetail;
-import projecta07.model.Status;
-import projecta07.service.IStatusService;
-
-
+import projecta07.dto.TableUpdateDTO;
 import projecta07.model.*;
 import projecta07.service.*;
-
 import projecta07.validate.ValidateTableDTO;
 
 import javax.validation.Valid;
@@ -33,7 +21,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/manager")
 @CrossOrigin(origins = "http://localhost:4200/")
-
 public class TableController {
 
     @Autowired
@@ -46,7 +33,6 @@ public class TableController {
     private IStatusService iStatusService;
     @Autowired
     private ITableService iTableService;
-
 
 
     @Autowired
@@ -78,20 +64,19 @@ public class TableController {
         }
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}/{dateOrder}")
-    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable,
-                                                  @PathVariable("dateOrder") String dateOrder) {
-        Employee employee = iEmployeeService.findEmployeeById(idEmployee);
+    @PostMapping("/emptyTable/saveOrderInTable")
+    public ResponseEntity<Order> saveOrderInTable(@RequestParam("idUser") Long idUser,
+                                                  @RequestParam("idTable") Long idTable) {
+        Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
-
 
         Order order = new Order();
         order.setTable(table);
         order.setStatusOrder(false);
         order.setEmployee(employee);
         order.setDateOrder(String.valueOf((LocalDate.now())));
-
         iOrderService.saveOrder(order);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -237,11 +222,11 @@ public class TableController {
 
     // QuangNV
     @GetMapping("/checkId")
-    public ResponseEntity<List<Table>> checkId(@RequestParam String id){
+    public ResponseEntity<List<Table>> checkId(@RequestParam String id) {
         List<Table> list = iTableService.findAll();
         List<Table> tables = new ArrayList<>();
-        for (Integer i=0;i<list.size();i++){
-            if (list.get(   i).getCodeTable().equals(id)){
+        for (Integer i = 0; i < list.size(); i++) {
+            if (list.get(i).getCodeTable().equals(id)) {
                 tables.add(list.get(i));
                 return new ResponseEntity<>(tables, HttpStatus.OK);
             }
