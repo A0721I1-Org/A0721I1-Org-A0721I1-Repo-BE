@@ -80,6 +80,7 @@ public class OrderDetailController {
 
         List<OrderDetail> orderDetails = ordService.getOrderDetailsByOrderId(idOrder);
         if(orderDetails.isEmpty()) {
+            order.setTotalOrder(orderDetail.getTotalProduct());
             /* Save and add order detail to list */
             orderDetails.add(ordService.save(orderDetail));
         } else {
@@ -100,11 +101,11 @@ public class OrderDetailController {
                     productExisting = false;
                 }
             }
-        }
 
-        /* Edit */
-        if(!productExisting) {
-            orderDetails.add(ordService.save(orderDetail));
+            /* Edit */
+            if(!productExisting) {
+                orderDetails.add(ordService.save(orderDetail));
+            }
         }
 
         /* Update total price in order */
