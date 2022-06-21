@@ -16,7 +16,7 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from `order` where status_order =0 and id_table = ?1" , nativeQuery = true)
     Order getOrderByTableId(Long id);
 
-    @Query("select o from Order o where o.table.idTable = ?1")
+    @Query("select o from Order o where o.table.idTable = ?1 and o.statusOrder = false")
     Order getAllOrderByIdTable(Long id);
 
     /* @Query("delete order khỏi table ")*/

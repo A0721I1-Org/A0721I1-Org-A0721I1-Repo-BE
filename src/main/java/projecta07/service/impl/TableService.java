@@ -1,5 +1,6 @@
 package projecta07.service.impl;
 
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projecta07.model.Table;
@@ -17,7 +18,7 @@ public class TableService implements ITableService {
     private ITableRepository iTableRepository;
 
     public Table saveTable(Table table) {
-        return tableRepository.save(table);
+        return this.tableRepository.save(table);
     }
 
     public Table getTableById(Long id) {

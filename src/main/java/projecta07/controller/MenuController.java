@@ -1,7 +1,4 @@
 package projecta07.controller;
-
-//import javafx.scene.control.Tab;
-import com.sun.xml.bind.v2.model.core.ID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -88,6 +85,9 @@ public class MenuController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    /* 404 */
+//    @RequestMapping(value = "404")
+
     /* Get Data DTO for table */
     @RequestMapping(value = "table/{idTable}/{currentPage}&{sizePage}", method = RequestMethod.GET)
     public ResponseEntity<List<MenuOrderDTO>> getMenuOrderDTO(@PathVariable("idTable") Long idTable
@@ -98,41 +98,45 @@ public class MenuController {
         /* Get order by table id */
         Order order = orderService.getOrderByTableId(idTable);
 
-        /* Get orders detail by order id */
-        List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
-        if(orderDetails.isEmpty()) {
-            menuOrderDTO = new MenuOrderDTO();
-            menuOrderDTO.setOrderId(order.getIdOrder());
-            menuOrderDTOS.add(menuOrderDTO);
+        if(order == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            for (OrderDetail orderDetail : orderDetails) {
+            /* Get orders detail by order id */
+            List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
+            if(orderDetails.isEmpty()) {
                 menuOrderDTO = new MenuOrderDTO();
                 menuOrderDTO.setOrderId(order.getIdOrder());
-                if (orderDetail.getOrder().getIdOrder() == menuOrderDTO.getOrderId()) {
-                    menuOrderDTO.setOrderId(orderDetail.getOrder().getIdOrder());
-                    menuOrderDTO.setOrderDetailId(orderDetail.getIdOrderDetail());
-                    menuOrderDTO.setNameProduct(orderDetail.getProduct().getNameProduct());
-                    menuOrderDTO.setQuantity(orderDetail.getNumberProduct());
-                    menuOrderDTO.setPrice(orderDetail.getProduct().getPriceProduct());
-                    menuOrderDTO.setTotalPrice(orderDetail.getTotalProduct());
-                    menuOrderDTO.setProductId(orderDetail.getProduct().getIdProduct());
-                }
                 menuOrderDTOS.add(menuOrderDTO);
+            } else {
+                for (OrderDetail orderDetail : orderDetails) {
+                    menuOrderDTO = new MenuOrderDTO();
+                    menuOrderDTO.setOrderId(order.getIdOrder());
+                    if (orderDetail.getOrder().getIdOrder() == menuOrderDTO.getOrderId()) {
+                        menuOrderDTO.setOrderId(orderDetail.getOrder().getIdOrder());
+                        menuOrderDTO.setOrderDetailId(orderDetail.getIdOrderDetail());
+                        menuOrderDTO.setNameProduct(orderDetail.getProduct().getNameProduct());
+                        menuOrderDTO.setQuantity(orderDetail.getNumberProduct());
+                        menuOrderDTO.setPrice(orderDetail.getProduct().getPriceProduct());
+                        menuOrderDTO.setTotalPrice(orderDetail.getTotalProduct());
+                        menuOrderDTO.setProductId(orderDetail.getProduct().getIdProduct());
+                    }
+                    menuOrderDTOS.add(menuOrderDTO);
+                }
             }
-        }
-        /* Pagination for DTO*/
-        Pageable dtoPageable = PageRequest.of(currentPage, sizePage);
-        int start = (int) dtoPageable.getOffset();
-        int end = Math.min((start + dtoPageable.getPageSize()), menuOrderDTOS.size());
-        Page<MenuOrderDTO> menuOrderDTOPage = new PageImpl<>(menuOrderDTOS.subList(start, end), dtoPageable, sizePage);
+            /* Pagination for DTO*/
+            Pageable dtoPageable = PageRequest.of(currentPage, sizePage);
+            int start = (int) dtoPageable.getOffset();
+            int end = Math.min((start + dtoPageable.getPageSize()), menuOrderDTOS.size());
+            Page<MenuOrderDTO> menuOrderDTOPage = new PageImpl<>(menuOrderDTOS.subList(start, end), dtoPageable, sizePage);
 
-        /* Get and set total page */
-        for (MenuOrderDTO mn : menuOrderDTOS) {
-            mn.setTotalPageDTO(menuOrderDTOS.size());
-        }
-        menuOrderDTOS.add(menuOrderDTO);
+            /* Get and set total page */
+            for (MenuOrderDTO mn : menuOrderDTOS) {
+                mn.setTotalPageDTO(menuOrderDTOS.size());
+            }
+            menuOrderDTOS.add(menuOrderDTO);
 
-        return new ResponseEntity<>(menuOrderDTOPage.getContent(), HttpStatus.OK);
+            return new ResponseEntity<>(menuOrderDTOPage.getContent(), HttpStatus.OK);
+        }
     }
 
     /* Click button Order*/
@@ -207,6 +211,8 @@ public class MenuController {
 
         table.setEmptyTable(true);
         tableService.saveTable(table);
+        /* Edit table */
+
         order.setStatusOrder(true);
         orderService.saveOrder(order);
         return new ResponseEntity<>(HttpStatus.OK);

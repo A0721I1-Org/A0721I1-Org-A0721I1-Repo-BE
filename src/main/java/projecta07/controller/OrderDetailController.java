@@ -1,4 +1,5 @@
 package projecta07.controller;
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Order;
 import projecta07.model.OrderDetail;
+import projecta07.model.Table;
 import projecta07.service.IOrderDetailService;
 import projecta07.service.impl.OrderDetailService;
 import projecta07.service.impl.OrderService;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import projecta07.service.impl.TableService;
 
 @RestController
 @RequestMapping("/api/order-detail")
@@ -29,6 +32,9 @@ public class OrderDetailController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private TableService tableService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<OrderDetail>> findAll() {
@@ -52,8 +58,18 @@ public class OrderDetailController {
     @RequestMapping(value = "/add-to-cart/{idOrder}" , method = RequestMethod.POST)
     public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody @Valid OrderDetail orderDetail,
                                                        @PathVariable("idOrder") Long idOrder) {
-        /* Get order by id and get list orderdetail */
+        /* Get order by id and get list order detail */
         Order order = orderService.getOrderById(idOrder);
+
+        /* Get table from order */
+        Table table = tableService.getTableById(order.getTable().getIdTable());
+
+        /* Set empty table */
+        table.setEmptyTable(false);
+
+        /* Edit table */
+        tableService.saveTable(table);
+
         List<OrderDetail> orderDetails = ordService.getOrderDetailsByOrderId(idOrder);
 
         /* Save and add order detail to list  */
