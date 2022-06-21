@@ -47,7 +47,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             manager.setRoles(roles);
             userRepository.save(manager);
         }
-//
+
 //        //Them Nhân viên
         if (userRepository.findByUsername("staff1") == null){
             User staff = new User();
