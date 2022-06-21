@@ -1,5 +1,6 @@
 package projecta07.controller;
 
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +46,19 @@ public class TableController {
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
         List<Table> tables = iTableService.findAll();
+        Order order;
 
-
+        for(Table table : tables) {
+            order = iOrderService.findOrderOfTableById(table.getIdTable());
+            if(order == null) {
+                table.setEmptyTable(true);
+                iTableService.save(table);
+                continue;
+            } else {
+                table.setEmptyTable(false);
+                iTableService.save(table);
+            }
+        }
         return new ResponseEntity<>(tables , HttpStatus.OK);
     }
 
@@ -67,7 +79,6 @@ public class TableController {
         order.setEmployee(employee);
         order.setDateOrder(String.valueOf((LocalDate.now())));
         ordered = iOrderService.saveOrder(order);
-
         return new ResponseEntity<>(ordered , HttpStatus.CREATED);
     }
 

@@ -34,7 +34,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order findOrderOfTableById(Long id) {
-        return iOrderService.getAllOrderByIdTable(id);
+        return iOrderService.getOrderByTableId(id);
     }
 
     @Override
