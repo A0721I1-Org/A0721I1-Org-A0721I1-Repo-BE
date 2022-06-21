@@ -49,10 +49,9 @@ public class TableController {
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
         List<Table> tables = iTableService.findAll();
-
-
         return new ResponseEntity<>(tables , HttpStatus.OK);
-/*
+
+/*  Phương thức trả về emptyTable nếu có order ....
         List<Table> tables = iTableService.findAll();
         Order order = new Order();
         if (tables.isEmpty()) {
