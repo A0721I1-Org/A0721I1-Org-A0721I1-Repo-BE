@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/manager")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public class TableController {
 
     @Autowired
@@ -48,7 +48,11 @@ public class TableController {
     //BinTK
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
+        List<Table> tables = iTableService.findAll();
 
+
+        return new ResponseEntity<>(tables , HttpStatus.OK);
+/*
         List<Table> tables = iTableService.findAll();
         Order order = new Order();
         if (tables.isEmpty()) {
@@ -65,7 +69,7 @@ public class TableController {
                 iTableService.save(table);
             }
             return new ResponseEntity<>(tables, HttpStatus.OK);
-        }
+        }*/
     }
 
 
@@ -123,6 +127,13 @@ public class TableController {
     //BinTK
     @DeleteMapping("/emptyTable/deleteOrderInTable/{idTable}")
     public ResponseEntity<Order> deleteOrderInTable(@PathVariable("idTable") Long id) {
+        /* Get table by table id */
+        Table table = iTableService.findTableById(id);
+
+        /* Set empty table is true */
+        table.setEmptyTable(true);
+        iTableService.save(table);
+
         /* Delete order */
         iOrderService.cancelTable(id);
         findAllEmptyTable();

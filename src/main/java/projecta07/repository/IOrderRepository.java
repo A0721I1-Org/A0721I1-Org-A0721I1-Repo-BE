@@ -22,6 +22,6 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
     /* @Query("delete order khỏi table ")*/
     @Modifying
     @Transactional
-    @Query(value = "delete from `order` where `order`.id_table = ?1", nativeQuery = true)
+    @Query(value = "delete from `order` where `order`.id_table = ?1 and `order`.status_order = false", nativeQuery = true)
     void removeOrderToTable(Long id);
 }
