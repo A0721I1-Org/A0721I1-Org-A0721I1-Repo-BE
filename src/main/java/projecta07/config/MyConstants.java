@@ -3,12 +3,9 @@ package projecta07.config;
 public class MyConstants {
 
     // Replace with your email here:
-    public static final String MY_EMAIL = "letrongbach02@gmail.com";
-
+    public static final String MY_EMAIL = "a0721i1.2022@gmail.com";
+        //pass :project2022@1
     // Replace password!!
-    public static final String MY_PASSWORD = "fmcqwqsykvyymhcu";
-
-  /*  // And receiver!
-    public static final String FRIEND_EMAIL = "benphantom102@gmail.com";*/
-
+    public static final String MY_PASSWORD = "ykddrsefedbcbvos";
+    
 }

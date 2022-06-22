@@ -2,8 +2,9 @@ package projecta07.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import projecta07.model.Position;
+import projecta07.model.Role;
 
 @Repository
-public interface IPositionRepository extends JpaRepository<Position,Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findByNameRole(String roleName);
 }

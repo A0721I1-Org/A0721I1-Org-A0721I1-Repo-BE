@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import projecta07.exception.EmployeeNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import projecta07.model.Employee;
 import projecta07.repository.IEmployeeRepository;
 import projecta07.service.IEmployeeService;
@@ -11,73 +14,118 @@ import projecta07.service.IEmployeeService;
 import java.util.List;
 import java.util.Optional;
 
+//Team Employee
 @Service
 public class EmployeeService implements IEmployeeService {
     @Autowired
-    private IEmployeeRepository employeeRepos;
+    private IEmployeeRepository employeeRepository;
+
+    @Override
+    public Employee findEmployeeByIdUser(Long IdUser) {
+        return employeeRepository.findEmployeeByIdUser(IdUser);
+    }
+
+    @Override
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public Page<Employee> findAllPage(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
+    }
+
+    @Override
+    public Employee findEmployeeById(long id) {
+        return employeeRepository.findEmployeeById(id);
+    }
+
+    @Override
+    public void deleteEmployee(long id) {
+        employeeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Employee> searchEmployee(String username, String name, String phone) {
+        return employeeRepository.searchAllEmployee(username, name, phone);
+    }
+
+    public void saveEmployee(Employee employee) {
+        employeeRepository.save(employee);
+    }
+
+    @Override
+    public Optional<Employee> findByIdEmployee(Long id) {
+        return employeeRepository.findById(id);
+    }
+    // Team Employee
+
     @Override
     public List<Employee> getAllEmployee() {
-        return employeeRepos.findAll();
+        return employeeRepository.findAll();
     }
 
     @Override
     public Optional<Employee> getEmployeeById(Long id) {
-        return employeeRepos.findById(id);
+        return employeeRepository.findById(id);
     }
 
     @Override
     public Employee addEmployee(Employee employee) {
-        employeeRepos.save(employee);
+        employeeRepository.save(employee);
         return employee;
     }
 
     @Override
     public boolean updateEmployee(Employee employee) {
-        if(employee != null)
-        {
-            employeeRepos.save(employee);
+        if (employee != null) {
+            employeeRepository.save(employee);
             return true;
         }
         return false;
     }
+
     @Override
     public boolean deleteEmployee(Long id) {
 
-        if(getEmployeeById(id)!= null)
-        {
-            employeeRepos.deleteById(id);
+        if (getEmployeeById(id) != null) {
+            employeeRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    // Ham kiem tra email nguoi dung
+    //BachLT: Phuc hoi mat khau
+    // BachLT1 Ham kiem tra email nguoi dung
     @Override
     public Employee getByEmail(String email) {
-        return employeeRepos.findByEmail(email);
+        return employeeRepository.findByEmail(email);
     }
 
-    // Hàm 1
-    public void updateResetPasswordToken(String token, String email) throws EmployeeNotFoundException{
-        Employee e = employeeRepos.findByEmail(email);
+
+    // BachLT1  Hàm 1
+    public void updateResetPasswordToken(String token, String email) throws EmployeeNotFoundException {
+        Employee e = employeeRepository.findByEmail(email);
         if (e != null) {
             e.setResetPasswordToken(token);
-            employeeRepos.save(e);
+            employeeRepository.save(e);
         } else {
             throw new EmployeeNotFoundException("Lỗi: Không thể tìm thấy email của bạn đã đăng ký:" + email);
         }
     }
-    // Hàm 2
+
+    //BachLT1  Hàm 2
     public Employee getByResetPasswordToken(String token) {
-        return employeeRepos.findByResetPasswordToken(token);
+        return employeeRepository.findByResetPasswordToken(token);
     }
-    // Hàm 3
+
+    //BachLT1  Hàm 3
     public void updatePassword(Employee employee, String newPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
         employee.getUser().setPassword(encodedPassword);
 // Sau khi đổi mật khẩu xong tiến hành reset token = null để đảm bảo bảo mật
         employee.setResetPasswordToken(null);
-        employeeRepos.save(employee);
+        employeeRepository.save(employee);
     }
 }
