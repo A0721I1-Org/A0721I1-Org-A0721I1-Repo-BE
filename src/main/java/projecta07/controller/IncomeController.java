@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import projecta07.service.IIncomeService;
 import java.util.Optional;
 
-@RequestMapping("/manager/api/income")
 @RestController
+@RequestMapping("/manager/api/income")
 @CrossOrigin("*")
 public class IncomeController {
     @Autowired
