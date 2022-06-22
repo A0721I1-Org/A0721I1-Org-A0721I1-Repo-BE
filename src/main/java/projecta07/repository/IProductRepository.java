@@ -1,15 +1,18 @@
 package projecta07.repository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import projecta07.model.Product;
 
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+
 import projecta07.model.OrderDetail;
+
+
+
 @Repository
 public interface IProductRepository extends JpaRepository<Product,Long> {
     List<Product> findProductByCodeProductContainingAndNameProductContaining(String codeProduct, String nameProduct);

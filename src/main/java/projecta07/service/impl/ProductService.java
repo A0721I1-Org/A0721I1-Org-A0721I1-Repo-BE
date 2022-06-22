@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.List;
 
 
+
 @Service
 public class ProductService implements IProductService {
     @Autowired
@@ -38,7 +39,6 @@ public class ProductService implements IProductService {
     @Override
     public void createProduct(Product product) {
         iProductRepository.save(product);
-
     }
 
     @Override
@@ -60,6 +60,7 @@ public class ProductService implements IProductService {
     public Page<Product> searchPage(String codeProduct, String nameProduct, Pageable pageable) {
         return iProductRepository.findProductByCodeProductContainingAndNameProductContaining(codeProduct, nameProduct, pageable);
     }
+
     @Override
     public void editProduct(Product product) {
         iProductRepository.save(product);
@@ -75,6 +76,7 @@ public class ProductService implements IProductService {
     public void delete(Long id) {
         productRepository.deleteById(id);
     }
+
 
     @Override
     public List<Product> findAllProductNew() {
@@ -111,5 +113,9 @@ public class ProductService implements IProductService {
         return this.productRepository.findById(id).orElse(null);
     }
 
+
 }
+
+
+
 
