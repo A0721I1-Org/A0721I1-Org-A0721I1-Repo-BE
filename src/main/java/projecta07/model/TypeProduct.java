@@ -1,6 +1,9 @@
 package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 @Entity

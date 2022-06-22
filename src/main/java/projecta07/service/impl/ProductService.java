@@ -8,8 +8,10 @@ import projecta07.model.Product;
 import projecta07.repository.IProductRepository;
 import projecta07.service.IProductService;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
+
+
 
 @Service
 public class ProductService implements IProductService {
@@ -18,6 +20,7 @@ public class ProductService implements IProductService {
 
     @Autowired
     private IProductRepository productRepository;
+
     @Override
     public List<Product> findByAll() {
         return iProductRepository.findAll();
@@ -33,8 +36,14 @@ public class ProductService implements IProductService {
         return iProductRepository.findProductByCodeProductContainingAndNameProductContaining(codeProduct, nameProduct);
     }
 
-    public void createProduct(Product product){
+    @Override
+    public void createProduct(Product product) {
         iProductRepository.save(product);
+    }
+
+    @Override
+    public Iterable<Product> findAll() {
+        return productRepository.findAll();
     }
 
     @Override
@@ -49,12 +58,25 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<Product> searchPage(String codeProduct, String nameProduct, Pageable pageable) {
-        return  iProductRepository.findProductByCodeProductContainingAndNameProductContaining(codeProduct, nameProduct, pageable);
+        return iProductRepository.findProductByCodeProductContainingAndNameProductContaining(codeProduct, nameProduct, pageable);
     }
 
-    public void editProduct(Product product){
+    @Override
+    public void editProduct(Product product) {
         iProductRepository.save(product);
     }
+
+
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
+
 
     @Override
     public List<Product> findAllProductNew() {
@@ -67,13 +89,13 @@ public class ProductService implements IProductService {
     }
 
     /* Get products with pagination */
-    public List<Product> getProductsWithPagination(int currentPage , int size) {
-        return this.productRepository.getProductsWithPagination(currentPage , size);
+    public List<Product> getProductsWithPagination(int currentPage, int size) {
+        return this.productRepository.getProductsWithPagination(currentPage, size);
     }
 
     /* Get products by product type id */
-    public List<Product> getProductsByTypeProductId(Long id , int currentPage , int size) {
-        return this.productRepository.getProductsByTypeProductId(id , currentPage ,  size);
+    public List<Product> getProductsByTypeProductId(Long id, int currentPage, int size) {
+        return this.productRepository.getProductsByTypeProductId(id, currentPage, size);
     }
 
     /* Get amount of products */
@@ -90,4 +112,10 @@ public class ProductService implements IProductService {
     public Product getProductById(Long id) {
         return this.productRepository.findById(id).orElse(null);
     }
+
+
 }
+
+
+
+

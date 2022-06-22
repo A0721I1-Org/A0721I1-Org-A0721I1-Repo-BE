@@ -1,6 +1,7 @@
 package projecta07.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,62 +25,69 @@ public class ProductController {
     ProductService productService;
     @Autowired
     TypeProductService typeProductService;
+
     @GetMapping
-    public ResponseEntity<List<Product>> findByAll(){
-       List<Product> productList=productService.findByAll();
-       if (productList.isEmpty()){
-           return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-       }else {
-           return new ResponseEntity<>(productList,HttpStatus.OK);
-       }
+    public ResponseEntity<List<Product>> findByAll() {
+        List<Product> productList = productService.findByAll();
+        if (productList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(productList, HttpStatus.OK);
+        }
     }
+
     @GetMapping("/page")
-    public ResponseEntity<Page<Product>> findByAllPageGing( Pageable pageable,@RequestParam String page){
-        int page1= Integer.parseInt(page);
-        pageable =PageRequest.of(page1,6);
-        Page<Product> productList1=productService.findByAllPaging(pageable);
-        if (productList1.isEmpty()){
+    public ResponseEntity<Page<Product>> findByAllPageGing(Pageable pageable, @RequestParam String page) {
+        int page1 = Integer.parseInt(page);
+        pageable = PageRequest.of(page1, 6);
+        Page<Product> productList1 = productService.findByAllPaging(pageable);
+        if (productList1.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
-            return new ResponseEntity<>(productList1,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(productList1, HttpStatus.OK);
         }
     }
+
     @GetMapping("/type")
-    public ResponseEntity<List<TypeProduct>> findByAllTypeproduct(){
-        List<TypeProduct> typeProducts=typeProductService.findByAll();
-        if (typeProducts.isEmpty()){
+    public ResponseEntity<List<TypeProduct>> findByAllTypeproduct() {
+        List<TypeProduct> typeProducts = typeProductService.findByAll();
+        if (typeProducts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
-            return new ResponseEntity<>(typeProducts,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(typeProducts, HttpStatus.OK);
         }
     }
+
     @DeleteMapping("/{id}")
-    public  ResponseEntity<Product> deleteById(@PathVariable(name="id") Long id1){
+    public ResponseEntity<Product> deleteById(@PathVariable(name = "id") Long id1) {
         productService.deleteById(id1);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<List<Product>> search(@RequestParam(defaultValue = "")String code,@RequestParam(defaultValue = "")String name){
-        List<Product> productList=productService.Search(code, name);
-        if (productList.isEmpty()){
+    public ResponseEntity<List<Product>> search(@RequestParam(defaultValue = "") String code, @RequestParam(defaultValue = "") String name) {
+        List<Product> productList = productService.Search(code, name);
+        if (productList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
-            return new ResponseEntity<>(productList,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(productList, HttpStatus.OK);
         }
     }
+
     @GetMapping("/searchPage")
-    public ResponseEntity<Page<Product>> search(@RequestParam(defaultValue = "")String code,
-                                                @RequestParam(defaultValue = "")String name,
-                                                Pageable pageable,@RequestParam String page1){
-        int page2= Integer.parseInt(page1);
-        pageable =PageRequest.of(page2,6);
-        Page<Product> productList2=productService.searchPage(code,name,pageable);
-        if (productList2.isEmpty()){
+    public ResponseEntity<Page<Product>> search(@RequestParam(defaultValue = "") String code,
+                                                @RequestParam(defaultValue = "") String name,
+                                                Pageable pageable, @RequestParam String page1) {
+        int page2 = Integer.parseInt(page1);
+        pageable = PageRequest.of(page2, 6);
+        Page<Product> productList2 = productService.searchPage(code, name, pageable);
+        if (productList2.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
-            return new ResponseEntity<>(productList2,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(productList2, HttpStatus.OK);
         }
     }
+
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody Product product) {
         productService.createProduct(product);
@@ -98,30 +106,4 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 }
-//@RestController
-//@RequestMapping("/api/products")
-//@CrossOrigin(origins = "*")
-//public class ProductController {
-//    @Autowired
-//    private IProductService productService;
-//    @GetMapping
-//    public ResponseEntity<Iterable<Product>> findAll() {
-//        List<Product> products = (List<Product>) productService.findAll();
-//        if (products.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        System.out.println(products);
-//        return new ResponseEntity<>(products, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Product> findById(@PathVariable Long id){
-//        Optional<Product> product = productService.findById(id);
-//        if(!product.isPresent()){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }else{
-//            return new ResponseEntity<>(product.get(),HttpStatus.OK);
-//        }
-//>>>>>>> 60db0eb40528436387c93fcb3b1fafe591065c64
-//    }
-//}
+
