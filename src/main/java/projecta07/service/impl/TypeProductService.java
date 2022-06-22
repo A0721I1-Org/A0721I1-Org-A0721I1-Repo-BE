@@ -12,8 +12,15 @@ import java.util.List;
 public class TypeProductService implements ITypeProductService {
     @Autowired
     ITypeProductRepository iTypeProductRepository;
+    @Autowired
+    private ITypeProductRepository typeProductRepository;
     @Override
     public List<TypeProduct> findByAll() {
         return iTypeProductRepository.findAll();
     }
+
+    public List<TypeProduct> getTypesProduct() {
+        return typeProductRepository.findAll();
+    }
 }
+

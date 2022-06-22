@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import projecta07.model.TypeProduct;
 
 @Repository
-public interface ITypeProductRepository extends JpaRepository<TypeProduct,Long> {
+public interface ITypeProductRepository extends JpaRepository<TypeProduct , Long> {
 }
