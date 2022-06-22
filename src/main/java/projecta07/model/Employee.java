@@ -20,6 +20,10 @@ public class Employee {
     @NotEmpty(message = "không được để trống")
     private String nameEmployee;
 
+    @Column(name = "code_employee")
+    @NotEmpty(message = "không được để trống")
+    private String codeEmployee;
+
     @Column(name = "address_employee")
     @NotEmpty(message = "không được để trống")
     private String addressEmployee;
@@ -41,6 +45,13 @@ public class Employee {
     @Min(value = 100000, message = "mức lương thấp nhất là 100,000")
     private Double salaryEmployee;
 
+    @Column(name = "email_employee")
+    private String emailEmployee;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
@@ -55,23 +66,22 @@ public class Employee {
     @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
+    public Employee() {
+    }
 
-    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user, Position position, List<Order> orderList) {
-        this.idEmployee = idEmployee;
+    public Employee(String codeEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
+        this.codeEmployee = codeEmployee;
         this.nameEmployee = nameEmployee;
         this.addressEmployee = addressEmployee;
         this.phoneEmployee = phoneEmployee;
         this.genderEmployee = genderEmployee;
         this.dateOfBirthEmployee = dateOfBirthEmployee;
         this.salaryEmployee = salaryEmployee;
-        this.user = user;
+        this.user = user1;
         this.position = position;
         this.orderList = orderList;
     }
 
-    public Employee() {
-
-    }
 
     public Long getIdEmployee() {
         return idEmployee;
@@ -160,5 +170,21 @@ public class Employee {
 
     public void setSalaryEmployee(Double salaryEmployee) {
         this.salaryEmployee = salaryEmployee;
+    }
+
+    public String getEmailEmployee() {
+        return emailEmployee;
+    }
+
+    public void setEmailEmployee(String emailEmployee) {
+        this.emailEmployee = emailEmployee;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 }
