@@ -17,6 +17,21 @@ public class OrderService implements IOrderService {
     private IOrderRepository orderRepository;
 
     @Override
+    public Optional<Order> findOrderById(Long id) {
+        return orderRepository.findById(id);
+    }
+
+    @Override
+    public Order findById(Long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
+    @Override
     public Page<Order> findAll(Pageable pageable) {
         return orderRepository.findAll(pageable);
     }
@@ -35,5 +50,10 @@ public class OrderService implements IOrderService {
     public Page<Order> findOrderByIdOrderAndDateOrder(Optional<Long> idOrder, Optional<String> dateOrder, Pageable pageable) {
         return orderRepository.findByIdOrderAndDateOrder(idOrder, dateOrder, pageable);
     }
+//ex
+//    @Override
+//    public List<Order> getAllOrder() {
+//        return orderRepository.getAllOrder();
+//    }
 
 }

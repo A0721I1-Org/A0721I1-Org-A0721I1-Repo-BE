@@ -1,10 +1,10 @@
 package projecta07.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -15,23 +15,28 @@ public class Order {
     private Long idOrder;
 
     @Column(name = "date_order")
-//    @NotEmpty(message = "Ngày tạo không được để trống")
     private String dateOrder;
+
+    @Column(name = "status_order")
+    private Boolean statusOrder;
+
     @Column(name = "total_order")
-//    @NotEmpty(message = "Tổng tiền hoá đơn không được để trống")
     private Double totalOrder;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Table.class)
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
-    @ManyToOne
-    @JsonBackReference
+//    @JsonIgnore
+    @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
+//    @Column(name = "status")
+//    private String status;
+
     @OneToMany(mappedBy = "order")
-    @JsonBackReference
+    @JsonBackReference(value = "order_ordeDetail")
     private List<OrderDetail> orderDetailList;
 
     public Table getTable() {
@@ -58,13 +63,38 @@ public class Order {
         this.orderDetailList = orderDetailList;
     }
 
+    /* Calculate total price in order*/
+    public double calculateTotalPriceInOrder(List<OrderDetail> orderDetails, Order order) {
+        double totalPrice = 0;
+        for (OrderDetail ord : orderDetails) {
+            if (ord.getOrder().getIdOrder() == order.getIdOrder()) {
+                totalPrice += ord.getTotalProduct();
+            }
+        }
+        return totalPrice;
+    }
+
     public Order() {
     }
 
-    public Order(Long idOrder, String dateOrder, Double totalOrder) {
-        this.idOrder = idOrder;
-        this.dateOrder = dateOrder;
-        this.totalOrder = totalOrder;
+    public Order(Long idOrder, LocalDate dateOrder, Double totalOrder) {
+
+    }
+    public Boolean getStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(Boolean statusOrder) {
+        this.statusOrder = statusOrder;
+    }
+
+
+    public boolean isStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
     public Long getIdOrder() {

@@ -6,6 +6,7 @@ import projecta07.model.OrderDetail;
 import projecta07.repository.IOrderDetailRepository;
 import projecta07.service.IOrderDetailService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,7 +15,7 @@ public class OrderDetailService implements IOrderDetailService {
     private IOrderDetailRepository orderDetailRepository;
 
     @Override
-    public Optional<OrderDetail> findById(Long id) {
-        return orderDetailRepository.findOrderDetailByIdOrderDetail(id);
+    public List<OrderDetail> findById(Long id) {
+        return orderDetailRepository.findOrderDetailByIdOrder(id);
     }
 }

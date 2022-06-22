@@ -1,8 +1,8 @@
 package projecta07.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 public class OrderDetail {
@@ -11,6 +11,9 @@ public class OrderDetail {
     @Column(name = "id_order_detail")
     private Long idOrderDetail;
 
+
+    @Min(value = 1, message = "Số lượng tối thiểu là 1!")
+    @Max(value = 10, message = "Số lượng tối đà là 10!")
     @Column(name = "number_product")
     private int numberProduct;
 
@@ -18,13 +21,17 @@ public class OrderDetail {
     private Double totalProduct;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "id_order", nullable = false)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "id_product", nullable = false)
     private Product product;
+
+    public double calculateTotalPriceOrderDetail(OrderDetail orderDetail) {
+        double totalProduct = orderDetail.getProduct().getPriceProduct() * orderDetail.getNumberProduct();
+        return totalProduct;
+    }
 
     public Double getTotalProduct() {
         return totalProduct;
@@ -64,6 +71,19 @@ public class OrderDetail {
     public OrderDetail(Long idOrderDetail, int numberProduct) {
         this.idOrderDetail = idOrderDetail;
         this.numberProduct = numberProduct;
+    }
+
+    public OrderDetail(int numberProduct, Order order, Product product) {
+        this.numberProduct = numberProduct;
+        this.order = order;
+        this.product = product;
+    }
+
+    public OrderDetail(Long idOrderDetail, int numberProduct, Order order, Product product) {
+        this.idOrderDetail = idOrderDetail;
+        this.numberProduct = numberProduct;
+        this.order = order;
+        this.product = product;
     }
 
     public Long getIdOrderDetail() {

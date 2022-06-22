@@ -2,6 +2,7 @@ package projecta07.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -21,15 +22,22 @@ import java.util.Optional;
 public class OrderController {
     @Autowired
     OrderService orderService;
+
     //Make by HauNT search date order, idOrder, date order and idOrder, Pagination
+
     @RequestMapping(value = "/listOrder", method = RequestMethod.GET)
     public ResponseEntity<Page<Order>> showList(
+            @PageableDefault(size = 5)
+            Pageable pageable,
+//            @RequestParam(value = "page", required = false) String page,
+//            @RequestParam(value = "numPage", required = false) String numPage,
             @RequestParam(value = "idOrder", required = false) Optional<Long> idOrder,
-            @RequestParam(value = "dateOrder", required = false) Optional<String> dateOrder,
-            @PageableDefault(size = 5) Pageable pageable) {
+            @RequestParam(value = "dateOrder", required = false) Optional<String> dateOrder
+    ) {
+//        pageable = PageRequest.of(numPage1, 10);
+//        System.out.println(dateOrder);
         Page<Order> listOrder;
-
-        if (idOrder.isPresent() && dateOrder.isPresent()) {
+        if ((idOrder.isPresent()) && dateOrder.isPresent() && !dateOrder.get().equals("")) {
             listOrder = orderService.findOrderByIdOrderAndDateOrder(idOrder, dateOrder, pageable);
         } else if (idOrder.isPresent()) {
             listOrder = orderService.findOrderByIdOrder(idOrder, pageable);
@@ -44,14 +52,13 @@ public class OrderController {
         return new ResponseEntity<Page<Order>>(listOrder, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/listOrder", method = RequestMethod.GET)
-//    public ResponseEntity<List<Order>> showList() {
-//        List<Order> listOrder = orderService.findAll();
-//        if (listOrder.isEmpty()) {
-//            return new ResponseEntity(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<List<Order>>(listOrder, HttpStatus.OK);
-//    }
-
-
+    //
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity<List<Order>> showList() {
+        List<Order> listOrder = orderService.findAll();
+        if (listOrder.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Order>>(listOrder, HttpStatus.OK);
+    }
 }
