@@ -2,6 +2,7 @@ package projecta07.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -18,14 +19,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class FeedbackController {
 
     @Autowired
     private FeedbackService feedbackService;
 
-    @GetMapping("manager/api/feedback/")
-    public ResponseEntity<Iterable<Feedback>> findAllFeedback(Pageable pageable) {
+    @GetMapping("manager/api/feedback")
+    public ResponseEntity<Iterable<Feedback>> findAllFeedback(@RequestParam int index) {
+        Pageable pageable = PageRequest.of(index , 10);
         Page<Feedback> feedbackList = feedbackService.findAll(pageable);
         if (feedbackList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -33,9 +35,20 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackList,HttpStatus.OK);
     }
 
-    @GetMapping("manager/api/feedback/search/{date}")
-    public ResponseEntity<Iterable<Feedback>> findAllFeedbackByDateFeedback( @PathVariable String date,Pageable pageable)  {
-        String dateSearch = date.replace("-","/");
+    @GetMapping("manager/api/feedback-not-pagination/")
+    public ResponseEntity<List<Feedback>> findAllFeedbackNotPagination() {
+        List<Feedback> feedbackList = feedbackService.findAll();
+        if (feedbackList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(feedbackList,HttpStatus.OK);
+    }
+
+    @GetMapping("manager/api/feedback/search")
+    public ResponseEntity<Iterable<Feedback>> findAllFeedbackByDateFeedback(@RequestParam(defaultValue = "") String date,
+                                                                            @RequestParam int index)  {
+        String dateSearch = date.replace("/","-");
+        Pageable pageable = PageRequest.of(index , 10);
         Page<Feedback> feedbackListByDate = feedbackService.findAllFeedbackByDateFeedback(dateSearch, pageable);
         if (feedbackListByDate.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -43,8 +56,17 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackListByDate,HttpStatus.OK);
     }
 
-    @GetMapping("manager/api/feedback/view/{id}")
-    public ResponseEntity<Feedback> findFeedbackById(@PathVariable Long id) {
+    @GetMapping("manager/api/feedback/search-not-pagination")
+    public ResponseEntity<List<Feedback>> findAllFeedbackByDateFeedbackNotPagination(@RequestParam(defaultValue = "") String date) {
+        List<Feedback> feedbackList = feedbackService.findAllFeedbackByDateFeedbackNotPagination(date);
+        if (feedbackList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(feedbackList,HttpStatus.OK);
+    }
+
+    @GetMapping("manager/api/feedback/view")
+    public ResponseEntity<Feedback> findFeedbackById(@RequestParam Long id) {
         Optional<Feedback> feedbackOptional = feedbackService.findFeedbackById(id);
         if (!feedbackOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
