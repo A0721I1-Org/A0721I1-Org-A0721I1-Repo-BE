@@ -1,10 +1,6 @@
 package projecta07.model;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -24,7 +20,7 @@ public class TypeProduct {
     private String nameTypeProduct;
 
     @OneToMany(mappedBy = "typeProduct")
-    @JsonBackReference
+    @JsonBackReference(value = "typeProduct_product")
     private List<Product> products;
 
     public List<Product> getProducts() {
