@@ -15,4 +15,8 @@ public interface IProductService {
     Optional<Product> findById(Long id);
     Page<Product> findByAllPaging(Pageable pageable);
     Page<Product> searchPage(String codeProduct,String nameProduct,Pageable pageable);
+
+    List<Product> findAllProductNew();
+
+    List<Product> findMostAll();
 }

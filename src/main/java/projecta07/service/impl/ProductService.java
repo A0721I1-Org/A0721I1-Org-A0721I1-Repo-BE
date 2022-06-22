@@ -15,6 +15,9 @@ import java.util.Optional;
 public class ProductService implements IProductService {
     @Autowired
     IProductRepository iProductRepository;
+
+    @Autowired
+    private IProductRepository productRepository;
     @Override
     public List<Product> findByAll() {
         return iProductRepository.findAll();
@@ -51,5 +54,40 @@ public class ProductService implements IProductService {
 
     public void editProduct(Product product){
         iProductRepository.save(product);
+    }
+
+    @Override
+    public List<Product> findAllProductNew() {
+        return iProductRepository.findAllProductNew();
+    }
+
+    @Override
+    public List<Product> findMostAll() {
+        return iProductRepository.findMostAll();
+    }
+
+    /* Get products with pagination */
+    public List<Product> getProductsWithPagination(int currentPage , int size) {
+        return this.productRepository.getProductsWithPagination(currentPage , size);
+    }
+
+    /* Get products by product type id */
+    public List<Product> getProductsByTypeProductId(Long id , int currentPage , int size) {
+        return this.productRepository.getProductsByTypeProductId(id , currentPage ,  size);
+    }
+
+    /* Get amount of products */
+    public int getAmountOfProducts() {
+        return this.productRepository.getAmountOfProducts();
+    }
+
+    /* Get amount of products by id type */
+    public int getAmountOfProductsByTypeId(Long id) {
+        return this.productRepository.getAmountOfProductsByTypeId(id);
+    }
+
+    /* Get product by product id */
+    public Product getProductById(Long id) {
+        return this.productRepository.findById(id).orElse(null);
     }
 }

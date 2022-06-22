@@ -3,6 +3,7 @@ package projecta07.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -11,13 +12,14 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "id_status")
+    @NotEmpty(message = "test")
     private Long idStatus;
 
     @Column(name = "name_status")
     private String nameStatus;
 
     @OneToMany(mappedBy = "status")
-    @JsonBackReference
+    @JsonBackReference(value = "status_table")
     private List<Table> tableList;
 
     public Status() {

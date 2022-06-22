@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -99,3 +98,30 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 }
+//@RestController
+//@RequestMapping("/api/products")
+//@CrossOrigin(origins = "*")
+//public class ProductController {
+//    @Autowired
+//    private IProductService productService;
+//    @GetMapping
+//    public ResponseEntity<Iterable<Product>> findAll() {
+//        List<Product> products = (List<Product>) productService.findAll();
+//        if (products.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        System.out.println(products);
+//        return new ResponseEntity<>(products, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Product> findById(@PathVariable Long id){
+//        Optional<Product> product = productService.findById(id);
+//        if(!product.isPresent()){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }else{
+//            return new ResponseEntity<>(product.get(),HttpStatus.OK);
+//        }
+//>>>>>>> 60db0eb40528436387c93fcb3b1fafe591065c64
+//    }
+//}
