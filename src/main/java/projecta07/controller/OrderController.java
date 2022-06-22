@@ -12,6 +12,7 @@ import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.service.impl.OrderService;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class OrderController {
     //Make by HauNT search date order, idOrder, date order and idOrder, Pagination
 
     @RequestMapping(value = "/listOrder", method = RequestMethod.GET)
-    public ResponseEntity<Page<Order>> showList(
+    public ResponseEntity<Page<Order>> showPage(
             @PageableDefault(size = 5)
             Pageable pageable,
 //            @RequestParam(value = "page", required = false) String page,
@@ -35,7 +36,6 @@ public class OrderController {
             @RequestParam(value = "dateOrder", required = false) Optional<String> dateOrder
     ) {
 //        pageable = PageRequest.of(numPage1, 10);
-//        System.out.println(dateOrder);
         Page<Order> listOrder;
         if ((idOrder.isPresent()) && dateOrder.isPresent() && !dateOrder.get().equals("")) {
             listOrder = orderService.findOrderByIdOrderAndDateOrder(idOrder, dateOrder, pageable);
@@ -54,8 +54,19 @@ public class OrderController {
 
     //
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity<List<Order>> showList() {
-        List<Order> listOrder = orderService.findAll();
+    public ResponseEntity<List<Order>> showList(
+            @RequestParam(value = "idOrder", required = false) Optional<Long> idOrder,
+            @RequestParam(value = "dateOrder", required = false) Optional<String> dateOrder) {
+        List<Order> listOrder;
+        if ((idOrder.isPresent()) && dateOrder.isPresent() && !dateOrder.get().equals("")) {
+            listOrder = orderService.findOrderByIdOrderAndDateOrder(idOrder, dateOrder);
+        } else if (idOrder.isPresent()) {
+            listOrder = orderService.findOrderById(idOrder);
+        } else if (dateOrder.isPresent()) {
+            listOrder = orderService.findOrderByDateOrder(dateOrder);
+        } else {
+            listOrder = orderService.findAll();
+        }
         if (listOrder.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }

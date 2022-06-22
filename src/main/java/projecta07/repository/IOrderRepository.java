@@ -13,6 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Long> {
+    List<Order> findOrderByIdOrder(Optional<Long> idOrder);
+    List<Order> findAllByDateOrder(Optional<String> dateOrder);
+
+    List<Order> findAllByIdOrderAndDateOrder(Optional<Long> idOrder, Optional<String> dateOrder);
+
     @Query(value = "select * from `order` where date_order=:dateOrder", nativeQuery = true)
     Page<Order> findByDateOrder(Optional<String> dateOrder, Pageable pageable);
 

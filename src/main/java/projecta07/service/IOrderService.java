@@ -9,9 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderService {
-    Optional<Order> findOrderById(Long id);
-    Order findById(Long id);
     List<Order> findAll();
+
+    List<Order> findOrderById(Optional<Long> id);
+
+    List<Order> findOrderByDateOrder(Optional<String> dateOrder);
+
+    List<Order> findOrderByIdOrderAndDateOrder(Optional<Long> id, Optional<String> dateOrder);
+
+
     Page<Order> findAll(Pageable pageable);
 
     Page<Order> findOrderByIdOrder(Optional<Long> idOrder, Pageable pageable);
