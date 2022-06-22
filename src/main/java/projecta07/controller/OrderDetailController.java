@@ -58,7 +58,7 @@ public class OrderDetailController {
     }
 
     @RequestMapping(value = "/add-to-cart/{idOrder}", method = RequestMethod.POST)
-    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody @Valid OrderDetail orderDetail,
+    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody OrderDetail orderDetail,
                                                        @PathVariable("idOrder") Long idOrder) {
         /* Get order by id and get list order detail */
         Order order = orderService.getOrderById(idOrder);

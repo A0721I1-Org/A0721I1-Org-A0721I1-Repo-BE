@@ -1,4 +1,5 @@
 package projecta07.controller;
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -238,5 +239,17 @@ public class MenuController {
         orderService.saveOrder(order);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /* Get table by id */
+    @RequestMapping(value = "/table/{idTable}" , method = RequestMethod.GET)
+    public ResponseEntity<Table> getTable(@PathVariable("idTable") Long idTable) {
+        return new ResponseEntity<>(this.tableService.findTableById(idTable) , HttpStatus.OK);
+    }
+
+    /* Get order by id */
+    @RequestMapping(value = "/order/{idOrder}" , method = RequestMethod.GET)
+    public ResponseEntity<Order> getOrder(@PathVariable("idOrder") Long idOrder) {
+        return new ResponseEntity<>(orderService.getOrderById(idOrder), HttpStatus.OK);
     }
 }
