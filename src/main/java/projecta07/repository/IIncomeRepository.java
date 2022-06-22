@@ -54,4 +54,20 @@ public interface IIncomeRepository extends JpaRepository<Order,Long> {
             "where year(date_order) = year(curdate()) -- and status = 'Đã thanh toán' -- có điều kiện đã thanh toán\n" +
             "group by year(date_order);", nativeQuery =true)
     String sumTontalOrderYear();
+
+    // tổng món cafe
+    @Query(value="select count(p.id_product) from product as p where p.id_type_product like '1';", nativeQuery= true)
+    String countProductCafe();
+
+    //    tổng món trà
+    @Query(value="select count(p.id_product) from product as p where p.id_type_product like '2';", nativeQuery= true)
+    String countProductTea();
+
+    // tổng món bánh
+    @Query(value="select count(p.id_product) from product as p where p.id_type_product like '3';", nativeQuery= true)
+    String countProductCake();
+
+    // món khác
+    @Query(value="select count(p.id_product) from product as p where p.id_type_product like '4';", nativeQuery= true)
+    String countProductOther();
 }
