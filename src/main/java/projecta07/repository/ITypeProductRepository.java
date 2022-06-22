@@ -7,3 +7,4 @@ import projecta07.model.TypeProduct;
 @Repository
 public interface ITypeProductRepository extends JpaRepository<TypeProduct , Long> {
 }
+
