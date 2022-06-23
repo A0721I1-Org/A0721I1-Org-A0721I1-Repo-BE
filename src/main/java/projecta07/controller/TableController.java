@@ -1,6 +1,6 @@
 package projecta07.controller;
 
-import javafx.scene.control.Tab;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,23 +46,17 @@ public class TableController {
     @Autowired
     private IOrderDetailService iOrderDetailService;
 
+    /* BinTK */
+    @RequestMapping(value = "/order/{idTable}" , method = RequestMethod.GET)
+    public ResponseEntity<Order> getOrderById(@PathVariable Long idTable) {
+        return new ResponseEntity<>(iOrderService.findOrderOfTableById(idTable) , HttpStatus.OK);
+    }
+
     //BinTK
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
         List<Table> tables = iTableService.findAll();
-        Order order;
 
-        for(Table table : tables) {
-            order = iOrderService.findOrderOfTableById(table.getIdTable());
-            if(order == null) {
-                table.setEmptyTable(true);
-                iTableService.save(table);
-                continue;
-            } else {
-                table.setEmptyTable(false);
-                iTableService.save(table);
-            }
-        }
         return new ResponseEntity<>(tables , HttpStatus.OK);
 
 /*  Phương thức trả về emptyTable nếu có order ....
@@ -110,7 +104,6 @@ public class TableController {
     //BinTK
     @GetMapping("/emptyTable/detailTable/{id}")
     public ResponseEntity<List<DetailOrderTableDTO>> findAllOrderByTableId(@PathVariable Long id) {
-
         Order order = iOrderService.findOrderOfTableById(id);
         List<DetailOrderTableDTO> orderDetailDTOS = new ArrayList<>();
         if (order == null) {

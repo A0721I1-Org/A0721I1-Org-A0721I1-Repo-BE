@@ -1,4 +1,6 @@
 package projecta07.controller;
+
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +16,7 @@ import projecta07.service.impl.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,12 +101,12 @@ public class MenuController {
         /* Get order by table id */
         Order order = orderService.getOrderByTableId(idTable);
 
-        if(order == null) {
+        if (order == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             /* Get orders detail by order id */
             List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
-            if(orderDetails.isEmpty()) {
+            if (orderDetails.isEmpty()) {
                 menuOrderDTO = new MenuOrderDTO();
                 menuOrderDTO.setOrderId(order.getIdOrder());
                 menuOrderDTOS.add(menuOrderDTO);
@@ -165,7 +168,7 @@ public class MenuController {
             /* Get product */
             product = productService.getProductById(menuOrderDTO.getProductId());
 
-            if(order == null) {
+            if (order == null) {
                 order = new Order();
                 /* set value for order */
                 order.setTable(table);
@@ -219,23 +222,54 @@ public class MenuController {
     }
 
     /* Click button delete food */
-    @RequestMapping(value = "table/delete/{idOrderDetail}/{idOrder}" , method = RequestMethod.DELETE)
+    @RequestMapping(value = "table/delete/{idOrderDetail}/{idOrder}", method = RequestMethod.DELETE)
     public ResponseEntity<OrderDetail> handleDelete(@PathVariable("idOrderDetail") Long idOrderDetail
-    , @PathVariable("idOrder") Long idOrder) {
+            , @PathVariable("idOrder") Long idOrder) {
         Order order = orderService.getOrderById(idOrder);
         double totalPriceOrderDetail;
-
-        /* Delete food */
-        orderDetailService.deleteById(idOrderDetail);
+        Optional<OrderDetail> orderDetail = orderDetailService.findById(idOrderDetail);
 
         /* Get list order detail after remove */
         List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(idOrder);
 
-        /* Edit total price in order */
-        totalPriceOrderDetail = order.calculateTotalPriceInOrder(orderDetails , order);
-        order.setTotalOrder(totalPriceOrderDetail);
-        orderService.saveOrder(order);
+        /* Edit quantity product after remove food */
+        Product product;
 
+        if(orderDetail.isPresent()) {
+            for (OrderDetail ord : orderDetails) {
+                product = productService.getProductById(ord.getProduct().getIdProduct());
+
+                if(product.getIdProduct() == orderDetail.get().getProduct().getIdProduct()) {
+                    product.setQuatityProduct(ord.getNumberProduct());
+                    productService.save(product);
+                }
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        /* Delete food */
+        orderDetailService.deleteById(idOrderDetail);
+        orderDetails = orderDetailService.getOrderDetailsByOrderId(idOrder);
+
+        /* Edit total price in order */
+        totalPriceOrderDetail = order.calculateTotalPriceInOrder(orderDetails, order);
+        order.setTotalOrder(totalPriceOrderDetail);
+
+        /* Save order */
+            orderService.saveOrder(order);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /* Get table by id */
+    @RequestMapping(value = "/table/{idTable}", method = RequestMethod.GET)
+    public ResponseEntity<Table> getTable(@PathVariable("idTable") Long idTable) {
+        return new ResponseEntity<>(this.tableService.findTableById(idTable), HttpStatus.OK);
+    }
+
+    /* Get order by id */
+    @RequestMapping(value = "/order/{idOrder}", method = RequestMethod.GET)
+    public ResponseEntity<Order> getOrder(@PathVariable("idOrder") Long idOrder) {
+        return new ResponseEntity<>(orderService.getOrderById(idOrder), HttpStatus.OK);
     }
 }
