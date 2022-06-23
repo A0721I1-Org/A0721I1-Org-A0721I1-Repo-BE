@@ -1,6 +1,6 @@
 package projecta07.repository;
 
-import javafx.scene.control.Tab;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

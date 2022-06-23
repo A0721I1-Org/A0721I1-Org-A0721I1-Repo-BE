@@ -1,6 +1,6 @@
 package projecta07.controller;
 
-import javafx.scene.control.Tab;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.model.Table;
 import projecta07.service.IOrderDetailService;
+import projecta07.service.IProductService;
 import projecta07.service.impl.OrderDetailService;
 import projecta07.service.impl.OrderService;
 
@@ -26,6 +27,9 @@ import projecta07.service.impl.TableService;
 @RequestMapping("/api/order-detail")
 @CrossOrigin(origins = "*")
 public class OrderDetailController {
+    @Autowired
+    private IProductService productService;
+
     @Autowired
     private IOrderDetailService orderDetailService;
 
@@ -62,6 +66,9 @@ public class OrderDetailController {
                                                        @PathVariable("idOrder") Long idOrder) {
         /* Get order by id and get list order detail */
         Order order = orderService.getOrderById(idOrder);
+        Long idProduct = orderDetail.getProduct().getIdProduct();
+        Integer quantity = orderDetail.getNumberProduct();
+        Integer productQuantity = orderDetail.getProduct().getQuatityProduct();
 
         /* Get class order detail to calculate total price */
         OrderDetail calTotalPrice;
@@ -79,39 +86,44 @@ public class OrderDetailController {
         tableService.saveTable(table);
 
         List<OrderDetail> orderDetails = ordService.getOrderDetailsByOrderId(idOrder);
-        if(orderDetails.isEmpty()) {
-            order.setTotalOrder(orderDetail.getTotalProduct());
-            /* Save and add order detail to list */
-            orderDetails.add(ordService.save(orderDetail));
-        } else {
-            for(OrderDetail ord: orderDetails) {
-                calTotalPrice = new OrderDetail();
-                if(ord.getProduct().getIdProduct() == orderDetail.getProduct().getIdProduct()) {
-                    /* Edit total price and quantity */
-                    ord.setNumberProduct(ord.getNumberProduct() + orderDetail.getNumberProduct());
-                    ord.setTotalProduct(calTotalPrice.calculateTotalPriceOrderDetail(ord));
+        /*Check product quantity*/
+        if(productQuantity > 0){
+            productService.subQuantity(idProduct, quantity);
+            if(orderDetails.isEmpty()) {
+                order.setTotalOrder(orderDetail.getTotalProduct());
+                /* Save and add order detail to list */
+                orderDetails.add(ordService.save(orderDetail));
+            } else {
+                for(OrderDetail ord: orderDetails) {
+                    calTotalPrice = new OrderDetail();
+                    if(ord.getProduct().getIdProduct() == orderDetail.getProduct().getIdProduct()) {
+                        /* Edit total price and quantity */
+                        ord.setNumberProduct(ord.getNumberProduct() + orderDetail.getNumberProduct());
+                        ord.setTotalProduct(calTotalPrice.calculateTotalPriceOrderDetail(ord));
 
-                    /* Edit in list */
-                    orderDetails.set(orderDetails.indexOf(ord) , ord);
+                        /* Edit in list */
+                        orderDetails.set(orderDetails.indexOf(ord) , ord);
 
-                    /* Check existing product */
-                    productExisting = true;
-                    break;
-                } else {
-                    productExisting = false;
+                        /* Check existing product */
+                        productExisting = true;
+                        break;
+                    } else {
+                        productExisting = false;
+                    }
+                }
+                /* Edit */
+                if(!productExisting) {
+                    orderDetails.add(ordService.save(orderDetail));
                 }
             }
-
-            /* Edit */
-            if(!productExisting) {
-                orderDetails.add(ordService.save(orderDetail));
-            }
+            /* Update total price in order */
+            order.setTotalOrder(new Order().calculateTotalPriceInOrder(orderDetails, order));
+            orderService.saveOrder(order);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        /* Update total price in order */
-        order.setTotalOrder(new Order().calculateTotalPriceInOrder(orderDetails, order));
-        orderService.saveOrder(order);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
@@ -130,7 +142,7 @@ public class OrderDetailController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderDetail> deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<OrderDetail> deleteOrderDetail(@PathVariable Long id) {
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
         if (orderDetailOptional.isPresent()) {
             orderDetailService.delete(id);

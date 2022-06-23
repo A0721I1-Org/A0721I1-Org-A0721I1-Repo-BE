@@ -1,10 +1,13 @@
 package projecta07.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import projecta07.model.OrderDetail;
 import projecta07.model.Product;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -28,6 +31,10 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     //Nhung
     @Query(value =" select * from product inner join orderdetail on orderdetail.id_product = product.id_product group by product.name_product order by sum(orderdetail.number_product) desc limit 5",nativeQuery = true)
     List<Product> findMostAll();
+    @Modifying
+    @Transactional
+    @Query(value = "update product set quatity_product = quatity_product-?2 where id_product = ?1", nativeQuery = true)
+    void subQuantity(Long idProduct, Integer quantity);
 
 //    List<Product> findProductByNameProductContaining(String nameProduct);
 }

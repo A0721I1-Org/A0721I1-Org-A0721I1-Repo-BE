@@ -11,10 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 
+import java.util.List;
+
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from `order` where status_order = 0 and id_table = ?1" , nativeQuery = true)
     Order getOrderByTableId(Long id);
+
+    @Query(value = "select * from `order` where status_order = 0 and id_table = ?1" , nativeQuery = true)
+    List<Order> getOrdersByTableId(Long id);
 
     /* @Query("delete order khỏi table ")*/
     @Modifying

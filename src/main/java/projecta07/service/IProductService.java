@@ -18,4 +18,6 @@ public interface IProductService {
     List<Product> findAllProductNew();
 
     List<Product> findMostAll();
+
+    void subQuantity(Long idProduct,Integer quantity);
 }
