@@ -197,6 +197,20 @@ public class TableController {
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
+    // QuangNV
+    @GetMapping("/checkId")
+    public ResponseEntity<List<Table>> checkId(@RequestParam String id) {
+        List<Table> list = iTableService.findAll();
+        List<Table> tables = new ArrayList<>();
+        for (Integer i = 0; i < list.size(); i++) {
+            if (list.get(i).getCodeTable().equals(id)) {
+                tables.add(list.get(i));
+                return new ResponseEntity<>(tables, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     //HuyNN method find all table with search and paging
     @GetMapping("/findAllTableWithSearchAndPaging")
     public ResponseEntity<Iterable<Table>> findAllTableWithSearch(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @RequestParam(value = "pageNumber", required = false) Integer page, @PageableDefault(sort = "codeTable", value = 5) Pageable pageable) {
