@@ -1,7 +1,10 @@
 package projecta07.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import projecta07.model.Status;
 import projecta07.model.Table;
 import projecta07.repository.ITableRepository;
 import projecta07.service.ITableService;
@@ -13,12 +16,10 @@ public class TableService implements ITableService {
     @Autowired
     private ITableRepository iTableRepository;
 
-
     @Override
     public Table save(Table table) {
         return iTableRepository.save(table);
     }
-
 
     @Override
     public List<Table> findAll() {
@@ -35,25 +36,28 @@ public class TableService implements ITableService {
         return iTableRepository.findTableById(id);
     }
 
-
     @Override
-    public List<Table> findAllByStatusAndEmptyTable(Long idStatus, Boolean emptyTable) {
-        return iTableRepository.findAllByStatusAndEmptyTable(idStatus, emptyTable);
+    public Page<Table> findAll(Pageable pageable) {
+        return iTableRepository.findAll(pageable);
     }
 
     @Override
-    public List<Table> findByCodeTable(String codeTable) {
-        return iTableRepository.findByCodeTable(codeTable);
+    public Page<Table> findAllByCodeTableContaining(String codeTable, Pageable pageable) {
+        return iTableRepository.findAllByCodeTableContaining(codeTable, pageable);
     }
 
     @Override
-    public List<Table> findAllByStatus(Long idStatus) {
-        return iTableRepository.findAllByStatus(idStatus);
+    public Page<Table> findAllByEmptyTable(Boolean emptyTable, Pageable pageable) {
+        return iTableRepository.findAllByEmptyTable(emptyTable, pageable);
     }
 
     @Override
-    public List<Table> findAllByEmptyTable(Boolean emptyTable) {
-        return iTableRepository.findAllByEmptyTable(emptyTable);
+    public Page<Table> findAllByStatus(Status status, Pageable pageable) {
+        return iTableRepository.findAllByStatus(status, pageable);
     }
 
+    @Override
+    public Page<Table> findAllByEmptyTableAndStatus(Boolean emptyTable, Status status, Pageable pageable) {
+        return iTableRepository.findAllByEmptyTableAndStatus(emptyTable, status, pageable);
+    }
 }

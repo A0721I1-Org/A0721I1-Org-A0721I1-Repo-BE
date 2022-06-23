@@ -1,4 +1,7 @@
 package projecta07.service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import projecta07.model.Status;
 import projecta07.model.Table;
 
 import java.util.List;
@@ -8,8 +11,13 @@ public interface ITableService {
     Table findTableById(Long id);
     Table save(Table table);
     //HuyNN search method
-    List<Table> findAllByStatusAndEmptyTable(Long idStatus, Boolean emptyTable);
-    List<Table> findByCodeTable(String codeTable);
-    List<Table> findAllByStatus(Long idStatus);
-    List<Table> findAllByEmptyTable(Boolean emptyTable);
+    Page<Table> findAll(Pageable pageable);
+
+    Page<Table> findAllByCodeTableContaining(String codeTable, Pageable pageable);
+
+    Page<Table> findAllByEmptyTable(Boolean emptyTable, Pageable pageable);
+
+    Page<Table> findAllByStatus(Status status, Pageable pageable);
+
+    Page<Table> findAllByEmptyTableAndStatus(Boolean emptyTable, Status status, Pageable pageable);
 }
