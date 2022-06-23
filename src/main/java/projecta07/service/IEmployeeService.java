@@ -1,6 +1,10 @@
 package projecta07.service;
 
 import projecta07.exception.EmployeeNotFoundException;
+import projecta07.model.Employee;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import projecta07.model.Employee;
@@ -22,9 +26,14 @@ public interface IEmployeeService {
     public Employee getByResetPasswordToken(String token);
     //Hàm để đỏi mật khẩu cá nhân.
     public void updatePassword(Employee employee, String newPassword);
-// ------------------------------------------------------
+//----------------------------
     Employee findEmployeeByIdUser(Long IdUser);
 
+    Employee findEmployeeByUsername(Long username);
+
+    //phương thức của bin
+    Employee findEmployeeByUser(Long idUser);
+    //
     List<Employee> findAll();
 
     Page<Employee> findAllPage(Pageable pageable);

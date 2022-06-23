@@ -1,9 +1,9 @@
 package projecta07.model;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 @Entity
@@ -11,12 +11,15 @@ public class TypeProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_type_product")
+
     private Long idTypeProduct;
 
     @Column(name = "code_type_product")
+
     private String codeTypeProduct;
 
     @Column(name = "name_type_product")
+
     private String nameTypeProduct;
 
     @OneToMany(mappedBy = "typeProduct")
