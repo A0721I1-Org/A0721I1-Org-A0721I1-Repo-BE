@@ -8,12 +8,19 @@ import projecta07.service.IOrderDetailService;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class OrderDetailService implements IOrderDetailService {
     @Autowired
     private IOrderDetailRepository orderDetailRepository;
 
     @Override
+
+    public List<OrderDetail> findByIdOrder(Long id) {
+        return orderDetailRepository.findOrderDetailByIdOrder(id);
+    }
+
+
     /* getOrderDetailByOrderId */
     public List<OrderDetail> getOrderDetailByOrderId(Long id) {
         return orderDetailRepository.getAllOrderDetailByOrderId(id);
@@ -58,3 +65,4 @@ public class OrderDetailService implements IOrderDetailService {
         this.orderDetailRepository.deleteById(orderDetailId);
     }
 }
+
