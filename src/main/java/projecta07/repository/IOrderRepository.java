@@ -13,8 +13,11 @@ import projecta07.model.OrderDetail;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.List;
+
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Long> {
+    @Query(value = "select * from `order` where status_order = 0 and id_table = ?1" , nativeQuery = true)
     List<Order> findOrderByIdOrder(Optional<Long> idOrder);
     List<Order> findAllByDateOrder(Optional<String> dateOrder);
 
@@ -36,13 +39,14 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from `order` where status_order =0 and id_table = ?1" , nativeQuery = true)
     Order getOrderByTableId(Long id);
 
-    @Query("select o from Order o where o.table.idTable = ?1")
-    Order getAllOrderByIdTable(Long id);
+    @Query(value = "select * from `order` where status_order = 0 and id_table = ?1" , nativeQuery = true)
+    List<Order> getOrdersByTableId(Long id);
 
     /* @Query("delete order khỏi table ")*/
     @Modifying
     @Transactional
-    @Query(value = "delete from `order` where `order`.id_table = ?1", nativeQuery = true)
+    @Query(value = "delete from `order` where `order`.id_table = ?1 and `order`.status_order = false", nativeQuery = true)
     void removeOrderToTable(Long id);
-
+    /* Get order with status order is false by table id */
+//    @Query(value = "select * from `order` where `order`.status_order = 0 and id_table =?1" , nativeQuery = true)
 }
