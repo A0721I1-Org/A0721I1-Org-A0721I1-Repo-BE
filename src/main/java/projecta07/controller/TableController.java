@@ -33,8 +33,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/manager")
-@CrossOrigin(origins = "http://localhost:4200/")
-
+@CrossOrigin(origins = "*")
 public class TableController {
 
     @Autowired
@@ -91,8 +90,7 @@ public class TableController {
 
     /* BinTK */
     @PostMapping("/emptyTable/saveOrderInTable/{idUser}/{idTable}")
-    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idUser") Long idUser,
-                                                  @PathVariable("idTable") Long idTable) {
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idUser") Long idUser, @PathVariable("idTable") Long idTable) {
         Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
 
