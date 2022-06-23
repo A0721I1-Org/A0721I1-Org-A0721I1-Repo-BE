@@ -7,7 +7,6 @@ public interface ITableService {
     void deleteTableById(Long id);
     Table findTableById(Long id);
     Table save(Table table);
-    //HuyNN search method
     List<Table> findAllByStatusAndEmptyTable(Long idStatus, Boolean emptyTable);
     List<Table> findByCodeTable(String codeTable);
     List<Table> findAllByStatus(Long idStatus);

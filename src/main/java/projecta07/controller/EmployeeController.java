@@ -3,28 +3,27 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
+import projecta07.model.Position;
 import projecta07.model.Role;
 import projecta07.model.User;
 import projecta07.service.IEmployeeService;
 import java.util.HashSet;
 import java.util.List;
-import org.springframework.validation.BindingResult;
-import projecta07.model.Position;
 import projecta07.service.IPositionService;
 import projecta07.service.IRoleService;
 import projecta07.service.IUserService;
 import projecta07.ultil.EncrypPasswordUtils;
 import javax.validation.Valid;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/manager/api/employee")
@@ -39,16 +38,11 @@ public class EmployeeController {
     @Autowired
     private IRoleService roleService;
 
+    //VinhTQ
     @GetMapping("/list")
-    public ResponseEntity<Page<Employee>> showList(
-            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Employee> employeePage = employeeService.findAllPage(pageable);
-        if (employeePage.isEmpty()) {
-            return new ResponseEntity<Page<Employee>>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<Page<Employee>>(employeePage, HttpStatus.OK);
+    public ResponseEntity<List<Employee>> showList() {
+        List<Employee> employeeList = employeeService.findAll();
+        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
     //VinhTQ
@@ -74,9 +68,6 @@ public class EmployeeController {
             phone = "";
         }
         List<Employee> employeeList = employeeService.searchEmployee(username, name, phone);
-        if (employeeList.isEmpty()) {
-            return new ResponseEntity<List<Employee>>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
@@ -97,7 +88,8 @@ public class EmployeeController {
             HashSet<Role> roles = new HashSet<>();
             User user = employee.getUser();
             user.setUsername(employee.getUser().getUsername());
-            user.setPassword(EncrypPasswordUtils.EncrypPasswordUtils(employee.getUser().getPassword()));;
+            user.setPassword(EncrypPasswordUtils.EncrypPasswordUtils(employee.getUser().getPassword()));
+            ;
             roles.add(roleService.findByName("ROLE_STAFF"));
         if (employee.getPosition().getNamePosition().equals("Quản lý")){
             roles.add(roleService.findByName("ROLE_MANAGER"));
@@ -106,7 +98,6 @@ public class EmployeeController {
                 roles.add(roleService.findByName("ROLE_MANAGER"));
             }
             user.setRoles(roles);
-//            userService.saveUser(user);
             employeeService.saveEmployee(employee);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -121,7 +112,7 @@ public class EmployeeController {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
-                employee.setId(employeeOptional.get().getId());
+                employee.setId(employeeOptional.get().getIdEmployee());
                 employeeService.saveEmployee(employee);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
@@ -144,8 +135,8 @@ public class EmployeeController {
         Employee employee = employeeService.findEmployeeById(id);
         if (employee == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
-            return new ResponseEntity<>(employee,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(employee, HttpStatus.OK);
         }
     }
 }

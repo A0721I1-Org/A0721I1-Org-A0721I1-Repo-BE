@@ -21,7 +21,8 @@ public class Table {
     @OneToMany(mappedBy = "table")
     @JsonBackReference(value = "table_order")
     private List<Order> orderList;
-    @ManyToOne
+
+    @ManyToOne(targetEntity = Status.class)
     @JoinColumn(name = "id_status", nullable = false)
     private Status status;
 
