@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projecta07.model.OrderDetail;
 import projecta07.repository.IOrderRepository;
 import projecta07.service.IOrderService;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,9 @@ import java.util.Optional;
 @Service
 @Transactional
 public class OrderService implements IOrderService {
+    @Autowired
     private IOrderRepository iOrderService;
+
     @Autowired
     private IOrderRepository orderRepository;
 
@@ -61,6 +64,7 @@ public class OrderService implements IOrderService {
     public Page<Order> findOrderByIdOrderAndDateOrder(Optional<Long> idOrder, Optional<String> dateOrder, Pageable pageable) {
         return orderRepository.findByIdOrderAndDateOrder(idOrder, dateOrder, pageable);
     }
+
     public Order getOrderByTableId(Long id) {
         return orderRepository.getOrderByTableId(id);
     }
@@ -75,7 +79,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order findOrderOfTableById(Long id) {
-        return iOrderService.getAllOrderByIdTable(id);
+        return iOrderService.getOrderByTableId(id);
     }
 
     @Override

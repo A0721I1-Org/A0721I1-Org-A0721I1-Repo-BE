@@ -1,7 +1,6 @@
 package projecta07.controller;
 
-//import javafx.scene.control.Tab;
-import com.sun.xml.bind.v2.model.core.ID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,13 +16,14 @@ import projecta07.service.impl.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("menu")
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public class MenuController {
 
     @Autowired
@@ -98,41 +98,45 @@ public class MenuController {
         /* Get order by table id */
         Order order = orderService.getOrderByTableId(idTable);
 
-        /* Get orders detail by order id */
-        List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
-        if(orderDetails.isEmpty()) {
-            menuOrderDTO = new MenuOrderDTO();
-            menuOrderDTO.setOrderId(order.getIdOrder());
-            menuOrderDTOS.add(menuOrderDTO);
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            for (OrderDetail orderDetail : orderDetails) {
+            /* Get orders detail by order id */
+            List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(order.getIdOrder());
+            if (orderDetails.isEmpty()) {
                 menuOrderDTO = new MenuOrderDTO();
                 menuOrderDTO.setOrderId(order.getIdOrder());
-                if (orderDetail.getOrder().getIdOrder() == menuOrderDTO.getOrderId()) {
-                    menuOrderDTO.setOrderId(orderDetail.getOrder().getIdOrder());
-                    menuOrderDTO.setOrderDetailId(orderDetail.getIdOrderDetail());
-                    menuOrderDTO.setNameProduct(orderDetail.getProduct().getNameProduct());
-                    menuOrderDTO.setQuantity(orderDetail.getNumberProduct());
-                    menuOrderDTO.setPrice(orderDetail.getProduct().getPriceProduct());
-                    menuOrderDTO.setTotalPrice(orderDetail.getTotalProduct());
-                    menuOrderDTO.setProductId(orderDetail.getProduct().getIdProduct());
-                }
                 menuOrderDTOS.add(menuOrderDTO);
+            } else {
+                for (OrderDetail orderDetail : orderDetails) {
+                    menuOrderDTO = new MenuOrderDTO();
+                    menuOrderDTO.setOrderId(order.getIdOrder());
+                    if (orderDetail.getOrder().getIdOrder() == menuOrderDTO.getOrderId()) {
+                        menuOrderDTO.setOrderId(orderDetail.getOrder().getIdOrder());
+                        menuOrderDTO.setOrderDetailId(orderDetail.getIdOrderDetail());
+                        menuOrderDTO.setNameProduct(orderDetail.getProduct().getNameProduct());
+                        menuOrderDTO.setQuantity(orderDetail.getNumberProduct());
+                        menuOrderDTO.setPrice(orderDetail.getProduct().getPriceProduct());
+                        menuOrderDTO.setTotalPrice(orderDetail.getTotalProduct());
+                        menuOrderDTO.setProductId(orderDetail.getProduct().getIdProduct());
+                    }
+                    menuOrderDTOS.add(menuOrderDTO);
+                }
             }
-        }
-        /* Pagination for DTO*/
-        Pageable dtoPageable = PageRequest.of(currentPage, sizePage);
-        int start = (int) dtoPageable.getOffset();
-        int end = Math.min((start + dtoPageable.getPageSize()), menuOrderDTOS.size());
-        Page<MenuOrderDTO> menuOrderDTOPage = new PageImpl<>(menuOrderDTOS.subList(start, end), dtoPageable, sizePage);
+            /* Pagination for DTO*/
+            Pageable dtoPageable = PageRequest.of(currentPage, sizePage);
+            int start = (int) dtoPageable.getOffset();
+            int end = Math.min((start + dtoPageable.getPageSize()), menuOrderDTOS.size());
+            Page<MenuOrderDTO> menuOrderDTOPage = new PageImpl<>(menuOrderDTOS.subList(start, end), dtoPageable, sizePage);
 
-        /* Get and set total page */
-        for (MenuOrderDTO mn : menuOrderDTOS) {
-            mn.setTotalPageDTO(menuOrderDTOS.size());
-        }
-        menuOrderDTOS.add(menuOrderDTO);
+            /* Get and set total page */
+            for (MenuOrderDTO mn : menuOrderDTOS) {
+                mn.setTotalPageDTO(menuOrderDTOS.size());
+            }
+            menuOrderDTOS.add(menuOrderDTO);
 
-        return new ResponseEntity<>(menuOrderDTOPage.getContent(), HttpStatus.OK);
+            return new ResponseEntity<>(menuOrderDTOPage.getContent(), HttpStatus.OK);
+        }
     }
 
     /* Click button Order*/
@@ -161,7 +165,7 @@ public class MenuController {
             /* Get product */
             product = productService.getProductById(menuOrderDTO.getProductId());
 
-            if(order == null) {
+            if (order == null) {
                 order = new Order();
                 /* set value for order */
                 order.setTable(table);
@@ -204,33 +208,66 @@ public class MenuController {
         /* Get order */
         Table table = tableService.getTableById(idTable);
         Order order = orderService.getOrderByTableId(table.getIdTable());
+        System.out.println(table.getEmptyTable());
 
         table.setEmptyTable(true);
-        order.setStatusOrder(true);
-
+        /* Edit table */
         tableService.saveTable(table);
+
+        order.setStatusOrder(true);
         orderService.saveOrder(order);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /* Click button delete food */
-    @RequestMapping(value = "table/delete/{idOrderDetail}/{idOrder}" , method = RequestMethod.DELETE)
+    @RequestMapping(value = "table/delete/{idOrderDetail}/{idOrder}", method = RequestMethod.DELETE)
     public ResponseEntity<OrderDetail> handleDelete(@PathVariable("idOrderDetail") Long idOrderDetail
-    , @PathVariable("idOrder") Long idOrder) {
+            , @PathVariable("idOrder") Long idOrder) {
         Order order = orderService.getOrderById(idOrder);
         double totalPriceOrderDetail;
-
-        /* Delete food */
-        orderDetailService.deleteById(idOrderDetail);
+        Optional<OrderDetail> orderDetail = orderDetailService.findById(idOrderDetail);
 
         /* Get list order detail after remove */
         List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(idOrder);
 
-        /* Edit total price in order */
-        totalPriceOrderDetail = order.calculateTotalPriceInOrder(orderDetails , order);
-        order.setTotalOrder(totalPriceOrderDetail);
-        orderService.saveOrder(order);
+        /* Edit quantity product after remove food */
+        Product product;
 
+        if(orderDetail.isPresent()) {
+            for (OrderDetail ord : orderDetails) {
+                product = productService.getProductById(ord.getProduct().getIdProduct());
+
+                if(product.getIdProduct() == orderDetail.get().getProduct().getIdProduct()) {
+                    product.setQuatityProduct(ord.getNumberProduct());
+                    productService.save(product);
+                }
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        /* Delete food */
+        orderDetailService.deleteById(idOrderDetail);
+        orderDetails = orderDetailService.getOrderDetailsByOrderId(idOrder);
+
+        /* Edit total price in order */
+        totalPriceOrderDetail = order.calculateTotalPriceInOrder(orderDetails, order);
+        order.setTotalOrder(totalPriceOrderDetail);
+
+        /* Save order */
+            orderService.saveOrder(order);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /* Get table by id */
+    @RequestMapping(value = "/table/{idTable}", method = RequestMethod.GET)
+    public ResponseEntity<Table> getTable(@PathVariable("idTable") Long idTable) {
+        return new ResponseEntity<>(this.tableService.findTableById(idTable), HttpStatus.OK);
+    }
+
+    /* Get order by id */
+    @RequestMapping(value = "/order/{idOrder}", method = RequestMethod.GET)
+    public ResponseEntity<Order> getOrder(@PathVariable("idOrder") Long idOrder) {
+        return new ResponseEntity<>(orderService.getOrderById(idOrder), HttpStatus.OK);
     }
 }
