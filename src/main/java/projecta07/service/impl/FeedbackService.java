@@ -21,6 +21,16 @@ public class FeedbackService implements IFeedbackService {
     }
 
     @Override
+    public List<Feedback> findAll() {
+        return iFeedbackRepository.findAll();
+    }
+
+    @Override
+    public List<Feedback> findAllFeedbackByDateFeedbackNotPagination(String date) {
+        return iFeedbackRepository.findAllFeedbackByDateFeedbackNotPagination(date);
+    }
+
+    @Override
     public Page<Feedback> findAllFeedbackByDateFeedback(String date, Pageable pageable) {
         return iFeedbackRepository.findAllFeedbackByDateFeedback(date, pageable);
     }
