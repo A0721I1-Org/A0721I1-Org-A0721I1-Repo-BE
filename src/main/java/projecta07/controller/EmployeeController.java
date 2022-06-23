@@ -1,4 +1,7 @@
 package projecta07.controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,17 +14,16 @@ import projecta07.model.Employee;
 import projecta07.model.Role;
 import projecta07.model.User;
 import projecta07.service.IEmployeeService;
-
 import java.util.HashSet;
 import java.util.List;
-
+import java.util.HashSet;
+import java.util.List;
 import org.springframework.validation.BindingResult;
 import projecta07.model.Position;
 import projecta07.service.IPositionService;
 import projecta07.service.IRoleService;
 import projecta07.service.IUserService;
 import projecta07.ultil.EncrypPasswordUtils;
-
 import javax.validation.Valid;
 import java.util.Optional;
 

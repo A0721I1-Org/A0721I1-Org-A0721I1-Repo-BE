@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import projecta07.dto.DetailOrderTableDTO;
 import projecta07.dto.TableUpdateDTO;
 import projecta07.model.Table;
+import projecta07.repository.ITableRepository;
 import projecta07.service.IOrderDetailService;
 import projecta07.service.IOrderService;
 import projecta07.service.ITableService;
@@ -19,13 +20,11 @@ import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.model.Status;
 import projecta07.service.IStatusService;
-
-
 import projecta07.model.*;
 import projecta07.service.*;
-
+import projecta07.model.*;
+import projecta07.service.*;
 import projecta07.validate.ValidateTableDTO;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,10 +45,9 @@ public class TableController {
 
     @Autowired
     private IStatusService iStatusService;
+
     @Autowired
     private ITableService iTableService;
-
-
 
     @Autowired
     private IOrderService iOrderService;
@@ -57,12 +55,22 @@ public class TableController {
     @Autowired
     private IOrderDetailService iOrderDetailService;
 
+    /* BinTK */
+    @RequestMapping(value = "/order/{idTable}" , method = RequestMethod.GET)
+    public ResponseEntity<Order> getOrderById(@PathVariable Long idTable) {
+        return new ResponseEntity<>(iOrderService.findOrderOfTableById(idTable) , HttpStatus.OK);
+    }
+
     //BinTK
     @GetMapping("/emptyTable")
     public ResponseEntity<List<Table>> findAllEmptyTable() {
         List<Table> tables = iTableService.findAll();
-        Order order = new Order();
 
+        return new ResponseEntity<>(tables , HttpStatus.OK);
+
+/*  Phương thức trả về emptyTable nếu có order ....
+        List<Table> tables = iTableService.findAll();
+        Order order = new Order();
         if (tables.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -77,30 +85,34 @@ public class TableController {
                 iTableService.save(table);
             }
             return new ResponseEntity<>(tables, HttpStatus.OK);
-        }
+        }*/
     }
 
-    @PostMapping("/emptyTable/saveOrderInTable/{idEmployee}/{idTable}/{dateOrder}")
-    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idEmployee") Long idEmployee, @PathVariable("idTable") Long idTable,
-                                                  @PathVariable("dateOrder") String dateOrder) {
-        Employee employee = iEmployeeService.findEmployeeById(idEmployee);
+
+    /* BinTK */
+    @PostMapping("/emptyTable/saveOrderInTable/{idUser}/{idTable}")
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idUser") Long idUser,
+                                                  @PathVariable("idTable") Long idTable) {
+        Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
 
-
         Order order = new Order();
+        /* lấy order trả về sau khi lưu */
+        Order ordered;
+
+        /* Đặt giá trị cho order */
         order.setTable(table);
         order.setStatusOrder(false);
         order.setEmployee(employee);
         order.setDateOrder(String.valueOf((LocalDate.now())));
+        ordered = iOrderService.saveOrder(order);
 
-        iOrderService.saveOrder(order);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(ordered , HttpStatus.CREATED);
     }
 
     //BinTK
     @GetMapping("/emptyTable/detailTable/{id}")
     public ResponseEntity<List<DetailOrderTableDTO>> findAllOrderByTableId(@PathVariable Long id) {
-
         Order order = iOrderService.findOrderOfTableById(id);
         List<DetailOrderTableDTO> orderDetailDTOS = new ArrayList<>();
         if (order == null) {
@@ -130,6 +142,13 @@ public class TableController {
     //BinTK
     @DeleteMapping("/emptyTable/deleteOrderInTable/{idTable}")
     public ResponseEntity<Order> deleteOrderInTable(@PathVariable("idTable") Long id) {
+        /* Get table by table id */
+        Table table = iTableService.findTableById(id);
+
+        /* Set empty table is true */
+        table.setEmptyTable(true);
+        iTableService.save(table);
+
         /* Delete order */
         iOrderService.cancelTable(id);
         findAllEmptyTable();
@@ -243,20 +262,5 @@ public class TableController {
         tableOptional.setStatus(tableUpdateDTO.getStatus());
         return new ResponseEntity<>(iTableService.save(tableOptional), HttpStatus.OK);
     }
-
-    // QuangNV
-    @GetMapping("/checkId")
-    public ResponseEntity<List<Table>> checkId(@RequestParam String id){
-        List<Table> list = iTableService.findAll();
-        List<Table> tables = new ArrayList<>();
-        for (Integer i=0;i<list.size();i++){
-            if (list.get(   i).getCodeTable().equals(id)){
-                tables.add(list.get(i));
-                return new ResponseEntity<>(tables, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
 }
 

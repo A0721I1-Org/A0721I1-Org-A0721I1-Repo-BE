@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import projecta07.model.Employee;
 import projecta07.repository.IEmployeeRepository;
 import projecta07.service.IEmployeeService;
-
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,13 +16,23 @@ public class EmployeeService implements IEmployeeService {
     private IEmployeeRepository employeeRepository;
 
     @Override
-    public Employee findEmployeeByIdUser(Long IdUser) {
-        return employeeRepository.findEmployeeByIdUser(IdUser);
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
+
+    //phương thức của bin
+    @Override
+    public Employee findEmployeeByUser(Long idUser) {
+        return employeeRepository.findEmployeeById_User(idUser);
+    }
+
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public Employee findEmployeeByIdUser(Long IdUser) {
+        return employeeRepository.findEmployeeByIdUser(IdUser);
     }
 
     @Override

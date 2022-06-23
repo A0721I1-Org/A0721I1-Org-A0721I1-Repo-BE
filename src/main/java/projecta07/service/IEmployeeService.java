@@ -14,8 +14,12 @@ import java.util.Optional;
 public interface IEmployeeService {
     Employee findEmployeeByIdUser(Long IdUser);
 
+    //phương thức của bin
+    Employee findEmployeeByUser(Long idUser);
+
     List<Employee> findAll();
 
+    Employee getEmployeeById(Long id);
     Page<Employee> findAllPage(Pageable pageable);
 
     Employee findEmployeeById(long id);

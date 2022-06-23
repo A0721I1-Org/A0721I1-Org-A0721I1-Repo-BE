@@ -60,4 +60,5 @@ public class TableService implements ITableService {
     public Page<Table> findAllByEmptyTableAndStatus(Boolean emptyTable, Status status, Pageable pageable) {
         return iTableRepository.findAllByEmptyTableAndStatus(emptyTable, status, pageable);
     }
+
 }

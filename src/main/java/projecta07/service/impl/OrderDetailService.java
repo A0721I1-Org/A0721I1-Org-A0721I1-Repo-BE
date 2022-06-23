@@ -23,9 +23,4 @@ public class OrderDetailService implements IOrderDetailService {
     @Override
     public void deleteOrderDetailInTable(Long id) {
     }
-
-
-
-
-
 }
