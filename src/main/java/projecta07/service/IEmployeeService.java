@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface IEmployeeService {
     Employee findEmployeeByIdUser(Long IdUser);
 
+    Employee findEmployeeByUsername(Long username);
+
     //phương thức của bin
     Employee findEmployeeByUser(Long idUser);
     //
