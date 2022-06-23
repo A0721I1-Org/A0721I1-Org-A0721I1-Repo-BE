@@ -238,7 +238,7 @@ public class MenuController {
                 product = productService.getProductById(ord.getProduct().getIdProduct());
 
                 if(product.getIdProduct() == orderDetail.get().getProduct().getIdProduct()) {
-                    product.setQuatityProduct(ord.getNumberProduct());
+                    product.setQuatityProduct(ord.getNumberProduct() + product.getQuatityProduct());
                     productService.save(product);
                 }
             }
