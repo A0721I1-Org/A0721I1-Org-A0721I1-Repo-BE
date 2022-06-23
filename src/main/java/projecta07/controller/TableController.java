@@ -1,6 +1,6 @@
 package projecta07.controller;
 
-import javafx.scene.control.Tab;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,17 +48,17 @@ public class TableController {
         List<Table> tables = iTableService.findAll();
         Order order;
 
-        for(Table table : tables) {
-            order = iOrderService.findOrderOfTableById(table.getIdTable());
-            if(order == null) {
-                table.setEmptyTable(true);
-                iTableService.save(table);
-                continue;
-            } else {
-                table.setEmptyTable(false);
-                iTableService.save(table);
-            }
-        }
+//        for(Table table : tables) {
+//            order = iOrderService.findOrderOfTableById(table.getIdTable());
+//            if(order == null) {
+//                table.setEmptyTable(true);
+//                iTableService.save(table);
+//                continue;
+//            } else {
+//                table.setEmptyTable(false);
+//                iTableService.save(table);
+//            }
+//        }
         return new ResponseEntity<>(tables , HttpStatus.OK);
     }
 
