@@ -203,7 +203,7 @@ public class MenuController {
     }
 
     /* Click button Payment */
-    @RequestMapping(value = "table/{idTable}/payment", method = RequestMethod.PUT)
+    @RequestMapping(value = "table/{idTable}/payment", method = RequestMethod.PATCH)
     public ResponseEntity<Order> handlePayment(@PathVariable("idTable") Long idTable) {
         /* Get order */
         Table table = tableService.getTableById(idTable);
