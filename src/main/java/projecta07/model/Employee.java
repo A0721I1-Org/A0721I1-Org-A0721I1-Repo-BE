@@ -42,7 +42,6 @@ public class Employee {
     private Double salaryEmployee;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonBackReference(value = "employee-user")
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
 //    @JsonBackReference(value = "employee_user1")

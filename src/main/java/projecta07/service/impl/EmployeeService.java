@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 public class EmployeeService implements IEmployeeService {
-
     @Autowired
     private IEmployeeRepository employeeRepository;
 
@@ -27,13 +26,10 @@ public class EmployeeService implements IEmployeeService {
     public Employee findEmployeeByUser(Long idUser) {
         return employeeRepository.findEmployeeById_User(idUser);
     }
-    //
 
-    @Override
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id).orElse(null);
     }
-
 
     @Override
     public Employee findEmployeeByIdUser(Long IdUser) {

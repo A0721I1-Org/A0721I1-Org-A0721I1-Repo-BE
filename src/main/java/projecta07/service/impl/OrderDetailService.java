@@ -23,7 +23,6 @@ public class OrderDetailService implements IOrderDetailService {
     public void deleteOrderDetailInTable(Long id) {
     }
 
-
     @Override
     public Iterable<OrderDetail> findAll() {
         return null;

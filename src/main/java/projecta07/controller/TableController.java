@@ -2,6 +2,9 @@ package projecta07.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -15,8 +18,9 @@ import projecta07.service.IStatusService;
 import projecta07.dto.TableUpdateDTO;
 import projecta07.model.*;
 import projecta07.service.*;
+import projecta07.model.*;
+import projecta07.service.*;
 import projecta07.validate.ValidateTableDTO;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -82,8 +86,7 @@ public class TableController {
 
     /* BinTK */
     @PostMapping("/emptyTable/saveOrderInTable/{idUser}/{idTable}")
-    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idUser") Long idUser,
-                                                  @PathVariable("idTable") Long idTable) {
+    public ResponseEntity<Order> saveOrderInTable(@PathVariable("idUser") Long idUser, @PathVariable("idTable") Long idTable) {
         Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
 
@@ -194,23 +197,44 @@ public class TableController {
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
-    //HuyNN method find all table with search
-    @GetMapping("/findAllTableWithSearch")
-    public ResponseEntity<Iterable<Table>> findAllTableWithSearch(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable) {
-        List<Table> tables;
+    // QuangNV
+    @GetMapping("/checkId")
+    public ResponseEntity<List<Table>> checkId(@RequestParam String id) {
+        List<Table> list = iTableService.findAll();
+        List<Table> tables = new ArrayList<>();
+        for (Integer i = 0; i < list.size(); i++) {
+            if (list.get(i).getCodeTable().equals(id)) {
+                tables.add(list.get(i));
+                return new ResponseEntity<>(tables, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    //HuyNN method find all table with search and paging
+    @GetMapping("/findAllTableWithSearchAndPaging")
+    public ResponseEntity<Iterable<Table>> findAllTableWithSearch(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @RequestParam(value = "pageNumber", required = false) Integer page, @PageableDefault(sort = "codeTable", value = 5) Pageable pageable) {
+        Page<Table> tables;
         if (codeTable.isPresent()) {
-            tables = iTableService.findByCodeTable(codeTable.get());
+            tables = iTableService.findAllByCodeTableContaining(codeTable.get(), pageable);
         } else if (emptyTable.isPresent() && idStatus.isPresent()) {
-            tables = iTableService.findAllByStatusAndEmptyTable(idStatus.get(), emptyTable.get());
+            Optional<Status> status = iStatusService.findStatusById(idStatus.get());
+            tables = iTableService.findAllByEmptyTableAndStatus(emptyTable.get(), status.get(), pageable);
         } else if (emptyTable.isPresent()) {
-            tables = iTableService.findAllByEmptyTable(emptyTable.get());
+            tables = iTableService.findAllByEmptyTable(emptyTable.get(), pageable);
         } else if (idStatus.isPresent()) {
-            tables = iTableService.findAllByStatus(idStatus.get());
+            Optional<Status> status = iStatusService.findStatusById(idStatus.get());
+            if (status == null) {
+                tables = null;
+            } else {
+                tables = iTableService.findAllByStatus(status.get(), pageable);
+            }
         } else {
-            tables = iTableService.findAll();
+            tables = iTableService.findAll(pageable);
         }
         if (tables.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            tables = null;
+            return new ResponseEntity<>(tables, HttpStatus.OK);
         }
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
@@ -246,20 +270,5 @@ public class TableController {
         tableOptional.setStatus(tableUpdateDTO.getStatus());
         return new ResponseEntity<>(iTableService.save(tableOptional), HttpStatus.OK);
     }
-
-    // QuangNV
-    @GetMapping("/checkId")
-    public ResponseEntity<List<Table>> checkId(@RequestParam String id) {
-        List<Table> list = iTableService.findAll();
-        List<Table> tables = new ArrayList<>();
-        for (Integer i = 0; i < list.size(); i++) {
-            if (list.get(i).getCodeTable().equals(id)) {
-                tables.add(list.get(i));
-                return new ResponseEntity<>(tables, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
 }
 
