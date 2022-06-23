@@ -25,23 +25,23 @@ public class TableService implements ITableService {
 
     @Override
     public Table save(Table table) {
-        return iTableRepository.save(table);
+        return tableRepository.save(table);
     }
 
 
     @Override
     public List<Table> findAll() {
-        return iTableRepository.findAll();
+        return tableRepository.findAll();
     }
 
     @Override
     public void deleteTableById(Long id) {
-        iTableRepository.deleteById(id);
+        tableRepository.deleteById(id);
     }
 
     @Override
     public Table findTableById(Long id) {
-        return iTableRepository.findTableById(id);
+        return tableRepository.findTableById(id);
     }
 
 

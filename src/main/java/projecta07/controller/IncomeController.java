@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import projecta07.service.IIncomeService;
 import java.util.Optional;
 
-@RequestMapping("/manager/api/income")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200/")
+@RequestMapping("/manager/api/income")
+@CrossOrigin("*")
 public class IncomeController {
     @Autowired
     private IIncomeService iIncomeService;
@@ -18,32 +18,28 @@ public class IncomeController {
 
     // THEO NGÀY
     @GetMapping("/day")
-    public ResponseEntity incomeToDay(Model model) {
-        model.addAttribute("sumTotalDay", iIncomeService.sumTotalOderDay());
+    public ResponseEntity incomeToDay(){
         double totalDay = Double.parseDouble(iIncomeService.sumTotalOderDay());
         return new ResponseEntity(totalDay, HttpStatus.OK);
     }
 
     // THEO TUẦN
     @GetMapping("/week")
-    public ResponseEntity incomeToWeek(Model model) {
-        model.addAttribute("sumTotalWeek", iIncomeService.sumTotalOrderWeek());
+    public ResponseEntity incomeToWeek() {
         double totalWeek = Double.parseDouble(iIncomeService.sumTotalOrderWeek());
         return new ResponseEntity(totalWeek, HttpStatus.OK);
     }
 
     // THEO THÁNG
     @GetMapping("/month")
-    public ResponseEntity incomeToMonth(Model model) {
-        model.addAttribute("sumTotalMonth", iIncomeService.sumTotalOrderWeek());
+    public ResponseEntity incomeToMonth() {
         double totalMonth = Double.parseDouble(iIncomeService.sumTotalOrderMonth());
         return new ResponseEntity(totalMonth, HttpStatus.OK);
     }
 
     // THEO NĂM
     @GetMapping("/year")
-    public ResponseEntity incomeToYear(Model model) {
-        model.addAttribute("sumTotalYear", iIncomeService.sumTotalOrderWeek());
+    public ResponseEntity incomeToYear() {
         double totalYear = Double.parseDouble(iIncomeService.sumTontalOrderYear());
         return new ResponseEntity(totalYear, HttpStatus.OK);
     }
@@ -55,16 +51,43 @@ public class IncomeController {
 //        return new ResponseEntity(totalDayToDay, HttpStatus.OK);
 //    }
 
-
     // TỪ NGÀY NÀY ĐẾN NGÀY KHÁC C2
     @GetMapping("/daytoday")
     public ResponseEntity incomeDayToDay(@RequestParam(value = "startDay", required = false) Optional<String> startDay,
-                                         @RequestParam(value = "endDay", required = false) Optional<String> endDay){
-        System.out.println(startDay.get() + " - "+ endDay.get());
+                                         @RequestParam(value = "endDay", required = false) Optional<String> endDay) {
+        System.out.println(startDay.get() + " - " + endDay.get());
         double totalDayToDay = 0;
-        if (startDay.isPresent() && endDay.isPresent()){
-             totalDayToDay = Double.parseDouble(iIncomeService.sumTotalStartDayToEndDay(startDay.get(), endDay.get()));
+        if (startDay.isPresent() && endDay.isPresent()) {
+            totalDayToDay = Double.parseDouble(iIncomeService.sumTotalStartDayToEndDay(startDay.get(), endDay.get()));
         }
         return new ResponseEntity(totalDayToDay, HttpStatus.OK);
+    }
+
+    // tổng số sản phẩm cafe
+    @GetMapping("countCafe")
+        public ResponseEntity countProductCafe() {
+        double countCafe = Double.parseDouble(iIncomeService.countProductCafe());
+        return new ResponseEntity(countCafe, HttpStatus.OK);
+    }
+
+    // tổng số sản phẩm trà
+    @GetMapping("countTea")
+    public ResponseEntity countProductTea() {
+        double countTea = Double.parseDouble(iIncomeService.countProductTea());
+        return new ResponseEntity(countTea, HttpStatus.OK);
+    }
+
+    // tổng số sản phẩm bánh
+    @GetMapping("countCake")
+    public ResponseEntity countProductCake() {
+        double countCake = Double.parseDouble(iIncomeService.countProductCafe());
+        return new ResponseEntity(countCake, HttpStatus.OK);
+    }
+
+    // tổng số sản phẩm khác
+    @GetMapping("countOther")
+    public ResponseEntity countProductOther() {
+        double countOther = Double.parseDouble(iIncomeService.countProductOther());
+        return new ResponseEntity(countOther, HttpStatus.OK);
     }
 }
