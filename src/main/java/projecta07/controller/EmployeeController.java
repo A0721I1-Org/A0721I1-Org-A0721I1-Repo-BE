@@ -6,25 +6,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
+import projecta07.model.Position;
 import projecta07.model.Role;
 import projecta07.model.User;
 import projecta07.service.IEmployeeService;
-
-import java.util.HashSet;
-import java.util.List;
-
-import org.springframework.validation.BindingResult;
-import projecta07.model.Position;
 import projecta07.service.IPositionService;
 import projecta07.service.IRoleService;
 import projecta07.service.IUserService;
 import projecta07.ultil.EncrypPasswordUtils;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/manager/api/employee")
@@ -40,26 +37,10 @@ public class EmployeeController {
     private IRoleService roleService;
 
     //VinhTQ
-    @GetMapping("/length/list")
-    public ResponseEntity<Integer> getLengthOfEmployees() {
-        return new ResponseEntity<>(employeeService.findAll().size(), HttpStatus.ACCEPTED);
-    }
-
-    //VinhTQ
-    @GetMapping("/length/search/{username}/{name}/{phone}")
-    public ResponseEntity<Integer> getLengthOfEmployeeSearch(@PathVariable String username, @PathVariable String name, @PathVariable String phone) {
-        return new ResponseEntity<>(employeeService.searchEmployee(username, name, phone).size(), HttpStatus.ACCEPTED);
-    }
-
-    //VinhTQ
-    @GetMapping("/list/page={currentPage}&size={sizePage}")
-    public ResponseEntity<List<Employee>> showList(@PathVariable("currentPage") int currentPage, @PathVariable("sizePage") int sizePage) {
-        List<Employee> employees = employeeService.findAll();
-        Pageable employeeList = PageRequest.of(currentPage, sizePage);
-        int start = (int) employeeList.getOffset();
-        int end = Math.min((start + employeeList.getPageSize()), employees.size());
-        Page<Employee> employeePage = new PageImpl<>(employees.subList(start, end), employeeList, sizePage);
-        return new ResponseEntity<List<Employee>>(employeePage.getContent(), HttpStatus.OK);
+    @GetMapping("/list")
+    public ResponseEntity<List<Employee>> showList() {
+        List<Employee> employeeList = employeeService.findAll();
+        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
     //VinhTQ
@@ -73,9 +54,8 @@ public class EmployeeController {
     }
 
     //VinhTQ
-    @GetMapping("/search/{username}/{name}/{phone}/page={currentPage}&size={sizePage}")
-    public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone,
-                                                         @PathVariable("currentPage") int currentPage, @PathVariable("sizePage") int sizePage) {
+    @GetMapping("/search/{username}/{name}/{phone}")
+    public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone) {
         if (username.equals("null")) {
             username = "";
         }
@@ -85,12 +65,8 @@ public class EmployeeController {
         if (phone.equals("null")) {
             phone = "";
         }
-        List<Employee> employees = employeeService.searchEmployee(username, name, phone);
-        Pageable employeeList = PageRequest.of(currentPage, sizePage);
-        int start = (int) employeeList.getOffset();
-        int end = Math.min((start + employeeList.getPageSize()), employees.size());
-        Page<Employee> employeeSearchPage = new PageImpl<>(employees.subList(start, end), employeeList, sizePage);
-        return new ResponseEntity<List<Employee>>(employeeSearchPage.getContent(), HttpStatus.OK);
+        List<Employee> employeeList = employeeService.searchEmployee(username, name, phone);
+        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
     @GetMapping("/position")
@@ -134,7 +110,7 @@ public class EmployeeController {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
-                employee.setId(employeeOptional.get().getId());
+                employee.setId(employeeOptional.get().getIdEmployee());
                 employeeService.saveEmployee(employee);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
