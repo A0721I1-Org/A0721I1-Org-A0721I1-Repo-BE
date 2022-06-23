@@ -42,7 +42,7 @@ public class ForgotPasswordController {
             // Hàm kiêm tra email này của người dùng nào, nếu không có trả về exception, có sẽ thực hiện set token.
             employeeService.updateResetPasswordToken(token, email);
             // Tạo đường dẫn đến form đổi mật khẩu
-            String resetPasswordLink = "http://localhost:4200/forgot-password/reset-password/"+token;
+             String resetPasswordLink = "http://localhost:4200/forgot-password/reset-password/"+token;//moi
             // Hàm để gửi email
             sendEmail(email, resetPasswordLink);
             message = "Chúng tôi đa gửi link thay đổi mật khẩu. Vui lòng mở email để kiểm tra";
