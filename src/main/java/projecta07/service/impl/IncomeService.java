@@ -39,6 +39,23 @@ public class IncomeService implements IIncomeService {
         return iIncomeRepository.sumTontalOrderYear();
     }
 
+    @Override
+    public String countProductCafe() {
+        return iIncomeRepository.countProductCafe();
+    }
 
+    @Override
+    public String countProductTea() {
+        return iIncomeRepository.countProductTea();
+    }
 
+    @Override
+    public String countProductCake() {
+        return iIncomeRepository.countProductCake();
+    }
+
+    @Override
+    public String countProductOther() {
+        return iIncomeRepository.countProductOther();
+    }
 }

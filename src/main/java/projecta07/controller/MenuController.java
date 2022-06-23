@@ -88,9 +88,6 @@ public class MenuController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    /* 404 */
-//    @RequestMapping(value = "404")
-
     /* Get Data DTO for table */
     @RequestMapping(value = "table/{idTable}/{currentPage}&{sizePage}", method = RequestMethod.GET)
     public ResponseEntity<List<MenuOrderDTO>> getMenuOrderDTO(@PathVariable("idTable") Long idTable
