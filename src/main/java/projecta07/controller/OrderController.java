@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import projecta07.model.Order;
 import projecta07.model.OrderDetail;
 import projecta07.service.impl.OrderService;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class OrderController {
     @Autowired
     OrderService orderService;
@@ -72,4 +73,9 @@ public class OrderController {
         }
         return new ResponseEntity<List<Order>>(listOrder, HttpStatus.OK);
     }
+
+
+
+
+
 }

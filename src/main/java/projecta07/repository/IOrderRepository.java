@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import projecta07.model.Order;
-
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
+import projecta07.model.OrderDetail;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,5 +33,16 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
 //    @Query(value = "select id_order, date_order, total_order, id_table, id_employee from `order`", nativeQuery = true)
 //    Page<Order> getAllOrder(Pageable pageable);
 
+    @Query(value = "select * from `order` where status_order =0 and id_table = ?1" , nativeQuery = true)
+    Order getOrderByTableId(Long id);
+
+    @Query("select o from Order o where o.table.idTable = ?1")
+    Order getAllOrderByIdTable(Long id);
+
+    /* @Query("delete order khỏi table ")*/
+    @Modifying
+    @Transactional
+    @Query(value = "delete from `order` where `order`.id_table = ?1", nativeQuery = true)
+    void removeOrderToTable(Long id);
 
 }

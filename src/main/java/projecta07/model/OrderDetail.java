@@ -1,8 +1,14 @@
 package projecta07.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.util.List;
+
 
 @Entity
 public class OrderDetail {
