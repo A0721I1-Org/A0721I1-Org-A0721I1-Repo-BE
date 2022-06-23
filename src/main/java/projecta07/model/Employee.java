@@ -23,9 +23,6 @@ public class Employee {
 
     private String nameEmployee;
 
-    @Column(name = "code_employee")
-    @NotEmpty(message = "không được để trống")
-    private String codeEmployee;
 
     @Column(name = "address_employee")
     @NotEmpty(message = "không được để trống")
@@ -74,19 +71,18 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String codeEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user1, Position position, List<Order> orderList) {
-        this.codeEmployee = codeEmployee;
+    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user, Position position, List<Order> orderList) {
+        this.idEmployee = idEmployee;
         this.nameEmployee = nameEmployee;
         this.addressEmployee = addressEmployee;
         this.phoneEmployee = phoneEmployee;
         this.genderEmployee = genderEmployee;
         this.dateOfBirthEmployee = dateOfBirthEmployee;
         this.salaryEmployee = salaryEmployee;
-        this.user = user1;
+        this.user = user;
         this.position = position;
         this.orderList = orderList;
     }
-
 
     public Long getIdEmployee() {
         return idEmployee;
