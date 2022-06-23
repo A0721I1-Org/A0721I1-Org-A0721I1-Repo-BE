@@ -9,8 +9,9 @@ import org.springframework.http.ResponseEntity;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import projecta07.dto.FeedbackDTO;
 import projecta07.model.Feedback;
-import projecta07.service.impl.FeedbackService;
+import projecta07.service.IFeedbackService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class FeedbackController {
 
     @Autowired
-    private FeedbackService feedbackService;
+    private IFeedbackService feedbackService;
 
     @GetMapping("manager/api/feedback")
     public ResponseEntity<Iterable<Feedback>> findAllFeedback(@RequestParam int index) {
@@ -73,12 +74,27 @@ public class FeedbackController {
 
     @PostMapping("api/feedback/createFeedback")
     public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
+        FeedbackDTO feedbackDTO = new FeedbackDTO();
         String codeFeedback = "FB-" + Math.floor(Math.random()* 999);
         feedback.setCodeFeedback(codeFeedback);
         feedback.setDateFeedback(LocalDate.now());
-        if (bindingResult.hasFieldErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        String[] swearing = {"dm", "vãi", "gớm", "xấu"};
+        String feedbackEdit = feedback.getContentFeedback();
+        String star = "**";
+        String result = "";
+
+        for (int i = 0; i < swearing.length; i ++) {
+            result = feedbackEdit.replaceAll(swearing[i], star);
         }
+
+        feedback.setContentFeedback(result);
+        feedbackDTO.validate(feedback, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<Feedback>((Feedback) bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
+
         feedbackService.saveFeedback(feedback);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

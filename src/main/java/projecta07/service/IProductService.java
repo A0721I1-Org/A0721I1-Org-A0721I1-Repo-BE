@@ -1,5 +1,7 @@
 package projecta07.service;
 
+
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import projecta07.model.Product;
@@ -22,5 +24,6 @@ public interface IProductService {
     List<Product> findAllProductNew();
     List<Product> findMostAll();
     void editProduct(Product product);
+
 }
 
