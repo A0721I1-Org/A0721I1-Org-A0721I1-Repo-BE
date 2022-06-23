@@ -10,6 +10,7 @@ public interface ITableService {
     void deleteTableById(Long id);
     Table findTableById(Long id);
     Table save(Table table);
+
     //HuyNN search method
     Page<Table> findAll(Pageable pageable);
 

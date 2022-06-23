@@ -12,7 +12,6 @@ import java.util.List;
 
 @Repository
 public interface ITableRepository extends JpaRepository<Table,Long> {
-
     @Query(value = "select * from `table` where `table`.id_table = ?1" , nativeQuery = true)
     Table findTableById(Long id);
 
@@ -26,4 +25,10 @@ public interface ITableRepository extends JpaRepository<Table,Long> {
     Page<Table> findAllByStatus(Status status, Pageable pageable);
 
     Page<Table> findAllByEmptyTableAndStatus(Boolean emptyTable, Status status, Pageable pageable);
+
+    @Query(value = "select id_table, code_table, empty_table, id_status from `Table` where id_status = :idStatus", nativeQuery = true)
+    List<Table> findAllByStatus(Long idStatus);
+
+    @Query(value = "select id_table, code_table, empty_table, id_status from `Table` where empty_table  = :emptyTable", nativeQuery = true)
+    List<Table> findAllByEmptyTable(Boolean emptyTable);
 }

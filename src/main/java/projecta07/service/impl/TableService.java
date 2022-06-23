@@ -1,5 +1,6 @@
 package projecta07.service.impl;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,18 @@ import java.util.List;
 @Service
 public class TableService implements ITableService {
     @Autowired
+    private ITableRepository tableRepository;
+
+    @Autowired
     private ITableRepository iTableRepository;
+
+    public Table saveTable(Table table) {
+        return this.tableRepository.save(table);
+    }
+
+    public Table getTableById(Long id) {
+        return tableRepository.findById(id).orElse(null);
+    }
 
     @Override
     public Table save(Table table) {
@@ -60,5 +72,4 @@ public class TableService implements ITableService {
     public Page<Table> findAllByEmptyTableAndStatus(Boolean emptyTable, Status status, Pageable pageable) {
         return iTableRepository.findAllByEmptyTableAndStatus(emptyTable, status, pageable);
     }
-
 }
