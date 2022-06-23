@@ -8,6 +8,7 @@ import projecta07.model.Feedback;
 import projecta07.repository.IFeedbackRepository;
 import projecta07.service.IFeedbackService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,16 @@ public class FeedbackService implements IFeedbackService {
     @Override
     public Page<Feedback> findAll(Pageable pageable) {
         return iFeedbackRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Feedback> findAll() {
+        return iFeedbackRepository.findAll();
+    }
+
+    @Override
+    public List<Feedback> findAllFeedbackByDateFeedbackNotPagination(String date) {
+        return iFeedbackRepository.findAllFeedbackByDateFeedbackNotPagination(date);
     }
 
     @Override
