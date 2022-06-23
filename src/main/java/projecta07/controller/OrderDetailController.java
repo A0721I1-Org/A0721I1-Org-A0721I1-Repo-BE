@@ -9,13 +9,14 @@ import projecta07.model.OrderDetail;
 import projecta07.service.IOrderDetailService;
 import projecta07.service.impl.OrderDetailService;
 import projecta07.service.impl.OrderService;
-
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+
+import projecta07.service.impl.ProductService;
+
 
 @RestController
 @RequestMapping("/api/order-detail")
@@ -29,6 +30,18 @@ public class OrderDetailController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    ProductService productService;
+    //Make by HauNT view detail order
+    @RequestMapping(value = "/orderDetail/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<OrderDetail>> getOrder(@PathVariable("id") long id) {
+        List<OrderDetail> orderDetail = ordService.findByIdOrder(id);
+        if (orderDetail == null) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<OrderDetail>>(orderDetail, HttpStatus.OK);
+    }
 
     @GetMapping("")
     public ResponseEntity<Iterable<OrderDetail>> findAll() {
@@ -88,5 +101,4 @@ public class OrderDetailController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
-
 }
