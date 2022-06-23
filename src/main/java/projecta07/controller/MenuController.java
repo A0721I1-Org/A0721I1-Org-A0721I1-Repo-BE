@@ -1,6 +1,6 @@
 package projecta07.controller;
 
-import javafx.scene.control.Tab;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -87,9 +87,6 @@ public class MenuController {
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
-
-    /* 404 */
-//    @RequestMapping(value = "404")
 
     /* Get Data DTO for table */
     @RequestMapping(value = "table/{idTable}/{currentPage}&{sizePage}", method = RequestMethod.GET)
