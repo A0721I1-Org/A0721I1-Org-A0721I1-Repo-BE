@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Order;
 import projecta07.model.OrderDetail;
+import projecta07.model.Product;
 import projecta07.model.Table;
 import projecta07.service.IOrderDetailService;
 import projecta07.service.IProductService;
@@ -62,13 +63,21 @@ public class OrderDetailController {
     }
 
     @RequestMapping(value = "/add-to-cart/{idOrder}", method = RequestMethod.POST)
-    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody @Valid OrderDetail orderDetail,
+    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody OrderDetail orderDetail,
                                                        @PathVariable("idOrder") Long idOrder) {
         /* Get order by id and get list order detail */
         Order order = orderService.getOrderById(idOrder);
         Long idProduct = orderDetail.getProduct().getIdProduct();
         Integer quantity = orderDetail.getNumberProduct();
-        Integer productQuantity = orderDetail.getProduct().getQuatityProduct();
+
+        /* Get quantity product */
+        Optional<Product> product = productService.findById(idProduct);
+        int quantityProduct;
+        if(product.isPresent()) {
+            quantityProduct = product.get().getQuatityProduct();
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
         /* Get class order detail to calculate total price */
         OrderDetail calTotalPrice;
@@ -87,7 +96,7 @@ public class OrderDetailController {
 
         List<OrderDetail> orderDetails = ordService.getOrderDetailsByOrderId(idOrder);
         /*Check product quantity*/
-        if(productQuantity > 0){
+        if(quantityProduct > 0){
             productService.subQuantity(idProduct, quantity);
             if(orderDetails.isEmpty()) {
                 order.setTotalOrder(orderDetail.getTotalProduct());
@@ -123,7 +132,6 @@ public class OrderDetailController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
 
 
