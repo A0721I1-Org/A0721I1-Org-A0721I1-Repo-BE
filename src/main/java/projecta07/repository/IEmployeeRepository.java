@@ -6,6 +6,7 @@ import projecta07.model.Employee;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
+
 @Repository
 public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
     //VinhTQ
@@ -35,6 +36,15 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
     Employee findEmployeeByIdUser(Long idUser);
 
 
+
+    //  Bach LT
+    @Query("SELECT e FROM Employee e WHERE e.emailEmployee = ?1")
+    public Employee findByEmail(String email);
+
+    @Query("SELECT e FROM Employee e WHERE e.resetPasswordToken = ?1")
+    public Employee findByResetPasswordToken(String token);
+
+
     //Phương thức của bin a hậu đừng xóa nha
     @Query(value = "select id_employee, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n" +
             "user.id_user,user.username, user.password, role.id_role,role.name_role\n" +
@@ -46,3 +56,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
             "            where user.id_user=?1", nativeQuery = true)
     Employee findEmployeeById_User(Long idUser);
 }
+
+
+
+
