@@ -9,9 +9,12 @@ import org.springframework.http.ResponseEntity;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import projecta07.dto.FeedbackDTO;
 import projecta07.model.Feedback;
-import projecta07.service.impl.FeedbackService;
+import projecta07.service.IFeedbackService;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,7 +22,7 @@ import java.util.Optional;
 public class FeedbackController {
 
     @Autowired
-    private FeedbackService feedbackService;
+    private IFeedbackService feedbackService;
 
     @GetMapping("manager/api/feedback")
     public ResponseEntity<Iterable<Feedback>> findAllFeedback(@RequestParam int index) {
@@ -72,13 +75,71 @@ public class FeedbackController {
 
     @PostMapping("api/feedback/createFeedback")
     public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
-        String codeFeedback = "FB-" + Math.floor(Math.random()* 999);
-        feedback.setCodeFeedback(codeFeedback);
-        feedback.setDateFeedback(LocalDate.now());
-        if (bindingResult.hasFieldErrors()) {
+        Feedback feedbackSaved = new Feedback();
+        String codeFeedback = "FB-" + Math.floor(Math.random() * 999);
+        feedbackSaved.setCodeFeedback(codeFeedback);
+        feedbackSaved.setDateFeedback(LocalDate.now());
+        feedbackSaved.setNamePeopleFeedback(feedback.getNamePeopleFeedback());
+        feedbackSaved.setImageFeedback(feedback.getImageFeedback());
+        feedbackSaved.setEmailPeopleFeedback(feedback.getEmailPeopleFeedback());
+
+        /* Danh sách từ loại bỏ */
+        List<String> matches = Arrays.asList("đm", "vãi", "ngu" , "gớm", "xấu");
+        String feedbackEdit = feedback.getContentFeedback().toLowerCase();
+
+        String star = "**";
+
+        char contentFeedbackAr[] = feedbackEdit.toCharArray();
+        int lenContentFeedback = contentFeedbackAr.length;
+        int index = 0;
+        for (int i = 0; i < lenContentFeedback; i++)
+        {
+            int j;
+            for (j = 0; j < i; j++)
+            {
+                /* Nếu giống nhau thì bỏ qua */
+                if (contentFeedbackAr[i] == contentFeedbackAr[j] && contentFeedbackAr[i] == contentFeedbackAr[j+2])
+                {
+                    break;
+                }
+            }
+            if (j == i)
+            {
+                contentFeedbackAr[index++] = contentFeedbackAr[i];
+            }
+        }
+
+        /* Lấy content sau khi cắt */
+        String contentAfterCut = String.valueOf(Arrays.copyOf(contentFeedbackAr, index));
+
+        /* Cắt dấu cách */
+        String[] arStr = contentAfterCut.split(",|-|\\.| ");
+
+        String result = "";
+
+        /* Lấy độ dài lớn nhất */
+        int maxLength = Math.max(arStr.length, matches.size());
+
+        /* Xóa từ */
+        for (int i = 0; i < maxLength-1; i++) {
+            if (arStr.length == i) {
+                break;
+            } else {
+                if(matches.contains(arStr[i])) {
+                    arStr[i] = star;
+                    result += arStr[i] + " ";
+                }
+                result += arStr[i] + " ";
+            }
+        }
+
+        feedbackSaved.setContentFeedback(result);
+
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        feedbackService.saveFeedback(feedback);
+
+        feedbackService.saveFeedback(feedbackSaved);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
