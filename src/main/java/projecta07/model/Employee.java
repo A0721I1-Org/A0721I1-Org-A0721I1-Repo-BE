@@ -19,7 +19,7 @@ public class Employee {
 
     @Column(name = "name_employee")
     @NotEmpty(message = "không được để trống")
-    @Pattern(regexp = "^[A-Za-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ' ]+$",message = "sai dinh dang")
+    @Pattern(regexp = "^[A-Za-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ' ]+$",message = "ho va ten khong chua so va ki tu dac biet")
     private String nameEmployee;
 
 
