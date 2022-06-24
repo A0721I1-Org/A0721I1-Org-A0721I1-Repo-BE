@@ -56,37 +56,71 @@ public class FeedbackController {
 
     @PostMapping("api/feedback/createFeedback")
     public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
-        FeedbackDTO feedbackDTO = new FeedbackDTO();
+        Feedback feedbackSaved = new Feedback();
         String codeFeedback = "FB-" + Math.floor(Math.random() * 999);
-        feedback.setCodeFeedback(codeFeedback);
-        feedback.setDateFeedback(LocalDate.now());
+        feedbackSaved.setCodeFeedback(codeFeedback);
+        feedbackSaved.setDateFeedback(LocalDate.now());
+        feedbackSaved.setNamePeopleFeedback(feedback.getNamePeopleFeedback());
+        feedbackSaved.setImageFeedback(feedback.getImageFeedback());
+        feedbackSaved.setEmailPeopleFeedback(feedback.getEmailPeopleFeedback());
 
-        String[] swearing = {"dm", "vãi", "gớm", "xấu"};
-        List<String> matches = Arrays.asList("dm", "vãi", "gớm", "xấu");
-        String feedbackEdit = feedback.getContentFeedback();
+        /* Danh sách từ loại bỏ */
+        List<String> matches = Arrays.asList("đm", "vãi", "ngu" , "gớm", "xấu");
+        String feedbackEdit = feedback.getContentFeedback().toLowerCase();
 
         String star = "**";
-        String result = "";
 
-        String[] arStr = feedbackEdit.split("-|\\.| ");
-
-        int minLength = Math.min(arStr.length, matches.size());
-
-        for (int i = 0; i < arStr.length; i++) {
-            if (matches.contains(arStr[i])) {
-                arStr[i] = star;
-                result += arStr[i];
+        char contentFeedbackAr[] = feedbackEdit.toCharArray();
+        int lenContentFeedback = contentFeedbackAr.length;
+        int index = 0;
+        for (int i = 0; i < lenContentFeedback; i++)
+        {
+            int j;
+            for (j = 0; j < i; j++)
+            {
+                /* Nếu giống nhau thì bỏ qua */
+                if (contentFeedbackAr[i] == contentFeedbackAr[j] && contentFeedbackAr[i] == contentFeedbackAr[j+2])
+                {
+                    break;
+                }
+            }
+            if (j == i)
+            {
+                contentFeedbackAr[index++] = contentFeedbackAr[i];
             }
         }
 
-        feedback.setContentFeedback(result);
-        feedbackDTO.validate(feedback, bindingResult);
+        /* Lấy content sau khi cắt */
+        String contentAfterCut = String.valueOf(Arrays.copyOf(contentFeedbackAr, index));
 
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<Feedback>((Feedback) bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        /* Cắt dấu cách */
+        String[] arStr = contentAfterCut.split("-|\\.| ");
+
+        String result = "";
+
+        /* Lấy độ dài lớn nhất */
+        int maxLength = Math.max(arStr.length, matches.size());
+
+        /* Xóa từ */
+        for (int i = 0; i < maxLength-1; i++) {
+            if (arStr.length == i) {
+                break;
+            } else {
+                if(matches.contains(arStr[i])) {
+                    arStr[i] = star;
+                    result += arStr[i] + " ";
+                }
+                result += arStr[i] + " ";
+            }
         }
 
-        feedbackService.saveFeedback(feedback);
+        feedbackSaved.setContentFeedback(result);
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        feedbackService.saveFeedback(feedbackSaved);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
