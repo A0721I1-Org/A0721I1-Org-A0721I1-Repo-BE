@@ -62,6 +62,8 @@ public class TableController {
                                                   @PathVariable("idTable") Long idTable) {
         Employee employee = iEmployeeService.findEmployeeByUser(idUser);
         Table table = iTableService.findTableById(idTable);
+        table.setEmptyTable(false);
+        iTableService.save(table);
 
         Order order = new Order();
         /* lấy order trả về sau khi lưu */
