@@ -5,13 +5,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import javax.validation.Valid;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.dto.FeedbackDTO;
 import projecta07.model.Feedback;
 import projecta07.service.IFeedbackService;
+
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,17 +32,17 @@ public class FeedbackController {
         if (feedbackList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(feedbackList,HttpStatus.OK);
+        return new ResponseEntity<>(feedbackList, HttpStatus.OK);
     }
 
     @GetMapping("manager/api/feedback/search/{date}")
-    public ResponseEntity<Iterable<Feedback>> findAllFeedbackByDateFeedback( @PathVariable String date,Pageable pageable)  {
-        String dateSearch = date.replace("-","/");
+    public ResponseEntity<Iterable<Feedback>> findAllFeedbackByDateFeedback(@PathVariable String date, Pageable pageable) {
+        String dateSearch = date.replace("-", "/");
         Page<Feedback> feedbackListByDate = feedbackService.findAllFeedbackByDateFeedback(dateSearch, pageable);
         if (feedbackListByDate.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(feedbackListByDate,HttpStatus.OK);
+        return new ResponseEntity<>(feedbackListByDate, HttpStatus.OK);
     }
 
     @GetMapping("manager/api/feedback/view/{id}")
@@ -52,17 +57,26 @@ public class FeedbackController {
     @PostMapping("api/feedback/createFeedback")
     public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
-        String codeFeedback = "FB-" + Math.floor(Math.random()* 999);
+        String codeFeedback = "FB-" + Math.floor(Math.random() * 999);
         feedback.setCodeFeedback(codeFeedback);
         feedback.setDateFeedback(LocalDate.now());
 
         String[] swearing = {"dm", "vãi", "gớm", "xấu"};
+        List<String> matches = Arrays.asList("dm", "vãi", "gớm", "xấu");
         String feedbackEdit = feedback.getContentFeedback();
+
         String star = "**";
         String result = "";
 
-        for (int i = 0; i < swearing.length; i ++) {
-            result = feedbackEdit.replaceAll(swearing[i], star);
+        String[] arStr = feedbackEdit.split("-|\\.| ");
+
+        int minLength = Math.min(arStr.length, matches.size());
+
+        for (int i = 0; i < arStr.length; i++) {
+            if (matches.contains(arStr[i])) {
+                arStr[i] = star;
+                result += arStr[i];
+            }
         }
 
         feedback.setContentFeedback(result);
