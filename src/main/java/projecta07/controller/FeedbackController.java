@@ -57,30 +57,21 @@ public class FeedbackController {
     @PostMapping("api/feedback/createFeedback")
     public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback, BindingResult bindingResult) {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
-        String codeFeedback = "FB-" + Math.floor(Math.random() * 999);
+        String codeFeedback = "FB-" + Math.floor(Math.random()* 999);
         feedback.setCodeFeedback(codeFeedback);
         feedback.setDateFeedback(LocalDate.now());
 
-//        String[] swearing = {"dm", "vãi", "gớm", "xấu"};
-//        List<String> matches = Arrays.asList("dm", "vãi", "gớm", "xấu");
-//        String feedbackEdit = feedback.getContentFeedback();
-//
-//        String star = "**";
-//        String result = "";
-//
-//        String[] arStr = feedbackEdit.split("-|\\.| ");
-//
-//        int minLength = Math.min(arStr.length, matches.size());
-//
-//        for (int i = 0; i < arStr.length; i++) {
-//            if (matches.contains(arStr[i])) {
-//                arStr[i] = star;
-//                result += arStr[i];
-//            }
-//        }
-//
-//        feedback.setContentFeedback(result);
-//        feedbackDTO.validate(feedback, bindingResult);
+        String[] swearing = {"dm", "vãi", "gớm", "xấu"};
+        String feedbackEdit = feedback.getContentFeedback();
+        String star = "**";
+        String result = "";
+
+        for (int i = 0; i < swearing.length; i ++) {
+            result = feedbackEdit.replaceAll(swearing[i], star);
+        }
+
+        feedback.setContentFeedback(result);
+        feedbackDTO.validate(feedback, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<Feedback>((Feedback) bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
