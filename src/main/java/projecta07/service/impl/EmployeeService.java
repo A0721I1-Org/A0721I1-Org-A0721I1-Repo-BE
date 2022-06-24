@@ -17,10 +17,21 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     private IEmployeeRepository employeeRepository;
 
+    public Employee getEmployeeById(Long id) {
+        return this.employeeRepository.findById(id).orElse(null);
+    }
+
     @Override
     public Employee findEmployeeByIdUser(Long IdUser) {
         return employeeRepository.findEmployeeByIdUser(IdUser);
     }
+
+    //phương thức của bin
+    @Override
+    public Employee findEmployeeByUser(Long idUser) {
+        return employeeRepository.findEmployeeById_User(idUser);
+    }
+    //
 
     @Override
     public List<Employee> findAll() {

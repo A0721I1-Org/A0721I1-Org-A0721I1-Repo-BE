@@ -28,5 +28,4 @@ public interface ITableRepository extends JpaRepository<Table,Long> {
 
     @Query(value = "select id_table, code_table, empty_table, id_status from `Table` where empty_table  = :emptyTable", nativeQuery = true)
     List<Table> findAllByEmptyTable(Boolean emptyTable);
-
 }

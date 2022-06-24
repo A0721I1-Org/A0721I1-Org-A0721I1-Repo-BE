@@ -11,8 +11,17 @@ import java.util.List;
 @Service
 public class TableService implements ITableService {
     @Autowired
+    private ITableRepository tableRepository;
+
     private ITableRepository iTableRepository;
 
+    public Table saveTable(Table table) {
+        return tableRepository.save(table);
+    }
+
+    public Table getTableById(Long id) {
+        return tableRepository.findById(id).orElse(null);
+    }
 
     @Override
     public Table save(Table table) {
@@ -55,5 +64,4 @@ public class TableService implements ITableService {
     public List<Table> findAllByEmptyTable(Boolean emptyTable) {
         return iTableRepository.findAllByEmptyTable(emptyTable);
     }
-
 }
