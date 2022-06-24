@@ -24,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-//@RequestMapping("/api/account")
+@RequestMapping("/api/account")
 public class ForgotPasswordController {
     @Autowired
     private IEmployeeService employeeService;
@@ -32,7 +32,7 @@ public class ForgotPasswordController {
     @Autowired
     private JavaMailSender mailSender;
 
-    @PostMapping("/api/account/forgot_password")
+    @PostMapping("/forgot_password")
     public ResponseEntity<String> processForgotPasswordForm(@RequestBody String comingEmail) {
         String message = "";
         String email = comingEmail;
