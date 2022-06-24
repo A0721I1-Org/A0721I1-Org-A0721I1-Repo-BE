@@ -27,10 +27,14 @@ public class Order {
     @JoinColumn(name = "id_table", nullable = false)
     private Table table;
 
-    @JsonIgnore
-    @ManyToOne
+
+//    @JsonIgnore
+    @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
+
+//    @Column(name = "status")
+//    private String status;
 
     @OneToMany(mappedBy = "order")
     @JsonBackReference(value = "order_ordeDetail")
@@ -77,6 +81,7 @@ public class Order {
     public Order(Long idOrder, LocalDate dateOrder, Double totalOrder) {
 
     }
+
     public Boolean getStatusOrder() {
         return statusOrder;
     }

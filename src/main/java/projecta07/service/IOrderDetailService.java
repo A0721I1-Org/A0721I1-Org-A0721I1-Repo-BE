@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderDetailService {
+
+    List<OrderDetail> findByIdOrder(Long id);
+
     List<OrderDetail> getOrderDetailByOrderId(Long id);
 
     void deleteOrderDetailInTable(Long id);
@@ -19,4 +22,5 @@ public interface IOrderDetailService {
     void delete(Long id);
 
     List<OrderDetail> findAllWithList();
+
 }

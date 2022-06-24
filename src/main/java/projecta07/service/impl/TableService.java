@@ -1,5 +1,6 @@
 package projecta07.service.impl;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projecta07.model.Table;
@@ -13,10 +14,11 @@ public class TableService implements ITableService {
     @Autowired
     private ITableRepository tableRepository;
 
+    @Autowired
     private ITableRepository iTableRepository;
 
     public Table saveTable(Table table) {
-        return tableRepository.save(table);
+        return this.tableRepository.save(table);
     }
 
     public Table getTableById(Long id) {
@@ -25,23 +27,23 @@ public class TableService implements ITableService {
 
     @Override
     public Table save(Table table) {
-        return iTableRepository.save(table);
+        return tableRepository.save(table);
     }
 
 
     @Override
     public List<Table> findAll() {
-        return iTableRepository.findAll();
+        return tableRepository.findAll();
     }
 
     @Override
     public void deleteTableById(Long id) {
-        iTableRepository.deleteById(id);
+        tableRepository.deleteById(id);
     }
 
     @Override
     public Table findTableById(Long id) {
-        return iTableRepository.findTableById(id);
+        return tableRepository.findTableById(id);
     }
 
 

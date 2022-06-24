@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,7 @@ public class Employee {
 
     @Column(name = "name_employee")
     @NotEmpty(message = "không được để trống")
+    @Pattern(regexp = "^[A-Za-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ' ]+$",message = "sai dinh dang")
     private String nameEmployee;
 
     @Column(name = "address_employee")
@@ -26,6 +28,8 @@ public class Employee {
 
     @Column(name = "phone_employee")
     @NotEmpty(message = "không được để trống")
+    @Pattern(regexp = "^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$",message = "sai dinh dang")
+
     private String phoneEmployee;
 
     @Column(name = "gender_employee")
@@ -55,9 +59,24 @@ public class Employee {
     @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
-    public Employee() {
-        //khoi tao constructor khong tham so
+
+    public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user, Position position, List<Order> orderList) {
+        this.idEmployee = idEmployee;
+        this.nameEmployee = nameEmployee;
+        this.addressEmployee = addressEmployee;
+        this.phoneEmployee = phoneEmployee;
+        this.genderEmployee = genderEmployee;
+        this.dateOfBirthEmployee = dateOfBirthEmployee;
+        this.salaryEmployee = salaryEmployee;
+        this.user = user;
+        this.position = position;
+        this.orderList = orderList;
     }
+
+    public Employee() {
+
+    }
+
     public Long getIdEmployee() {
         return idEmployee;
     }

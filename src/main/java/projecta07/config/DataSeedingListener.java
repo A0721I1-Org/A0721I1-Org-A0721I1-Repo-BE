@@ -37,17 +37,17 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             roleRepository.save(new Role("ROLE_BLOCK"));
         }
 
-//        if (userRepository.findByUsername("manager102") == null){
-//            User manager = new User();
-//            manager.setUsername("manager102");
-//            manager.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-//            HashSet<Role> roles = new HashSet<>();
-//            roles.add(roleRepository.findByNameRole("ROLE_MANAGER"));
-//            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
-//            manager.setRoles(roles);
-//            userRepository.save(manager);
-//        }
-////
+        if (userRepository.findByUsername("manager102") == null){
+            User manager = new User();
+            manager.setUsername("manager102");
+            manager.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
+            HashSet<Role> roles = new HashSet<>();
+            roles.add(roleRepository.findByNameRole("ROLE_MANAGER"));
+            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
+            manager.setRoles(roles);
+            userRepository.save(manager);
+        }
+//
 ////        //Them Nhân viên
 //        if (userRepository.findByUsername("staff1") == null){
 //            User staff = new User();
