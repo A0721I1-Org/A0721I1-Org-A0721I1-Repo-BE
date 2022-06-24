@@ -1,6 +1,11 @@
 package projecta07.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Entity
 public class Feedback {
@@ -13,14 +18,21 @@ public class Feedback {
     private String codeFeedback;
 
     @Column(name = "date_feedback")
-    private String dateFeedback;
+    private LocalDate dateFeedback;
 
+    @NotBlank
+    @Size(min = 3, max = 100)
     @Column(name = "content_feedback")
     private String contentFeedback;
 
+    @Pattern(regexp = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W|_]+", message = "Định dạng tên không đúng")
+    @Size(min = 3, max = 50)
+    @NotBlank
     @Column(name = "name_people_feedback")
     private String namePeopleFeedback;
 
+    @NotBlank
+    @Email
     @Column(name = "email_people_feedback")
     private String emailPeopleFeedback;
 
@@ -30,10 +42,16 @@ public class Feedback {
     public Feedback() {
     }
 
+    public Feedback(String contentFeedback, String namePeopleFeedback, String emailPeopleFeedback, String imageFeedback) {
+        this.contentFeedback = contentFeedback;
+        this.namePeopleFeedback = namePeopleFeedback;
+        this.emailPeopleFeedback = emailPeopleFeedback;
+        this.imageFeedback = imageFeedback;
+    }
+
     public Feedback(Long idFeedback, String codeFeedback, String dateFeedback, String contentFeedback, String namePeopleFeedback, String emailPeopleFeedback, String imageFeedback) {
         this.idFeedback = idFeedback;
         this.codeFeedback = codeFeedback;
-        this.dateFeedback = dateFeedback;
         this.contentFeedback = contentFeedback;
         this.namePeopleFeedback = namePeopleFeedback;
         this.emailPeopleFeedback = emailPeopleFeedback;
@@ -56,11 +74,11 @@ public class Feedback {
         this.codeFeedback = codeFeedback;
     }
 
-    public String getDateFeedback() {
+    public LocalDate getDateFeedback() {
         return dateFeedback;
     }
 
-    public void setDateFeedback(String dateFeedback) {
+    public void setDateFeedback(LocalDate dateFeedback) {
         this.dateFeedback = dateFeedback;
     }
 

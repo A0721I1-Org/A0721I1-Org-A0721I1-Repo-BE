@@ -19,10 +19,10 @@ public class Table {
     private Boolean emptyTable;
 
     @OneToMany(mappedBy = "table")
-    @JsonBackReference
+    @JsonBackReference(value = "table_order")
     private List<Order> orderList;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Status.class)
     @JoinColumn(name = "id_status", nullable = false)
     private Status status;
 
@@ -38,9 +38,7 @@ public class Table {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+
 
     public Table() {
     }
@@ -73,5 +71,9 @@ public class Table {
 
     public void setEmptyTable(Boolean emptyTable) {
         this.emptyTable = emptyTable;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

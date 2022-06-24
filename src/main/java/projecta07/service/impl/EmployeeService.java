@@ -20,10 +20,22 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     private IEmployeeRepository employeeRepository;
 
+    public Employee getEmployeeById(Long id) {
+        return this.employeeRepository.findById(id).orElse(null);
+    }
+
     @Override
     public Employee findEmployeeByIdUser(Long IdUser) {
         return employeeRepository.findEmployeeByIdUser(IdUser);
     }
+
+
+    //phương thức của bin
+    @Override
+    public Employee findEmployeeByUser(Long idUser) {
+        return employeeRepository.findEmployeeById_User(idUser);
+    }
+    //
 
     @Override
     public List<Employee> findAll() {
@@ -58,42 +70,7 @@ public class EmployeeService implements IEmployeeService {
     public Optional<Employee> findByIdEmployee(Long id) {
         return employeeRepository.findById(id);
     }
-    // Team Employee
 
-    @Override
-    public List<Employee> getAllEmployee() {
-        return employeeRepository.findAll();
-    }
-
-    @Override
-    public Optional<Employee> getEmployeeById(Long id) {
-        return employeeRepository.findById(id);
-    }
-
-    @Override
-    public Employee addEmployee(Employee employee) {
-        employeeRepository.save(employee);
-        return employee;
-    }
-
-    @Override
-    public boolean updateEmployee(Employee employee) {
-        if (employee != null) {
-            employeeRepository.save(employee);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean deleteEmployee(Long id) {
-
-        if (getEmployeeById(id) != null) {
-            employeeRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
 
     //BachLT: Phuc hoi mat khau
     // BachLT1 Ham kiem tra email nguoi dung
