@@ -11,7 +11,7 @@ public class User {
     @Column(name = "id_user")
     private Long idUser;
 
-    @Column(name = "username")
+    @Column(name = "username",unique = true)
     private String username;
 
     @Column(name = "password")
@@ -23,19 +23,11 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-
             name = "user_role",
             joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_role")
     )
     private Set<Role> roles;
-
-//    @OneToMany(mappedBy = "user")
-//    @JsonBackReference(value = "user_userRole")
-
-
-//    @OneToMany(mappedBy = "user")
-//    @JsonBackReference(value = "user_userRole")
 
 
     public Employee getEmployee() {
