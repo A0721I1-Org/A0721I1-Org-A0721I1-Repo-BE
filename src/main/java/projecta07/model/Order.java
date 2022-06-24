@@ -81,6 +81,7 @@ public class Order {
     public Order(Long idOrder, LocalDate dateOrder, Double totalOrder) {
 
     }
+
     public Boolean getStatusOrder() {
         return statusOrder;
     }

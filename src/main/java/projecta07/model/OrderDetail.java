@@ -19,7 +19,6 @@ public class OrderDetail {
 
 
     @Min(value = 1, message = "Số lượng tối thiểu là 1!")
-    @Max(value = 10, message = "Số lượng tối đà là 10!")
     @Column(name = "number_product")
     private int numberProduct;
 

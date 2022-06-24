@@ -87,6 +87,12 @@ public class ProductService implements IProductService {
         return iProductRepository.findMostAll();
     }
 
+    @Override
+    public void subQuantity(Long idProduct, Integer quantity) {
+        iProductRepository.subQuantity(idProduct, quantity);
+    }
+
+
     /* Get products with pagination */
     public List<Product> getProductsWithPagination(int currentPage, int size) {
         return this.productRepository.getProductsWithPagination(currentPage, size);
