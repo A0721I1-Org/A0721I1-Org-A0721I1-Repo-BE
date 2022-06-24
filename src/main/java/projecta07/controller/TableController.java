@@ -64,6 +64,7 @@ public class TableController {
         Table table = iTableService.findTableById(idTable);
         table.setEmptyTable(false);
         iTableService.save(table);
+
         Order order = new Order();
         /* lấy order trả về sau khi lưu */
         Order ordered;

@@ -1,10 +1,9 @@
 package projecta07.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Entity
@@ -20,18 +19,18 @@ public class Feedback {
     @Column(name = "date_feedback")
     private LocalDate dateFeedback;
 
-    @NotBlank
-    @Size(min = 3, max = 100)
+    @NotEmpty(message = "cannot be empty")
+    @Length(min = 3 , max = 50 , message = "must be between 3 and 50")
     @Column(name = "content_feedback")
     private String contentFeedback;
 
+    @NotEmpty(message = "cannot be empty")
     @Pattern(regexp = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W|_]+", message = "Định dạng tên không đúng")
-    @Size(min = 3, max = 50)
-    @NotBlank
+    @Length(min = 3 , max = 50 , message = "must be between 3 and 50")
     @Column(name = "name_people_feedback")
     private String namePeopleFeedback;
 
-    @NotBlank
+    @NotEmpty
     @Email
     @Column(name = "email_people_feedback")
     private String emailPeopleFeedback;
