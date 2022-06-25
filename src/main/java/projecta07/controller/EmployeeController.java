@@ -141,19 +141,19 @@ public class EmployeeController {
     }
 
     @PostMapping("/change_password")
-    public ResponseEntity<String> processChangePassword(@RequestParam(value="userName", required = false) String userName,
+    public ResponseEntity<String> processChangePassword(@RequestParam(value="userId", required = false) Long userId,
                                                         @RequestParam(value="password", required = false) String password,
                                                         @RequestParam(value="oldPassword", required = false) String oldPassword) {
-        User user = userService.getUserByUsername(userName);
+        Optional<User> user = userService.findById(userId);
         String message = "";
-        if (user == null) {
+        if (!user.isPresent()) {
             message = "User khong ton tai";
         } else {
             // Ma hoa password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedPassword = passwordEncoder.encode(password);
-            user.setPassword(encodedPassword);
-            userService.save(user);
+            user.get().setPassword(encodedPassword);
+            userService.save(user.get());
             message = "Đã thay đổi password thành công";
         }
         return new ResponseEntity<String>(message, HttpStatus.OK);
