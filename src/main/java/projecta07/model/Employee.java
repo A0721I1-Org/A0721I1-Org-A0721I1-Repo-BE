@@ -19,9 +19,9 @@ public class Employee {
 
     @Column(name = "name_employee")
     @NotEmpty(message = "không được để trống")
-    @Pattern(regexp = "[^([a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)((\\s{1}[a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$]",message = "sai dinh dang")
-
+    @Pattern(regexp = "^[A-Za-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ' ]+$",message = "ho va ten khong chua so va ki tu dac biet")
     private String nameEmployee;
+
 
     @Column(name = "address_employee")
     @NotEmpty(message = "không được để trống")
@@ -29,7 +29,7 @@ public class Employee {
 
     @Column(name = "phone_employee")
     @NotEmpty(message = "không được để trống")
-    @Pattern(regexp = "[^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$]",message = "sai dinh dang")
+    @Pattern(regexp = "^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$",message = "sai dinh dang")
 
     private String phoneEmployee;
 
@@ -46,6 +46,13 @@ public class Employee {
     @Min(value = 100000, message = "mức lương thấp nhất là 100,000")
     private Double salaryEmployee;
 
+    @Column(name = "email_employee")
+    private String emailEmployee;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
 //    @NotEmpty(message = "không được để trống")
@@ -60,6 +67,8 @@ public class Employee {
     @JsonBackReference(value = "employee_orderList")
     private List<Order> orderList;
 
+    public Employee() {
+    }
 
     public Employee(Long idEmployee, String nameEmployee, String addressEmployee, String phoneEmployee, boolean genderEmployee, String dateOfBirthEmployee, Double salaryEmployee, User user, Position position, List<Order> orderList) {
         this.idEmployee = idEmployee;
@@ -72,10 +81,6 @@ public class Employee {
         this.user = user;
         this.position = position;
         this.orderList = orderList;
-    }
-
-    public Employee() {
-
     }
 
     public Long getIdEmployee() {
@@ -165,5 +170,21 @@ public class Employee {
 
     public void setSalaryEmployee(Double salaryEmployee) {
         this.salaryEmployee = salaryEmployee;
+    }
+
+    public String getEmailEmployee() {
+        return emailEmployee;
+    }
+
+    public void setEmailEmployee(String emailEmployee) {
+        this.emailEmployee = emailEmployee;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 }
