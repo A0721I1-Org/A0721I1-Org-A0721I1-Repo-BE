@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
@@ -137,5 +138,24 @@ public class EmployeeController {
         } else {
             return new ResponseEntity<>(employee, HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/change_password")
+    public ResponseEntity<String> processChangePassword(@RequestParam(value="userName", required = false) String userName,
+                                                        @RequestParam(value="password", required = false) String password,
+                                                        @RequestParam(value="oldPassword", required = false) String oldPassword) {
+        User user = userService.getUserByUsername(userName);
+        String message = "";
+        if (user == null) {
+            message = "User khong ton tai";
+        } else {
+            // Ma hoa password
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(password);
+            user.setPassword(encodedPassword);
+            userService.save(user);
+            message = "Đã thay đổi password thành công";
+        }
+        return new ResponseEntity<String>(message, HttpStatus.OK);
     }
 }
