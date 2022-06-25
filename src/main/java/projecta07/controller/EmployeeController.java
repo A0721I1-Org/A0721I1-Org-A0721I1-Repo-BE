@@ -148,18 +148,20 @@ public class EmployeeController {
         String message = "";
         if (!user.isPresent()) {
             message = "User không tồn tại";
+            return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
         } else {
             // Ma hoa password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (!passwordEncoder.matches(oldPassword, user.get().getPassword())) {
                 message = "Mật khẩu cũ không đúng";
+                return new ResponseEntity<String>(message, HttpStatus.FORBIDDEN);
             } else {
                 String encodedPassword = passwordEncoder.encode(password);
                 user.get().setPassword(encodedPassword);
                 userService.save(user.get());
                 message = "Đã thay đổi mật khẩu thành công";
+                return new ResponseEntity<String>(message, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<String>(message, HttpStatus.OK);
     }
 }
