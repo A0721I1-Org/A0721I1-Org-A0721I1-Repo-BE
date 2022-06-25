@@ -2,6 +2,7 @@ package projecta07.ultil;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+//Hoang NV
 public class EncrypPasswordUtils {
     public static String EncrypPasswordUtils(String password){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
