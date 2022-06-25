@@ -147,18 +147,17 @@ public class EmployeeController {
         Optional<User> user = userService.findById(userId);
         String message = "";
         if (!user.isPresent()) {
-            message = "User khong ton tai";
+            message = "User không tồn tại";
         } else {
             // Ma hoa password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedOldPassword = passwordEncoder.encode(oldPassword);
-            if (!user.get().getPassword().equals(encodedOldPassword)) {
-                message = "User khong ton tai";
+            if (!passwordEncoder.matches(oldPassword, user.get().getPassword())) {
+                message = "Mật khẩu cũ không đúng";
             } else {
                 String encodedPassword = passwordEncoder.encode(password);
                 user.get().setPassword(encodedPassword);
                 userService.save(user.get());
-                message = "Đã thay đổi password thành công";
+                message = "Đã thay đổi mật khẩu thành công";
             }
         }
         return new ResponseEntity<String>(message, HttpStatus.OK);
