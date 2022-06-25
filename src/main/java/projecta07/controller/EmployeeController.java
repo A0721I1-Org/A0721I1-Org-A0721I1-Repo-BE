@@ -151,10 +151,15 @@ public class EmployeeController {
         } else {
             // Ma hoa password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(password);
-            user.get().setPassword(encodedPassword);
-            userService.save(user.get());
-            message = "Đã thay đổi password thành công";
+            String encodedOldPassword = passwordEncoder.encode(oldPassword);
+            if (!user.get().getPassword().equals(encodedOldPassword)) {
+                message = "User khong ton tai";
+            } else {
+                String encodedPassword = passwordEncoder.encode(password);
+                user.get().setPassword(encodedPassword);
+                userService.save(user.get());
+                message = "Đã thay đổi password thành công";
+            }
         }
         return new ResponseEntity<String>(message, HttpStatus.OK);
     }
