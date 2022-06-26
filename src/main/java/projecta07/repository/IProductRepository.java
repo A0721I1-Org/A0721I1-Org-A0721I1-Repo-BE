@@ -53,5 +53,5 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "update product set quatity_product = quatity_product-?2 where id_product = ?1", nativeQuery = true)
     void subQuantity(Long idProduct, Integer quantity);
 
-
 }
+
