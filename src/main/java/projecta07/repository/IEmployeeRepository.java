@@ -14,7 +14,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
     Employee findEmployeeById(long id);
 
     //VinhTQ
-    @Query(value = "SELECT  id_employee, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n " +
+    @Query(value = "SELECT  id_employee,email_employee, reset_password_token, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n " +
             "user.id_user,user.username " +
             "FROM employee \n" +
             "inner join position on employee.id_position = position.id_position \n" +
@@ -25,7 +25,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
     List<Employee> searchAllEmployee(String username, String name, String phone);
 
     //HauLST
-    @Query(value = "select id_employee, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n" +
+    @Query(value = "select id_employee, email_employee, reset_password_token, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n" +
             "user.id_user,user.username, user.password, role.id_role,role.name_role\n" +
             "            from employee \n" +
             "            inner join position on employee.id_position = position.id_position\n" +
@@ -46,7 +46,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
 
 
     //Phương thức của bin a hậu đừng xóa nha
-    @Query(value = "select id_employee, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n" +
+    @Query(value = "select id_employee, name_employee, email_employee, reset_password_token, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n" +
             "user.id_user,user.username, user.password, role.id_role,role.name_role\n" +
             "            from employee \n" +
             "            inner join position on employee.id_position = position.id_position\n" +
