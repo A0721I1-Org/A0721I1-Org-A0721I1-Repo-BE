@@ -43,7 +43,6 @@ public class HomeController {
         return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
     }
 
-
 //    @GetMapping("/home")
 //    public ResponseEntity<List<Product>> search(@RequestParam(defaultValue = "")String name){
 //        List<Product> products=productService.Search(name);

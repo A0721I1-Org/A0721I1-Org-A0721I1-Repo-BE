@@ -28,4 +28,9 @@ public interface IIncomeService {
     String sumTotalOrderMonth();
 
     String sumTontalOrderYear();
+
+    String countProductCafe();
+    String countProductTea();
+    String countProductCake();
+    String countProductOther();
 }
