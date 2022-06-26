@@ -1,9 +1,11 @@
 package projecta07.repository;
 
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import projecta07.model.Status;
 import projecta07.model.Table;
 
 import java.util.List;
@@ -13,15 +15,16 @@ public interface ITableRepository extends JpaRepository<Table,Long> {
     @Query(value = "select * from `table` where `table`.id_table = ?1" , nativeQuery = true)
     Table findTableById(Long id);
 
-    //HuyNN search and paging query method
-    @Query(value = "select id_table, code_table, empty_table, id_status from `Table`", nativeQuery = true)
-    List<Table> findAll();
+    // HuyNN searh and paging method
+    Page<Table> findAll(Pageable pageable);
 
-    @Query(value = "select id_table, code_table, empty_table, id_status from `Table` where id_status = :idStatus and empty_table = :emptyTable", nativeQuery = true)
-    List<Table> findAllByStatusAndEmptyTable(Long idStatus, Boolean emptyTable);
+    Page<Table> findAllByCodeTableContaining(String codeTable, Pageable pageable);
 
-    @Query(value = "select id_table, code_table, empty_table, id_status from `Table` where code_table like concat('%' ,:codeTable,'%')", nativeQuery = true)
-    List<Table> findByCodeTable(String codeTable);
+    Page<Table> findAllByEmptyTable(Boolean emptyTable, Pageable pageable);
+
+    Page<Table> findAllByStatus(Status status, Pageable pageable);
+
+    Page<Table> findAllByEmptyTableAndStatus(Boolean emptyTable, Status status, Pageable pageable);
 
     @Query(value = "select id_table, code_table, empty_table, id_status from `Table` where id_status = :idStatus", nativeQuery = true)
     List<Table> findAllByStatus(Long idStatus);
