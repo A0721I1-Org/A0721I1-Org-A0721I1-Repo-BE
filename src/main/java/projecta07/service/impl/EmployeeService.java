@@ -32,7 +32,6 @@ public class EmployeeService implements IEmployeeService {
     public Employee findEmployeeByUser(Long idUser) {
         return employeeRepository.findEmployeeById_User(idUser);
     }
-    //
 
     @Override
     public List<Employee> findAll() {
@@ -55,8 +54,8 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public List<Employee> searchEmployee(String username, String name, String phone) {
-        return employeeRepository.searchAllEmployee(username, name, phone);
+    public Page<Employee> searchEmployee(String username, String name, String phone,Pageable pageable) {
+        return employeeRepository.searchAllEmployee(username, name, phone, pageable);
     }
 
     public void saveEmployee(Employee employee) {
