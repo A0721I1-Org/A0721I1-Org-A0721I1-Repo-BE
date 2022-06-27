@@ -57,7 +57,7 @@ public class EmployeeController {
     @GetMapping("/search/{username}/{name}/{phone}")
     public ResponseEntity<Page<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone
             , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(page, 6);
+        Pageable pageable = PageRequest.of(page, 10);
         if (username.equals("null")) {
             username = "";
         }
