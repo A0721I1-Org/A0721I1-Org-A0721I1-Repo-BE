@@ -13,8 +13,9 @@ import projecta07.service.impl.TypeProductService;
 import java.util.List;
 
 @RestController
-@RequestMapping ("/")
-@CrossOrigin(origins = "http://localhost:4200/")
+@RequestMapping ("")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class HomeController {
     @Autowired
     private ProductService productService;
@@ -25,7 +26,7 @@ public class HomeController {
     @Autowired
     private OrderDetailService orderDetailService;
 
-    @GetMapping("find")
+    @GetMapping("/find")
     public ResponseEntity<List<Product>> findAllProductNew() {
         List<Product> products = productService.findAllProductNew();
         if (products.isEmpty()) {
@@ -33,7 +34,7 @@ public class HomeController {
         }
             return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
         }
-    @GetMapping("cart")
+    @GetMapping("/cart")
     public ResponseEntity<List<Product>> findMostAll() {
         List<Product> products = productService.findMostAll();
         if (products.isEmpty()) {
