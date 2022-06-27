@@ -18,7 +18,6 @@ public class Role {
     @Column(name = "name_role")
     private String nameRole;
 
-
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<User> users;

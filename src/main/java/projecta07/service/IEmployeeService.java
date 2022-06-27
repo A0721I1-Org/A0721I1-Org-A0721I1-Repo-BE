@@ -21,13 +21,15 @@ public interface IEmployeeService {
     public Employee getByResetPasswordToken(String token);
     //Hàm để đỏi mật khẩu cá nhân.
     public void updatePassword(Employee employee, String newPassword);
-//----------------------------
+
     Employee findEmployeeByIdUser(Long IdUser);
 
     //phương thức của bin
     Employee findEmployeeByUser(Long idUser);
-    //
+
     List<Employee> findAll();
+
+    Employee getEmployeeById(Long id);
 
     Page<Employee> findAllPage(Pageable pageable);
 
@@ -35,7 +37,7 @@ public interface IEmployeeService {
 
     void deleteEmployee(long id);
 
-    List<Employee> searchEmployee(String username, String name, String phone);
+    Page<Employee> searchEmployee(String username, String name, String phone,Pageable pageable);
 
     void saveEmployee(Employee employee);
 
