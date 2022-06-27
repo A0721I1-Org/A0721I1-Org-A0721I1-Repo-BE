@@ -26,15 +26,15 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        if (roleRepository.findByNameRole("MANAGER")==null){
-            roleRepository.save(new Role("MANAGER"));
+        if (roleRepository.findByNameRole("ROLE_MANAGER")==null){
+            roleRepository.save(new Role("ROLE_MANAGER"));
         }
 
-        if (roleRepository.findByNameRole("STAFF")==null){
-            roleRepository.save(new Role("STAFF"));
+        if (roleRepository.findByNameRole("ROLE_STAFF")==null){
+            roleRepository.save(new Role("ROLE_STAFF"));
         }
-        if (roleRepository.findByNameRole("BLOCK")==null){
-            roleRepository.save(new Role("BLOCK"));
+        if (roleRepository.findByNameRole("ROLE_BLOCK")==null){
+            roleRepository.save(new Role("ROLE_BLOCK"));
         }
 
         if (userRepository.findByUsername("manager102") == null){
@@ -42,8 +42,8 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             manager.setUsername("manager102");
             manager.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
             HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByNameRole("MANAGER"));
-            roles.add(roleRepository.findByNameRole("STAFF"));
+            roles.add(roleRepository.findByNameRole("ROLE_MANAGER"));
+            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
             manager.setRoles(roles);
             userRepository.save(manager);
         }
@@ -78,47 +78,15 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 //            staff.setRoles(roles);
 //            userRepository.save(staff);
 //        }
-
 //
-//        //Them Nhân viên
-        if (userRepository.findByUsername("staff1") == null){
-            User staff = new User();
-            staff.setUsername("staff1");
-            staff.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByNameRole("STAFF"));
-            staff.setRoles(roles);
-            userRepository.save(staff);
-        }
-
-        if (userRepository.findByUsername("staff2") == null){
-            User staff = new User();
-            staff.setUsername("staff2");
-            staff.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByNameRole("STAFF"));
-            staff.setRoles(roles);
-            userRepository.save(staff);
-        }
-
-        if (userRepository.findByUsername("staff3") == null){
-            User staff = new User();
-            staff.setUsername("staff3");
-            staff.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByNameRole("STAFF"));
-            staff.setRoles(roles);
-            userRepository.save(staff);
-        }
-
-        if (userRepository.findByUsername("staff4") == null){
-            User staff = new User();
-            staff.setUsername("staff4");
-            staff.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByNameRole("STAFF"));
-            staff.setRoles(roles);
-            userRepository.save(staff);
-        }
+//        if (userRepository.findByUsername("staff4") == null){
+//            User staff = new User();
+//            staff.setUsername("staff4");
+//            staff.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
+//            HashSet<Role> roles = new HashSet<>();
+//            roles.add(roleRepository.findByNameRole("ROLE_STAFF"));
+//            staff.setRoles(roles);
+//            userRepository.save(staff);
+//        }
     }
 }
