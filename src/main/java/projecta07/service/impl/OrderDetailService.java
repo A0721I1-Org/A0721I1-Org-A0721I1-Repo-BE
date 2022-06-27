@@ -40,6 +40,7 @@ public class OrderDetailService implements IOrderDetailService {
         return orderDetailRepository.findAll();
     }
 
+
     @Override
     public Optional<OrderDetail> findById(Long id) {
         return orderDetailRepository.findById(id);
@@ -65,4 +66,3 @@ public class OrderDetailService implements IOrderDetailService {
         this.orderDetailRepository.deleteById(orderDetailId);
     }
 }
-

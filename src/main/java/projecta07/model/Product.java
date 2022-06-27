@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -36,6 +37,8 @@ public class Product {
     @Column(name = "description_product")
 
     private String descriptionProduct;
+    @Column(name = "create_at")
+    private Date createAt;
 
     @ManyToOne(targetEntity = TypeProduct.class)
     @JoinColumn(name = "id_type_product", nullable = false)
@@ -73,7 +76,8 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
+
+    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, Date createAt, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
         this.idProduct = idProduct;
         this.codeProduct = codeProduct;
         this.nameProduct = nameProduct;
@@ -81,8 +85,17 @@ public class Product {
         this.priceProduct = priceProduct;
         this.imageProduct = imageProduct;
         this.descriptionProduct = descriptionProduct;
+        this.createAt = createAt;
         this.typeProduct = typeProduct;
         this.orderDetailList = orderDetailList;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 
     public Long getIdProduct() {
