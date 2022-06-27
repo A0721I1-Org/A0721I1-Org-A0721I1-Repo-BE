@@ -208,11 +208,10 @@ public class MenuController {
         /* Get order */
         Table table = tableService.getTableById(idTable);
         Order order = orderService.getOrderByTableId(table.getIdTable());
-        System.out.println(table.getEmptyTable());
 
         table.setEmptyTable(true);
-        /* Edit table */
         tableService.saveTable(table);
+        /* Edit table */
 
         order.setStatusOrder(true);
         orderService.saveOrder(order);

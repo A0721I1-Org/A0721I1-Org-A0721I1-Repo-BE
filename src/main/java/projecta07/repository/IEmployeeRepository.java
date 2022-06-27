@@ -35,15 +35,12 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
             "            where employee.id_user=?1", nativeQuery = true)
     Employee findEmployeeByIdUser(Long idUser);
 
-
-
     //  Bach LT
     @Query("SELECT e FROM Employee e WHERE e.emailEmployee = ?1")
     public Employee findByEmail(String email);
 
     @Query("SELECT e FROM Employee e WHERE e.resetPasswordToken = ?1")
     public Employee findByResetPasswordToken(String token);
-
 
     //Phương thức của bin a hậu đừng xóa nha
     @Query(value = "select id_employee, name_employee, email_employee, reset_password_token, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n" +
