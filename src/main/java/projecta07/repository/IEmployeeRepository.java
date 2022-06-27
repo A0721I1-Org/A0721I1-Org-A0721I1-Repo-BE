@@ -1,5 +1,7 @@
 package projecta07.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import projecta07.model.Employee;
@@ -21,8 +23,17 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
             "inner join user on employee.id_user = user.id_user \n" +
             "where user.username like concat('%' ,?1,'%') " +
             "and employee.name_employee like concat('%' ,?2,'%') " +
-            "and employee.phone_employee like concat('%' ,?3,'%') ", nativeQuery = true)
-    List<Employee> searchAllEmployee(String username, String name, String phone);
+            "and employee.phone_employee like concat('%' ,?3,'%') ",
+    countQuery = "SELECT  id_employee, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n " +
+            "user.id_user,user.username " +
+            "FROM employee \n" +
+            "inner join position on employee.id_position = position.id_position \n" +
+            "inner join user on employee.id_user = user.id_user \n" +
+            "where user.username like concat('%' ,?1,'%') " +
+            "and employee.name_employee like concat('%' ,?2,'%') " +
+            "and employee.phone_employee like concat('%' ,?3,'%') "
+    ,nativeQuery = true)
+    Page<Employee> searchAllEmployee(String username, String name, String phone, Pageable pageable);
 
     //HauLST
     @Query(value = "select id_employee, email_employee, reset_password_token, name_employee, address_employee, date_of_birth_employee, gender_employee, phone_employee, salary_employee,position.id_position, position.name_position, \n" +
@@ -52,6 +63,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee , Long> {
             "            inner join role on user_role.id_role = role.id_role\n" +
             "            where user.id_user=?1", nativeQuery = true)
     Employee findEmployeeById_User(Long idUser);
+
 }
 
 
