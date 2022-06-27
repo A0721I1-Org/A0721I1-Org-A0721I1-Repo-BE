@@ -40,7 +40,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     //sắp xếp mới nhất là theo ngày tạo
 
     //Nhung
-    @Query(value = " select * from product inner join orderdetail on orderdetail.id_product = product.id_product group by product.name_product order by sum(orderdetail.number_product) desc limit 5", nativeQuery = true)
+    @Query(value = " select product.* from Product inner join OrderDetail on OrderDetail.id_product = Product.id_product group by product.id_product order by sum(OrderDetail.number_product) desc limit 5", nativeQuery = true)
     List<Product> findMostAll();
 
 
