@@ -27,6 +27,7 @@ import java.util.Optional;
 @RequestMapping("/manager/api/employee")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class EmployeeController {
+    // Team Employees
     @Autowired
     private IEmployeeService employeeService;
     @Autowired
