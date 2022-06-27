@@ -40,7 +40,7 @@ public class ProductController {
     @GetMapping("/page")
     public ResponseEntity<Page<Product>> findByAllPageGing(Pageable pageable, @RequestParam String page) {
         int page1 = Integer.parseInt(page);
-        pageable = PageRequest.of(page1, 6);
+        pageable = PageRequest.of(page1, 8);
         Page<Product> productList1 = productService.findByAllPaging(pageable);
         if (productList1.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -80,7 +80,7 @@ public class ProductController {
                                                 @RequestParam(defaultValue = "") String name,
                                                 Pageable pageable, @RequestParam String page1) {
         int page2 = Integer.parseInt(page1);
-        pageable = PageRequest.of(page2, 6);
+        pageable = PageRequest.of(page2, 8);
         Page<Product> productList2 = productService.searchPage(code, name, pageable);
         if (productList2.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
