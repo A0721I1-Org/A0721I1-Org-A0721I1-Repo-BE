@@ -37,7 +37,7 @@ public interface IEmployeeService {
 
     void deleteEmployee(long id);
 
-    List<Employee> searchEmployee(String username, String name, String phone);
+    Page<Employee> searchEmployee(String username, String name, String phone,Pageable pageable);
 
     void saveEmployee(Employee employee);
 

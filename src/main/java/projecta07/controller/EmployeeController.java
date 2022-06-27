@@ -1,12 +1,13 @@
 package projecta07.controller;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -50,7 +51,6 @@ public class EmployeeController {
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
-    //VinhTQ
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         if (employeeService.findEmployeeById(id) != null) {
@@ -62,7 +62,9 @@ public class EmployeeController {
 
     //VinhTQ
     @GetMapping("/search/{username}/{name}/{phone}")
-    public ResponseEntity<List<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone) {
+    public ResponseEntity<Page<Employee>> searchEmployee(@PathVariable String username, @PathVariable String name, @PathVariable String phone
+            , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page) {
+        Pageable pageable = PageRequest.of(page, 10);
         if (username.equals("null")) {
             username = "";
         }
@@ -72,8 +74,8 @@ public class EmployeeController {
         if (phone.equals("null")) {
             phone = "";
         }
-        List<Employee> employeeList = employeeService.searchEmployee(username, name, phone);
-        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
+        Page<Employee> employeeList = employeeService.searchEmployee(username, name, phone, pageable);
+        return new ResponseEntity<Page<Employee>>(employeeList, HttpStatus.OK);
     }
 
     @GetMapping("/position")
@@ -96,10 +98,10 @@ public class EmployeeController {
             user.setPassword(EncrypPasswordUtils.EncrypPasswordUtils(employee.getUser().getPassword()));
             ;
             roles.add(roleService.findByName("ROLE_STAFF"));
-        if (employee.getPosition().getNamePosition().equals("Quản lý")){
-            roles.add(roleService.findByName("ROLE_MANAGER"));
-        }
-            if (employee.getPosition().getNamePosition().equals("Quản lý")){
+            if (employee.getPosition().getNamePosition().equals("Quản lý")) {
+                roles.add(roleService.findByName("ROLE_MANAGER"));
+            }
+            if (employee.getPosition().getNamePosition().equals("Quản lý")) {
                 roles.add(roleService.findByName("ROLE_MANAGER"));
             }
             user.setRoles(roles);
