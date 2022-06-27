@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -12,33 +13,31 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
-
     private Long idProduct;
 
     @Column(name = "code_product")
-
     private String codeProduct;
 
     @Column(name = "name_product")
-
     private String nameProduct;
 
     @Column(name = "quatity_product")
     private Integer quatityProduct;
 
     @Column(name = "price_product")
-
     private Double priceProduct;
 
     @Column(name = "image_product")
-
     private String imageProduct;
 
     @Column(name = "description_product")
-
     private String descriptionProduct;
     @Column(name = "create_at")
     private Date createAt;
+
+    @Column(name = "amount_product")
+    private Integer amountProduct;
+
 
     @ManyToOne(targetEntity = TypeProduct.class)
     @JoinColumn(name = "id_type_product", nullable = false)
@@ -77,7 +76,7 @@ public class Product {
     }
 
 
-    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, Date createAt, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
+    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, Date createAt, Integer amountProduct, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
         this.idProduct = idProduct;
         this.codeProduct = codeProduct;
         this.nameProduct = nameProduct;
@@ -86,8 +85,17 @@ public class Product {
         this.imageProduct = imageProduct;
         this.descriptionProduct = descriptionProduct;
         this.createAt = createAt;
+        this.amountProduct = amountProduct;
         this.typeProduct = typeProduct;
         this.orderDetailList = orderDetailList;
+    }
+
+    public Integer getAmountProduct() {
+        return amountProduct;
+    }
+
+    public void setAmountProduct(Integer amountProduct) {
+        this.amountProduct = amountProduct;
     }
 
     public Date getCreateAt() {

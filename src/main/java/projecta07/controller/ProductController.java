@@ -13,6 +13,8 @@ import projecta07.model.TypeProduct;
 import projecta07.service.impl.ProductService;
 import projecta07.service.impl.TypeProductService;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,6 +91,7 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody Product product) {
+        product.setCreateAt(Date.valueOf(LocalDate.now()));
         productService.createProduct(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
