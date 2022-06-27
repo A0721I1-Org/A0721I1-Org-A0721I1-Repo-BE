@@ -34,12 +34,19 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     int getAmountOfProductsByTypeId(Long id);
 
     //Nhung
-    @Query(value = "SELECT * FROM projecta07.product ORDER BY product.id_product DESC", nativeQuery = true)
+    @Query(value ="SELECT * FROM projecta07.product ORDER BY product.create_at DESC limit 5", nativeQuery = true)
+
     List<Product> findAllProductNew();
+    //sắp xếp mới nhất là theo ngày tạo
 
     //Nhung
     @Query(value = " select * from product inner join orderdetail on orderdetail.id_product = product.id_product group by product.name_product order by sum(orderdetail.number_product) desc limit 5", nativeQuery = true)
     List<Product> findMostAll();
+
+
+//    List<Product> findByAll();
+
+//    List<Product> findProductByNameProductContaining(String nameProduct);
 
     @Modifying
     @Transactional
@@ -47,3 +54,4 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     void subQuantity(Long idProduct, Integer quantity);
 
 }
+
