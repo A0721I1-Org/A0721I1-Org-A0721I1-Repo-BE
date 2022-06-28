@@ -213,7 +213,7 @@ public class TableController {
 
     //HuyNN method find all table with search and paging
     @GetMapping("/findAllTableWithSearchAndPaging")
-    public ResponseEntity<Iterable<Table>> findAllTableWithSearch(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @RequestParam(value = "pageNumber", required = false) Integer page, @PageableDefault(sort = "codeTable", value = 5) Pageable pageable) {
+    public ResponseEntity<Iterable<Table>> findAllTableWithSearch(@RequestParam(value = "codeTable", required = false) Optional<String> codeTable, @RequestParam(value = "idStatus", required = false) Optional<Long> idStatus, @RequestParam(value = "emptyTable", required = false) Optional<Boolean> emptyTable, @RequestParam(value = "pageNumber", required = false) Integer page, @PageableDefault(sort = "codeTable", value = 10) Pageable pageable) {
         Page<Table> tables;
         if (codeTable.isPresent()) {
             tables = iTableService.findAllByCodeTableContaining(codeTable.get(), pageable);
