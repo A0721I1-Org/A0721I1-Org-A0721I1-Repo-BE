@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -11,31 +13,28 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
-
     private Long idProduct;
 
     @Column(name = "code_product")
-
     private String codeProduct;
 
     @Column(name = "name_product")
-
     private String nameProduct;
 
     @Column(name = "quatity_product")
     private Integer quatityProduct;
 
     @Column(name = "price_product")
-
     private Double priceProduct;
 
     @Column(name = "image_product")
-
     private String imageProduct;
 
     @Column(name = "description_product")
-
     private String descriptionProduct;
+    @Column(name = "create_at")
+    private Date createAt;
+
 
     @ManyToOne(targetEntity = TypeProduct.class)
     @JoinColumn(name = "id_type_product", nullable = false)
@@ -73,7 +72,8 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
+
+    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, Date createAt, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
         this.idProduct = idProduct;
         this.codeProduct = codeProduct;
         this.nameProduct = nameProduct;
@@ -81,8 +81,18 @@ public class Product {
         this.priceProduct = priceProduct;
         this.imageProduct = imageProduct;
         this.descriptionProduct = descriptionProduct;
+        this.createAt = createAt;
         this.typeProduct = typeProduct;
         this.orderDetailList = orderDetailList;
+    }
+
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 
     public Long getIdProduct() {

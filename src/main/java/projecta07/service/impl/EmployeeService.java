@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import projecta07.model.Employee;
 import projecta07.repository.IEmployeeRepository;
 import projecta07.service.IEmployeeService;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -20,13 +19,10 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     private IEmployeeRepository employeeRepository;
 
-    public Employee getEmployeeById(Long id) {
-        return this.employeeRepository.findById(id).orElse(null);
-    }
 
     @Override
-    public Employee findEmployeeByIdUser(Long IdUser) {
-        return employeeRepository.findEmployeeByIdUser(IdUser);
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
     }
 
 
@@ -35,11 +31,15 @@ public class EmployeeService implements IEmployeeService {
     public Employee findEmployeeByUser(Long idUser) {
         return employeeRepository.findEmployeeById_User(idUser);
     }
-    //
+
+
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id).orElse(null);
+    }
 
     @Override
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public Employee findEmployeeByIdUser(Long IdUser) {
+        return employeeRepository.findEmployeeByIdUser(IdUser);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public List<Employee> searchEmployee(String username, String name, String phone) {
-        return employeeRepository.searchAllEmployee(username, name, phone);
+    public Page<Employee> searchEmployee(String username, String name, String phone,Pageable pageable) {
+        return employeeRepository.searchAllEmployee(username, name, phone, pageable);
     }
 
     public void saveEmployee(Employee employee) {
