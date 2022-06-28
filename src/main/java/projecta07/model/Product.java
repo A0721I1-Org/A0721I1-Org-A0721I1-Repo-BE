@@ -35,9 +35,6 @@ public class Product {
     @Column(name = "create_at")
     private Date createAt;
 
-    @Column(name = "amount_product")
-    private Integer amountProduct;
-
 
     @ManyToOne(targetEntity = TypeProduct.class)
     @JoinColumn(name = "id_type_product", nullable = false)
@@ -76,7 +73,7 @@ public class Product {
     }
 
 
-    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, Date createAt, Integer amountProduct, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
+    public Product(Long idProduct, String codeProduct, String nameProduct, Integer quatityProduct, Double priceProduct, String imageProduct, String descriptionProduct, Date createAt, TypeProduct typeProduct, List<OrderDetail> orderDetailList) {
         this.idProduct = idProduct;
         this.codeProduct = codeProduct;
         this.nameProduct = nameProduct;
@@ -85,18 +82,10 @@ public class Product {
         this.imageProduct = imageProduct;
         this.descriptionProduct = descriptionProduct;
         this.createAt = createAt;
-        this.amountProduct = amountProduct;
         this.typeProduct = typeProduct;
         this.orderDetailList = orderDetailList;
     }
 
-    public Integer getAmountProduct() {
-        return amountProduct;
-    }
-
-    public void setAmountProduct(Integer amountProduct) {
-        this.amountProduct = amountProduct;
-    }
 
     public Date getCreateAt() {
         return createAt;
