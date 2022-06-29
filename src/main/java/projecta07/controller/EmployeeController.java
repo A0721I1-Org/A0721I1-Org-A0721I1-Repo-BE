@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projecta07.model.Employee;
@@ -144,6 +145,31 @@ public class EmployeeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(employee, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/change_password")
+    public ResponseEntity<String> processChangePassword(@RequestParam(value="userId", required = false) Long userId,
+                                                        @RequestParam(value="password", required = false) String password,
+                                                        @RequestParam(value="oldPassword", required = false) String oldPassword) {
+        Optional<User> user = userService.findById(userId);
+        String message = "";
+        if (!user.isPresent()) {
+            message = "User không tồn tại";
+            return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        } else {
+            // Ma hoa password
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (!passwordEncoder.matches(oldPassword, user.get().getPassword())) {
+                message = "Mật khẩu cũ không đúng";
+                return new ResponseEntity<String>(message, HttpStatus.FORBIDDEN);
+            } else {
+                String encodedPassword = passwordEncoder.encode(password);
+                user.get().setPassword(encodedPassword);
+                userService.save(user.get());
+                message = "Đã thay đổi mật khẩu thành công";
+                return new ResponseEntity<String>(message, HttpStatus.OK);
+            }
         }
     }
 }
