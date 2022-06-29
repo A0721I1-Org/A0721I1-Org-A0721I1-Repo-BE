@@ -26,7 +26,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> findOrderById(Optional<Long> idOrder) {
-        return orderRepository.findOrderByIdOrder(idOrder);
+        return orderRepository.findByIdOrder(idOrder);
     }
 
     @Override
