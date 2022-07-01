@@ -20,7 +20,7 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from `order` where status_order = 0 and id_table = ?1" , nativeQuery = true)
     List<Order> findOrderByIdOrder(Optional<Long> idOrder);
     List<Order> findAllByDateOrder(Optional<String> dateOrder);
-
+    List<Order> findByIdOrder(Optional<Long> idOrder);
     List<Order> findAllByIdOrderAndDateOrder(Optional<Long> idOrder, Optional<String> dateOrder);
 
     @Query(value = "select * from `order` where date_order=:dateOrder", nativeQuery = true)
